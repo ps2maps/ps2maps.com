@@ -64,7 +64,16 @@ App::error(function(Exception $exception, $code)
 
 App::down(function()
 {
-	return Response::make("Be right back!", 503);
+	$whitelist = array(
+		'192.168.1.51',
+		'24.54.148.205',
+	);
+
+	if ( !in_array($_SERVER['REMOTE_ADDR'], $whitelist) ) {
+		return Response::make("ps2maps.com will be right back...", 503);
+	}
+
+	echo "maintenance mode<br/>";
 });
 
 /*
