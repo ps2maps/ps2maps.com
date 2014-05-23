@@ -24,9 +24,24 @@ $app = new Illuminate\Foundation\Application;
 |
 */
 
-$env = $app->detectEnvironment(array(
-	'dev' => array('augusta.gunsight'),
-));
+$env = $app->detectEnvironment(function(){
+
+	$hostname = gethostname();
+
+	// Dev
+	if ( in_array($hostname, array('augusta.gunsight')) )
+		return 'dev';
+
+	// Dev Staging
+	elseif ( $_SERVER['HTTP_HOST'] == 'staging.ps2maps.gunsight' )
+		return 'dev-staging';
+
+	// Live Staging
+	elseif ( $_SERVER['HTTP_HOST'] == 'staging.ps2maps.com' )
+		return 'staging';
+
+	// Default: production
+});
 
 /*
 |--------------------------------------------------------------------------
