@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
-});
+// Route::post('ajax/region-control', 'ajax@region_control');
+
+Route::controller('blog', 'BlogController');
+
+Route::get('/', 'HomeController@getIndex');
+
