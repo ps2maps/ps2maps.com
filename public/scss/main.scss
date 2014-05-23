@@ -1,0 +1,115 @@
+body {
+	font-family: 'Roboto Condensed', "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+	margin-top: 50px;
+}
+
+a:focus {
+	outline: none;
+	color: inherit;
+}
+
+/* Old Browser Alert ********************/
+.old-browser-container {
+	display: none;
+	z-index: 9999;
+	position: absolute;
+	text-align: center;
+	top: 50px;
+}
+
+/* Bootstrap Tweaks *********************/
+
+.thumbnail > img,
+.thumbnail > a > img {
+	display: block;
+	max-width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* Navbar Tweaks ************************/
+
+.navbar {
+	z-index: 3;
+	position: absolute;
+	// box-shadow: 1px 2px 10px rgba(0,0,0,0.5);
+}
+
+// .navbar a.brand {
+// 	font-size: 22px;
+// 	font-weight: bold;
+// 	float: right;
+// 	color: inherit;
+// 	text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+// 	-webkit-transition: all .1s linear;
+// 	-moz-transition: all .1s linear;
+// 	transition: all .1s linear;
+// }
+// .navbar a.brand:hover {
+// 	text-decoration: none;
+// 	text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
+// }
+
+// .navbar-inverse .brand,
+// .navbar-inverse .nav > li > a {
+// 	-webkit-transition: all .1s linear;
+// 	-moz-transition: all .1s linear;
+// 	transition: all .1s linear;
+// }
+
+// .navbar-inverse .nav > li > a:focus,
+// .navbar-inverse .nav > li > a:hover {
+// 	text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
+// }
+
+// .navbar .btn-navbar {
+// 	float: left;
+// }
+
+// .nav-collapse .nav > li > a,
+// .nav-collapse .dropdown-menu a {
+// 	font-weight: normal;
+// }
+
+// .navbar-inverse .navbar-search .search-query {
+// 	line-height: 20px;
+// }
+
+// .navbar .search-query {
+// 	width: auto;
+// }
+
+/* Social Media Buttons *****************/
+
+#social-container {
+	height: 67px;
+}
+
+#social-container > div {
+	display: inline-block;
+	margin-left: 5px;
+	height: 67px;
+}
+
+#twitter-container {
+	width: 58px;
+}
+
+#facebook-container {
+	position: relative;
+	width: 44px;
+}
+#googleplus-container {
+	position: relative;
+	top: -2px;
+	width: 50px;
+}
+
+/* Blog */
+.rss-container {
+	margin-top: 10px;
+}
+
+#disqus_thread {
+	margin-top: 40px;
+}
