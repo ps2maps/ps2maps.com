@@ -1,0 +1,68 @@
+/* line 1, ./main.scss */
+body {
+  font-family: 'Roboto Condensed', "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+  margin-top: 50px; }
+
+/* line 6, ./main.scss */
+a:focus {
+  outline: none;
+  color: inherit; }
+
+/* Old Browser Alert ********************/
+/* line 12, ./main.scss */
+.old-browser-container {
+  display: none;
+  z-index: 9999;
+  position: absolute;
+  text-align: center;
+  top: 50px; }
+
+/* Bootstrap Tweaks *********************/
+/* line 22, ./main.scss */
+.thumbnail > img,
+.thumbnail > a > img {
+  display: block;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto; }
+
+/* Navbar Tweaks ************************/
+/* line 32, ./main.scss */
+.navbar {
+  z-index: 3;
+  position: absolute; }
+
+/* Social Media Buttons *****************/
+/* line 84, ./main.scss */
+#social-container {
+  height: 67px; }
+
+/* line 88, ./main.scss */
+#social-container > div {
+  display: inline-block;
+  margin-left: 5px;
+  height: 67px; }
+
+/* line 94, ./main.scss */
+#twitter-container {
+  width: 58px; }
+
+/* line 98, ./main.scss */
+#facebook-container {
+  position: relative;
+  width: 44px; }
+
+/* line 102, ./main.scss */
+#googleplus-container {
+  position: relative;
+  top: -2px;
+  width: 50px; }
+
+/* Blog */
+/* line 109, ./main.scss */
+.rss-container {
+  margin-top: 10px; }
+
+/* line 113, ./main.scss */
+#disqus_thread {
+  margin-top: 40px; }

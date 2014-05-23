@@ -1,0 +1,734 @@
+/* line 18, map.scss */
+body {
+  overflow: hidden;
+  margin-top: 0;
+}
+
+/* line 23, map.scss */
+#map {
+  background-color: #051111;
+  display: block;
+  position: absolute;
+  height: auto;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-top: 40px;
+  z-index: 1;
+}
+
+/* line 36, map.scss */
+#sidebar {
+  z-index: 2;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 170px;
+  height: 100%;
+  color: #FFF;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  transition: right 0.25s;
+  -moz-transition: right 0.25s;
+  -webkit-transition: right 0.25s;
+  -o-transition: right 0.25s;
+}
+
+/* line 55, map.scss */
+#sidebar.closed {
+  right: -170px;
+}
+
+/* line 59, map.scss */
+#sidebar_handle {
+  display: block;
+  position: absolute;
+  right: 169px;
+  top: 42px;
+  border: 1px solid #333;
+  border-right: 0;
+  background-color: #000;
+  height: 25px;
+  width: 20px;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  transition: all .1s linear;
+  pointer-events: auto;
+}
+/* line 80, map.scss */
+#sidebar_handle #handle {
+  margin: 6px 0 0 8px;
+  border-left: 6px solid #FFF;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: none;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  content: '';
+  opacity: 0.5;
+  filter: alpha(opacity=30);
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  transition: all .1s linear;
+}
+/* line 96, map.scss */
+#sidebar_handle #handle:hover {
+  opacity: 1;
+}
+
+/* line 103, map.scss */
+#sidebar.closed #sidebar_handle {
+  background-color: #EEE;
+  border-color: #888;
+}
+/* line 108, map.scss */
+#sidebar.closed #handle {
+  margin-left: 6px;
+  border-right: 6px solid #000;
+  border-left: none;
+}
+
+/* line 115, map.scss */
+#sidebar_content {
+  overflow-y: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  height: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin-top: 40px;
+  padding: 2px;
+}
+/* line 130, map.scss */
+#sidebar_content hr {
+  margin: 5px 0 5px;
+  border-bottom-width: 0;
+  border-style: dotted;
+  border-color: #999;
+}
+/* line 137, map.scss */
+#sidebar_content h2 {
+  text-align: center;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 16px;
+  margin: 0 1px 5px;
+}
+/* line 145, map.scss */
+#sidebar_content::-webkit-scrollbar {
+  width: 14px;
+}
+/* line 149, map.scss */
+#sidebar_content::-webkit-scrollbar-track {
+  background: rgba(17, 17, 17, 0.7);
+}
+/* line 153, map.scss */
+#sidebar_content::-webkit-scrollbar-thumb {
+  background: #111;
+  border: 1px solid #444;
+}
+/* line 158, map.scss */
+#sidebar_content::-webkit-scrollbar-button {
+  height: 0;
+  width: 0;
+}
+/* line 163, map.scss */
+#sidebar_content label {
+  font-size: 12px;
+  text-align: right;
+  margin-bottom: 0;
+}
+/* line 169, map.scss */
+#sidebar_content input[type=checkbox] {
+  float: right;
+  margin-left: 5px;
+}
+/* line 175, map.scss */
+#sidebar_content .radio,
+#sidebar_content .checkbox {
+  padding-left: 0;
+}
+/* line 179, map.scss */
+#sidebar_content .accordion {
+  margin: 0;
+  pointer-events: auto;
+}
+/* line 184, map.scss */
+#sidebar_content .accordion-group {
+  border: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 194, map.scss */
+#sidebar_content .accordion-heading {
+  -webkit-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+  -moz-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+  text-align: center;
+  text-transform: uppercase;
+  height: 25px;
+  line-height: 25px;
+  background: #222222;
+  background: -moz-linear-gradient(top, #222222 0%, #111111 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222222), color-stop(100%, #111111));
+  background: -webkit-linear-gradient(top, #222222 0%, #111111 100%);
+  background: -o-linear-gradient(top, #222222 0%, #111111 100%);
+  background: -ms-linear-gradient(top, #222222 0%, #111111 100%);
+  background: linear-gradient(to bottom, #222222 0%, #111111 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  border: 1px solid #333;
+}
+/* line 203, map.scss */
+#sidebar_content .accordion-heading a {
+  color: #999;
+  -webkit-transition: all .1s linear;
+  -moz-transition: all .1s linear;
+  transition: all .1s linear;
+}
+/* line 210, map.scss */
+#sidebar_content .accordion-heading a:hover {
+  text-decoration: none;
+  color: #FFF;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.4);
+}
+/* line 217, map.scss */
+#sidebar_content .accordion-inner {
+  background: rgba(17, 17, 17, 0.7);
+  font-size: 12px;
+  border: 1px solid #333;
+  border-top: none;
+  padding: 10px 5px 10px 5px;
+}
+/* line 225, map.scss */
+#sidebar_content .accordion-toggle {
+  padding: 0;
+}
+
+/* Sidebar Territory Info */
+/* line 231, map.scss */
+#territory-info {
+  text-shadow: 1px 2px 2px #000;
+}
+/* line 234, map.scss */
+#territory-info .initial {
+  text-align: center;
+}
+/* line 238, map.scss */
+#territory-info.nc {
+  background: blue;
+  background: -moz-linear-gradient(top, blue 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, blue), color-stop(100%, rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, blue 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -o-linear-gradient(top, blue 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -ms-linear-gradient(top, blue 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(to bottom, #0000ff 0%, rgba(0, 0, 0, 0.7) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  padding-left: 5px;
+}
+/* line 243, map.scss */
+#territory-info.tr {
+  background: red;
+  background: -moz-linear-gradient(top, red 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, red), color-stop(100%, rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, red 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -o-linear-gradient(top, red 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -ms-linear-gradient(top, red 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(to bottom, #ff0000 0%, rgba(0, 0, 0, 0.7) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  padding-left: 5px;
+}
+/* line 248, map.scss */
+#territory-info.vs {
+  background: #660099;
+  background: -moz-linear-gradient(top, #660099 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #660099), color-stop(100%, rgba(0, 0, 0, 0.7)));
+  background: -webkit-linear-gradient(top, #660099 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -o-linear-gradient(top, #660099 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: -ms-linear-gradient(top, #660099 0%, rgba(0, 0, 0, 0.7) 100%);
+  background: linear-gradient(to bottom, #660099 0%, rgba(0, 0, 0, 0.7) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  padding-left: 5px;
+}
+/* line 253, map.scss */
+#territory-info .territory-icon {
+  position: absolute;
+  top: 2px;
+  width: 32px;
+  height: 32px;
+}
+/* line 260, map.scss */
+#territory-info .territory-name {
+  font-size: 16px;
+  position: relative;
+  left: 36px;
+  width: 106px;
+  min-height: 32px;
+}
+/* line 268, map.scss */
+#territory-info .resource-icon {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+}
+/* line 274, map.scss */
+#territory-info .resource {
+  position: relative;
+  left: 36px;
+}
+/* line 279, map.scss */
+#territory-info .resource-name {
+  line-height: 32px;
+}
+/* line 283, map.scss */
+#territory-info .faction-icon {
+  width: 32px;
+  height: 32px;
+  position: absolute;
+}
+/* line 289, map.scss */
+#territory-info .faction-name {
+  line-height: 32px;
+  position: relative;
+  left: 36px;
+}
+/* line 295, map.scss */
+#territory-info .captured {
+  text-align: center;
+}
+
+/* Sidebar Stats */
+/* line 304, map.scss */
+#sidebar-stats .header .resource-icon {
+  position: absolute;
+}
+/* line 308, map.scss */
+#sidebar-stats .header .resource-name {
+  height: 32px;
+  line-height: 32px;
+  position: relative;
+  left: 32px;
+}
+
+/* line 316, map.scss */
+#aerospaceChartContainer {
+  background: rgba(0, 0, 0, 0);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #1bc263 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, #1bc263));
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #1bc263 100%);
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #1bc263 100%);
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #1bc263 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #1bc263 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  border: 2px solid #1BC263;
+}
+
+/* line 321, map.scss */
+#mechanizedChartContainer {
+  margin-top: 5px;
+  background: rgba(0, 0, 0, 0);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #cc881b 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, #cc881b));
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #cc881b 100%);
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #cc881b 100%);
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #cc881b 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #cc881b 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  border: 2px solid #CC881B;
+}
+
+/* line 327, map.scss */
+#infantryChartContainer {
+  margin-top: 5px;
+  background: rgba(0, 0, 0, 0);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #f2ef22 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, #f2ef22));
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #f2ef22 100%);
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #f2ef22 100%);
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, #f2ef22 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #f2ef22 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2',GradientType=0 );
+  border: 2px solid #F2EF22;
+}
+
+/* line 333, map.scss */
+.accordion-heading#user-echo-button {
+  height: 30px;
+}
+
+/* line 337, map.scss */
+#user-echo-button .icon-comment {
+  margin-top: 3px;
+}
+
+/* line 341, map.scss */
+#territoryRadioButtons .btn {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* line 345, map.scss */
+#territoryRadioButtons .btn.active {
+  color: white;
+}
+
+/* Sprite Icons */
+/* line 351, map.scss */
+.icon {
+  background-image: url(../img/icons/sprites.png);
+  pointer-events: none;
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+}
+/* line 358, map.scss */
+.icon.warpgate {
+  background-position: 0px 0px;
+}
+/* line 359, map.scss */
+.icon.warpgate.nc {
+  background-position: 0px -32px;
+}
+/* line 360, map.scss */
+.icon.warpgate.tr {
+  background-position: 0px -64px;
+}
+/* line 361, map.scss */
+.icon.warpgate.vs {
+  background-position: 0px -96px;
+}
+/* line 363, map.scss */
+.icon.amp-station {
+  background-position: -32px 0px;
+}
+/* line 364, map.scss */
+.icon.amp-station.nc {
+  background-position: -32px -32px;
+}
+/* line 365, map.scss */
+.icon.amp-station.tr {
+  background-position: -32px -64px;
+}
+/* line 366, map.scss */
+.icon.amp-station.vs {
+  background-position: -32px -96px;
+}
+/* line 368, map.scss */
+.icon.bio-lab {
+  background-position: -64px 0px;
+}
+/* line 369, map.scss */
+.icon.bio-lab.nc {
+  background-position: -64px -32px;
+}
+/* line 370, map.scss */
+.icon.bio-lab.tr {
+  background-position: -64px -64px;
+}
+/* line 371, map.scss */
+.icon.bio-lab.vs {
+  background-position: -64px -96px;
+}
+/* line 373, map.scss */
+.icon.tech-plant {
+  background-position: -96px 0px;
+}
+/* line 374, map.scss */
+.icon.tech-plant.nc {
+  background-position: -96px -32px;
+}
+/* line 375, map.scss */
+.icon.tech-plant.tr {
+  background-position: -96px -64px;
+}
+/* line 376, map.scss */
+.icon.tech-plant.vs {
+  background-position: -96px -96px;
+}
+/* line 378, map.scss */
+.icon.large-outpost {
+  background-position: -128px 0px;
+}
+/* line 379, map.scss */
+.icon.large-outpost.nc {
+  background-position: -128px -32px;
+}
+/* line 380, map.scss */
+.icon.large-outpost.tr {
+  background-position: -128px -64px;
+}
+/* line 381, map.scss */
+.icon.large-outpost.vs {
+  background-position: -128px -96px;
+}
+/* line 383, map.scss */
+.icon.small-outpost {
+  background-position: -160px 0px;
+}
+/* line 384, map.scss */
+.icon.small-outpost.nc {
+  background-position: -160px -32px;
+}
+/* line 385, map.scss */
+.icon.small-outpost.tr {
+  background-position: -160px -64px;
+}
+/* line 386, map.scss */
+.icon.small-outpost.vs {
+  background-position: -160px -96px;
+}
+/* line 388, map.scss */
+.icon.forward-spawn {
+  background-position: -96px -160px;
+}
+/* line 389, map.scss */
+.icon.aircraft-terminal {
+  background-position: 0px -128px;
+}
+/* line 390, map.scss */
+.icon.galaxy-terminal {
+  background-position: 0px -160px;
+}
+/* line 391, map.scss */
+.icon.ground-vehicle-terminal {
+  background-position: -32px -128px;
+}
+/* line 392, map.scss */
+.icon.ground-transport-terminal {
+  background-position: -32px -160px;
+}
+/* line 393, map.scss */
+.icon.equipment-terminal {
+  background-position: -64px -128px;
+}
+/* line 394, map.scss */
+.icon.warpgate-terminal {
+  background-position: -64px -160px;
+}
+/* line 395, map.scss */
+.icon.spawn-beacon {
+  background-position: -96px -128px;
+}
+/* line 396, map.scss */
+.icon.vertical-shield-generator {
+  background-position: -224px -32px;
+}
+/* line 397, map.scss */
+.icon.horizontal-shield-generator {
+  background-position: -224px -64px;
+}
+/* line 398, map.scss */
+.icon.gate-shield-generator {
+  background-position: -128px -128px;
+}
+/* line 399, map.scss */
+.icon.spawn-control-unit {
+  background-position: -128px -160px;
+}
+/* line 400, map.scss */
+.icon.teleporter {
+  background-position: -224px -96px;
+}
+/* line 401, map.scss */
+.icon.spawn-tube {
+  background-position: -224px -128px;
+}
+/* line 402, map.scss */
+.icon.ammo-tower {
+  background-position: -224px -160px;
+}
+/* line 403, map.scss */
+.icon.landing-pad {
+  background-position: -256px 0px;
+}
+/* line 404, map.scss */
+.icon.scu-shield-generator {
+  background-position: -160px -128px;
+}
+/* line 405, map.scss */
+.icon.capture-point {
+  background-position: -192px 0px;
+}
+/* line 406, map.scss */
+.icon.nc {
+  background-position: -192px -32px;
+}
+/* line 407, map.scss */
+.icon.tr {
+  background-position: -192px -64px;
+}
+/* line 408, map.scss */
+.icon.vs {
+  background-position: -192px -96px;
+}
+/* line 409, map.scss */
+.icon.aerospace {
+  background-position: -192px -128px;
+}
+/* line 410, map.scss */
+.icon.mechanized {
+  background-position: -192px -160px;
+}
+/* line 411, map.scss */
+.icon.infantry {
+  background-position: -224px 0px;
+}
+
+/* Layers Modal */
+/* line 417, map.scss */
+#icons-modal .modal-body {
+  max-height: inherit;
+}
+/* line 421, map.scss */
+#icons-modal input[type=checkbox] {
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
+  margin-top: 0;
+}
+/* line 428, map.scss */
+#icons-modal label {
+  height: 32px;
+  line-height: 32px;
+  margin: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* line 440, map.scss */
+#icons-modal .icon {
+  vertical-align: top;
+}
+/* line 444, map.scss */
+#icons-modal .icon.capture-point {
+  top: 0;
+}
+/* line 445, map.scss */
+#icons-modal .icon.spawn-control-unit {
+  width: 64px;
+}
+/* line 447, map.scss */
+#icons-modal hr {
+  margin: 5px 0;
+}
+
+/* Leaftlet.label */
+/* line 453, map.scss */
+.leaflet-label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  z-index: 6;
+  color: #fff;
+  width: 80px;
+  position: absolute;
+  text-align: center;
+  left: -40px;
+  top: 12px;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: 'Roboto Condensed';
+  text-shadow: #000 2px 3px 1px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* line 476, map.scss */
+.label-capture-point {
+  top: -10px;
+  left: -41px;
+  font-size: 16px;
+}
+
+/* Leaflet.divLayer */
+/* line 483, map.scss */
+.leaflet-divlayer {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100px;
+  font-family: 'Roboto Condensed';
+  text-shadow: #000 2px 2px 1px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 16px;
+  line-height: 18px;
+  margin-left: -50px;
+  margin-top: -8px;
+  text-align: center;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* line 505, map.scss */
+.gridLabel {
+  width: 50px;
+  font-size: 12px;
+  line-height: 12px;
+  margin-left: 2px;
+  margin-top: 2px;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Misc */
+/* line 520, map.scss */
+.no-localstorage .old-browser-container,
+.no-svg .old-browser-container,
+.no-inlinesvg .old-browser-container,
+.no-canvas .old-browser-container,
+.no-canvastext .old-browser-container {
+  display: block;
+}
+
+/* line 524, map.scss */
+#navbar-permalink {
+  width: 20px;
+  height: 20px;
+}
+
+/* line 529, map.scss */
+#navbar-search input.hidden {
+  display: none;
+}
+
+/* line 533, map.scss */
+#permalink-modal {
+  width: 580px;
+}
+
+/* line 537, map.scss */
+.nomouse {
+  pointer-events: none;
+}
+
+/* Responsive */
