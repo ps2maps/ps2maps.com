@@ -29,7 +29,7 @@ $env = $app->detectEnvironment(function(){
 	$hostname = gethostname();
 
 	// Dev
-	if ( in_array($hostname, array('augusta.gunsight')) )
+	if ( $hostname == 'augusta.gunsight' )
 		return 'dev';
 
 	// Dev Staging
