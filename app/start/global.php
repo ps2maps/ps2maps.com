@@ -31,7 +31,7 @@ ClassLoader::addDirectories(array(
 |
 */
 
-Log::useFiles(storage_path().'/logs/laravel.log');
+Log::useDailyFiles(storage_path().'/logs/laravel.log');
 
 /*
 |--------------------------------------------------------------------------
@@ -88,3 +88,5 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+require app_path().'/composers.php';
+require app_path().'/macros.php';
