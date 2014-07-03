@@ -11,3 +11,5 @@
 |
 */
 
+Artisan::add(new Census);
+Artisan::add(new GenerateJS);
