@@ -8,4 +8,9 @@ class Currency extends Eloquent
 		'id',
 		'name',
 	);
+
+	public function facilities()
+	{
+		return $this->hasMany('Facility');
+	}
 }

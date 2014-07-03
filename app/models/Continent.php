@@ -11,4 +11,14 @@ class Continent extends Eloquent
 		'description',
 		'enabled',
 	);
+
+	public function regions()
+	{
+		return $this->hasMany('Region');
+	}
+
+	public function facilities()
+	{
+		return $this->hasMany('Facility');
+	}
 }

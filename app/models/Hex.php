@@ -11,4 +11,9 @@ class Hex extends Eloquent
 		'x',
 		'y',
 	);
+
+	public function region()
+	{
+		return $this->belongsTo('Region');
+	}
 }

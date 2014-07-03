@@ -9,4 +9,14 @@ class Region extends Eloquent
 		'name',
 		'continent_id',
 	);
+
+	public function hexes()
+	{
+		return $this->hasMany('Hex');
+	}
+
+	public function facility()
+	{
+		return $this->hasOne('Facility');
+	}
 }

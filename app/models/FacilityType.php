@@ -11,4 +11,9 @@ class FacilityType extends Eloquent
 		'name',
 		'slug',
 	);
+
+	public function facilities()
+	{
+		return $this->hasMany('Facility');
+	}
 }

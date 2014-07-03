@@ -32,4 +32,29 @@ class Facility extends Eloquent
 	{
 		$this->attributes['z'] = number_format(round($value, 2),2,'.','');
 	}
+
+	public function continent()
+	{
+		return $this->belongsTo('Continent');
+	}
+
+	public function currency()
+	{
+		return $this->belongsTo('Currency');
+	}
+
+	public function facilityType()
+	{
+		return $this->belongsTo('FacilityType');
+	}
+
+	public function region()
+	{
+		return $this->belongsTo('Region');
+	}
+
+	public function linkedFacilities()
+	{
+		return $this->belongsToMany('Facility', 'links', 'facility_id_a', 'facility_id_b');
+	}
 }
