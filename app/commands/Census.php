@@ -19,7 +19,7 @@ class Census extends Command {
 	 *
 	 * @var string
 	 */
-	protected $name = 'command:census';
+	protected $name = 'ps2maps:census';
 
 	/**
 	 * The console command description.
