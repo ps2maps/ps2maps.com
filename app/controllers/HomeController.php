@@ -4,9 +4,11 @@ class HomeController extends BaseController {
 
 	public function getIndex()
 	{
-		$servers = Server::where('enabled','=','yes')->orderBy('name')->get();
+		$servers = Server::orderBy('name')
+			->remember(1440)
+			->get();
 
-		return View::make('home/index', compact('servers'));
+		return View::make('home/indexnew', compact('servers'));
 	}
 
 }

@@ -2,7 +2,7 @@
 
 Class BlogController extends BaseController
 {
-	public function getIndex()
+	public function index()
 	{
 		$posts = Post::where('published','=','yes')
 			->orderBy('published_at','desc')
@@ -11,12 +11,19 @@ Class BlogController extends BaseController
 		return View::make('blog/index', compact('posts'));
 	}
 
-	public function getArticle($slug)
+	public function article($slug)
 	{
-		echo "article";
+		$post = Post::where('slug','=',$slug)
+			->where('published','=','yes')
+			->first();
+
+		if ( is_null($post) )
+			return App::abort('404');
+
+		return View::make('blog/post', compact('post'));
 	}
 
-	public function getRss()
+	public function rss()
 	{
 		echo "rss";
 	}
