@@ -1,7 +1,7 @@
 (function(){
 	var logWindow = $('.log');
 
-	// Init
+	// Set height from localStorage or default value
 	var height = cache.getItem('ps2maps.log.height');
 	if ( !height || height <= 0 )
 		height = '30%';
@@ -25,4 +25,4 @@
 		e.preventDefault();
 	});
 
-})();
+});

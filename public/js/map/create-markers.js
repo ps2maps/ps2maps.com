@@ -265,20 +265,19 @@ var icons = {
 			iconAnchor: [16,16]
 		})
 	}
-}
+};
 
 // Create Markers
 (function(){
-	if ( typeof markers == 'undefined' )
-		markers = [];
 
-	if ( typeof layers == 'undefined' )
-		return false;
-
-	for( var layer in layers )
+	for( id in continent.facilities )
 	{
-		if ( !marker_data[layer] )
-			continue;
+		continent.facilities[id].loc[0] = continent.facilities[id].loc[0] * 0.03126 + 128;
+		continent.facilities[id].loc[1] = continent.facilities[id].loc[1] * 0.03126 + 128;
+		var marker = L.marker(continent.facilities[id].loc)
+			.bindPopup(continent.facilities[id].name)
+			.addTo(ps2maps.map);
+		continue;
 
 		// The Marker's Icon
 		var icon = L.divIcon({
@@ -328,4 +327,4 @@ var icons = {
 		if ( marker_data[layer].hasLabel )
 			layers[layer].has_label = true;
 	}
-});
+})();

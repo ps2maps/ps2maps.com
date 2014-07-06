@@ -1,39 +1,20 @@
 // Create Regions
 (function(){
 
-	// Region On Click
-	function onClick(e)
-	{
-		// console.log(e);
-	}
-
-	// Region Mouse Over
-	function onMouseOver(e)
-	{
-		// console.log('moused over');
-	}
-
-	// Region Mouse Out
-	function onMouseOut(e)
-	{
-		// console.log('moused out');
-	}
-
 	// territories = [];
-	var regions = [],
-		region;
+	var regions = [], region;
 
 	for( index in continent.regions )
 	{
 		region = L.polygon( continent.regions[index].polygon, ps2maps.options.regions.default )
-			.on('click', onClick)
-			.on('mouseover', onMouseOver)
-			.on('mouseout', onMouseOut);
-			region.id = continent.regions[index].id;
-			region.name = continent.regions[index].name;
-			// region.type_id = continent.regions[index].type_id;
-			// region.resource = continent.regions[index].resource;
-			// region.markers = [];
+			.on('click', ps2maps.regionClick)
+			.on('mouseover', ps2maps.regionMouseOver)
+			.on('mouseout', ps2maps.regionMouseOut);
+		region.id = continent.regions[index].id;
+		region.name = continent.regions[index].name;
+		// region.type_id = continent.regions[index].type_id;
+		// region.resource = continent.regions[index].resource;
+		// region.markers = [];
 		regions.push(region);
 		// territories[regions[index].id] = region;
 	}
