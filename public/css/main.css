@@ -1,24 +1,13 @@
-/* line 1, ./main.scss */
-body {
-  font-family: 'Roboto Condensed', "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
-  margin-top: 50px; }
+/* line 7, ./main.scss */
+.container-fluid {
+  max-width: 1440px; }
 
-/* line 6, ./main.scss */
+/* line 11, ./main.scss */
 a:focus {
   outline: none;
   color: inherit; }
 
-/* Old Browser Alert ********************/
-/* line 12, ./main.scss */
-.old-browser-container {
-  display: none;
-  z-index: 9999;
-  position: absolute;
-  text-align: center;
-  top: 50px; }
-
-/* Bootstrap Tweaks *********************/
-/* line 22, ./main.scss */
+/* line 18, ./main.scss */
 .thumbnail > img,
 .thumbnail > a > img {
   display: block;
@@ -26,43 +15,341 @@ a:focus {
   margin-right: auto;
   margin-left: auto; }
 
-/* Navbar Tweaks ************************/
-/* line 32, ./main.scss */
-.navbar {
-  z-index: 3;
-  position: absolute; }
+/* line 3, _nav.scss */
+header.navbar {
+  background: #051112;
+  border-width: 0 0 1px 0;
+  border-color: #222; }
+  /* line 8, _nav.scss */
+  header.navbar button.navbar-toggle {
+    float: left;
+    margin-right: 0;
+    margin-left: 15px;
+    border-color: #222; }
+    /* line 14, _nav.scss */
+    header.navbar button.navbar-toggle .icon-bar {
+      background-color: #666; }
+    /* line 18, _nav.scss */
+    header.navbar button.navbar-toggle:hover {
+      background-color: #333; }
+      /* line 20, _nav.scss */
+      header.navbar button.navbar-toggle:hover .icon-bar {
+        background-color: #111; }
+  /* line 26, _nav.scss */
+  header.navbar .solo-dropdown {
+    border-left: 1px solid #222;
+    border-right: 1px solid #222;
+    padding-left: 8px; }
+    /* line 31, _nav.scss */
+    header.navbar .solo-dropdown > a {
+      padding-left: 0;
+      padding-right: 9px; }
+  /* line 37, _nav.scss */
+  header.navbar li.server {
+    border-right: 1px solid #222; }
+  /* line 41, _nav.scss */
+  header.navbar a.navbar-brand {
+    font-size: 22px;
+    font-weight: bold;
+    -webkit-transition: all .1s linear;
+    -moz-transition: all .1s linear;
+    transition: all .1s linear; }
+    /* line 48, _nav.scss */
+    header.navbar a.navbar-brand div.logo {
+      background: url(/img/nav-logo.png) no-repeat left center;
+      padding-left: 24px;
+      position: relative;
+      top: 5px; }
+      /* line 54, _nav.scss */
+      header.navbar a.navbar-brand div.logo div.text {
+        position: relative;
+        top: -2px; }
+  /* line 63, _nav.scss */
+  header.navbar .nav .open > a, header.navbar .nav .open > a:hover, header.navbar .nav .open > a:focus {
+    background-color: inherit; }
+  /* line 71, _nav.scss */
+  header.navbar .nav > li > a {
+    -webkit-transition: all .1s linear;
+    -moz-transition: all .1s linear;
+    transition: all .1s linear; }
+    /* line 76, _nav.scss */
+    header.navbar .nav > li > a:focus, header.navbar .nav > li > a:hover {
+      text-decoration: none;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      color: #FFF; }
+  /* line 84, _nav.scss */
+  header.navbar .btn-navbar {
+    float: left; }
+  /* line 88, _nav.scss */
+  header.navbar .navbar-collapse {
+    border-color: #222;
+    border-width: 0 0 1px 0; }
 
-/* Social Media Buttons *****************/
-/* line 84, ./main.scss */
+/* line 94, _nav.scss */
+.nav-collapse .nav > li > a,
+.nav-collapse .dropdown-menu a {
+  font-weight: normal; }
+
+/* line 99, _nav.scss */
+.navbar-inverse .navbar-search .search-query {
+  line-height: 20px; }
+
+/* line 103, _nav.scss */
+.navbar .search-query {
+  width: auto; }
+
+/* line 30, ./main.scss */
 #social-container {
   height: 67px; }
 
-/* line 88, ./main.scss */
+/* line 34, ./main.scss */
 #social-container > div {
   display: inline-block;
   margin-left: 5px;
   height: 67px; }
 
-/* line 94, ./main.scss */
+/* line 40, ./main.scss */
 #twitter-container {
   width: 58px; }
 
-/* line 98, ./main.scss */
+/* line 44, ./main.scss */
 #facebook-container {
   position: relative;
   width: 44px; }
 
-/* line 102, ./main.scss */
+/* line 48, ./main.scss */
 #googleplus-container {
   position: relative;
   top: -2px;
   width: 50px; }
 
-/* Blog */
-/* line 109, ./main.scss */
+/* line 56, ./main.scss */
+.post img {
+  width: 100%; }
+
+/* line 60, ./main.scss */
 .rss-container {
   margin-top: 10px; }
 
-/* line 113, ./main.scss */
+/* line 64, ./main.scss */
 #disqus_thread {
   margin-top: 40px; }
+
+/* line 73, ./main.scss */
+#continents hr {
+  border-color: #b3b3b3; }
+/* line 77, ./main.scss */
+#continents h2 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 24px; }
+/* line 83, ./main.scss */
+#continents .territory-control-bar {
+  width: 100%;
+  text-align: center; }
+  /* line 87, ./main.scss */
+  #continents .territory-control-bar td {
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    transition: all 0.1s linear; }
+  /* line 91, ./main.scss */
+  #continents .territory-control-bar div {
+    padding: 10px; }
+  /* line 95, ./main.scss */
+  #continents .territory-control-bar .nc {
+    background-color: #33adff;
+    margin-right: 2px; }
+  /* line 99, ./main.scss */
+  #continents .territory-control-bar .tr {
+    background-color: #df2020;
+    margin-right: 2px; }
+  /* line 103, ./main.scss */
+  #continents .territory-control-bar .vs {
+    background-color: #9e52e0; }
+/* line 108, ./main.scss */
+#continents .icon {
+  background-image: url(/img/icons/sprites.png);
+  pointer-events: none;
+  height: 32px;
+  width: 32px;
+  display: inline-block; }
+  /* line 115, ./main.scss */
+  #continents .icon.nc {
+    background-position: -192px -33px; }
+  /* line 116, ./main.scss */
+  #continents .icon.tr {
+    background-position: -192px -64px; }
+  /* line 117, ./main.scss */
+  #continents .icon.vs {
+    background-position: -192px -96px; }
+  /* line 119, ./main.scss */
+  #continents .icon.warpgate {
+    background-position: 0px 0px; }
+  /* line 120, ./main.scss */
+  #continents .icon.warpgate.nc {
+    background-position: 0px -32px; }
+  /* line 121, ./main.scss */
+  #continents .icon.warpgate.tr {
+    background-position: 0px -64px; }
+  /* line 122, ./main.scss */
+  #continents .icon.warpgate.vs {
+    background-position: 0px -96px; }
+  /* line 124, ./main.scss */
+  #continents .icon.amp-station {
+    background-position: -32px 0px; }
+  /* line 125, ./main.scss */
+  #continents .icon.amp-station.nc {
+    background-position: -32px -32px; }
+  /* line 126, ./main.scss */
+  #continents .icon.amp-station.tr {
+    background-position: -32px -64px; }
+  /* line 127, ./main.scss */
+  #continents .icon.amp-station.vs {
+    background-position: -32px -96px; }
+  /* line 129, ./main.scss */
+  #continents .icon.bio-lab {
+    background-position: -64px 0px; }
+  /* line 130, ./main.scss */
+  #continents .icon.bio-lab.nc {
+    background-position: -64px -32px; }
+  /* line 131, ./main.scss */
+  #continents .icon.bio-lab.tr {
+    background-position: -64px -64px; }
+  /* line 132, ./main.scss */
+  #continents .icon.bio-lab.vs {
+    background-position: -64px -96px; }
+  /* line 134, ./main.scss */
+  #continents .icon.tech-plant {
+    background-position: -96px 0px; }
+  /* line 135, ./main.scss */
+  #continents .icon.tech-plant.nc {
+    background-position: -96px -32px; }
+  /* line 136, ./main.scss */
+  #continents .icon.tech-plant.tr {
+    background-position: -96px -64px; }
+  /* line 137, ./main.scss */
+  #continents .icon.tech-plant.vs {
+    background-position: -96px -96px; }
+  /* line 139, ./main.scss */
+  #continents .icon.large-outpost {
+    background-position: -128px 0px; }
+  /* line 140, ./main.scss */
+  #continents .icon.large-outpost.nc {
+    background-position: -128px -32px; }
+  /* line 141, ./main.scss */
+  #continents .icon.large-outpost.tr {
+    background-position: -128px -64px; }
+  /* line 142, ./main.scss */
+  #continents .icon.large-outpost.vs {
+    background-position: -128px -96px; }
+  /* line 144, ./main.scss */
+  #continents .icon.small-outpost {
+    background-position: -160px 0px; }
+  /* line 145, ./main.scss */
+  #continents .icon.small-outpost.nc {
+    background-position: -160px -32px; }
+  /* line 146, ./main.scss */
+  #continents .icon.small-outpost.tr {
+    background-position: -160px -64px; }
+  /* line 147, ./main.scss */
+  #continents .icon.small-outpost.vs {
+    background-position: -160px -96px; }
+  /* line 149, ./main.scss */
+  #continents .icon.forward-spawn {
+    background-position: -96px -160px; }
+  /* line 150, ./main.scss */
+  #continents .icon.aircraft-terminal {
+    background-position: 0px -128px; }
+  /* line 151, ./main.scss */
+  #continents .icon.galaxy-terminal {
+    background-position: 0px -160px; }
+  /* line 152, ./main.scss */
+  #continents .icon.ground-vehicle-terminal {
+    background-position: -32px -128px; }
+  /* line 153, ./main.scss */
+  #continents .icon.ground-transport-terminal {
+    background-position: -32px -160px; }
+  /* line 154, ./main.scss */
+  #continents .icon.equipment-terminal {
+    background-position: -64px -128px; }
+  /* line 155, ./main.scss */
+  #continents .icon.warpgate-terminal {
+    background-position: -64px -160px; }
+  /* line 156, ./main.scss */
+  #continents .icon.spawn-beacon {
+    background-position: -96px -128px; }
+  /* line 157, ./main.scss */
+  #continents .icon.vertical-shield-generator {
+    background-position: -224px -32px; }
+  /* line 158, ./main.scss */
+  #continents .icon.horizontal-shield-generator {
+    background-position: -224px -64px; }
+  /* line 159, ./main.scss */
+  #continents .icon.gate-shield-generator {
+    background-position: -128px -128px; }
+  /* line 160, ./main.scss */
+  #continents .icon.spawn-control-unit {
+    background-position: -128px -160px; }
+  /* line 161, ./main.scss */
+  #continents .icon.teleporter {
+    background-position: -224px -96px; }
+  /* line 162, ./main.scss */
+  #continents .icon.spawn-tube {
+    background-position: -224px -128px; }
+  /* line 163, ./main.scss */
+  #continents .icon.ammo-tower {
+    background-position: -224px -160px; }
+  /* line 164, ./main.scss */
+  #continents .icon.landing-pad {
+    background-position: -256px 0px; }
+  /* line 165, ./main.scss */
+  #continents .icon.scu-shield-generator {
+    background-position: -160px -128px; }
+  /* line 166, ./main.scss */
+  #continents .icon.capture-point {
+    background-position: -192px 0px; }
+  /* line 167, ./main.scss */
+  #continents .icon.aerospace {
+    background-position: -192px -128px; }
+  /* line 168, ./main.scss */
+  #continents .icon.mechanized {
+    background-position: -192px -160px; }
+  /* line 169, ./main.scss */
+  #continents .icon.infantry {
+    background-position: -224px 0px; }
+/* line 173, ./main.scss */
+#continents table td.name {
+  line-height: 32px; }
+/* line 179, ./main.scss */
+#continents .table .nc, #continents .table .tr, #continents .table .vs {
+  background-image: url(../img/icons/sprites.png);
+  height: 32px;
+  width: 32px;
+  display: inline-block; }
+/* line 185, ./main.scss */
+#continents .table .nc {
+  background-position: -192px -33px; }
+/* line 186, ./main.scss */
+#continents .table .tr {
+  background-position: -192px -64px; }
+/* line 187, ./main.scss */
+#continents .table .vs {
+  background-position: -192px -96px; }
+/* line 189, ./main.scss */
+#continents .table th, #continents .table td {
+  text-align: center; }
+  /* line 191, ./main.scss */
+  #continents .table th.left, #continents .table td.left {
+    text-align: left; }
+/* line 198, ./main.scss */
+#continents .territory text {
+  fill: white;
+  font: 28px 'Roboto Condensed';
+  text-anchor: middle; }
+/* line 207, ./main.scss */
+#continents .map {
+  width: 100%; }
+  @media only screen and (min-width: 768px) {
+    /* line 207, ./main.scss */
+    #continents .map {
+      float: right; } }
