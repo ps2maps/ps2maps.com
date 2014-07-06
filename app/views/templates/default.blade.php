@@ -17,16 +17,13 @@
 
 	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
 	<link rel="canonical" href="{{ Request::url() }}" />
+
 	<link href="/css/bootstrap.css" rel="stylesheet" media="screen"/>
 	<link href="/css/main.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 	@yield('styles')
 
 	<script src='/js/modernizr.custom.js'></script>
-
-	<script>
-	var server, continent = null;
-	</script>
 
 	@yield('head')
 </head>
@@ -39,7 +36,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery-2.1.0.min.js"><\/script>')</script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	@yield('scripts');
+
+	@yield('scripts')
 
 	<script>
 		@yield('javascript')
