@@ -6,14 +6,14 @@
 
 	<div class='row'>
 
-		<div class='span4 offset2'>
+		<div class='col-sm-4 col-sm-offset-2'>
 			<div class='rss-container'>
 				<a href="{{ URL::to('/blog/rss') }}" target='_blank'>
 					<img src="{{ URL::to('/img/rss.png') }}"/> Blog RSS Feed
 				</a>
 			</div>
 		</div>
-		<div class='span4'>
+		<div class='col-sm-4'>
 			<div class='pull-right'>
 				@include('social')
 			</div>
@@ -23,7 +23,7 @@
 
 	<div class='row'>
 
-		<div class='span8 offset2'>
+		<div class='col-sm-10 col-md-12 col-sm-offset-1 col-md-offset-0'>
 
 			@foreach( $posts as $post )
 
@@ -36,7 +36,7 @@
 				</a>
 
 				<a href='{{URL::to('blog/'.$post->slug)}}'>
-					<img src='{{URL::to($post->image)}}'/>
+					<img src='{{URL::to($post->image)}}' class='img-responsive'/>
 				</a>
 
 				<h4>{{ $date->format('F j, Y')}}</h4>

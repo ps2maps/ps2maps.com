@@ -1,4 +1,4 @@
-@layout('template')
+@extends('template')
 
 @section('content')
 
@@ -13,8 +13,7 @@ $date = new DateTime($post->published_at);
 <div class='container'>
 
 	<div class='row'>
-
-		<div class='span4 offset2'>
+		<div class='col-sm-10 col-sm-offset-1'>
 			<a href='{{URL::to('blog')}}'>&laquo; Back to the Blog</a>
 			<div class='rss-container'>
 				<a href="{{ URL::to('/blog/rss') }}" target='_blank'>
@@ -22,17 +21,19 @@ $date = new DateTime($post->published_at);
 				</a>
 			</div>
 		</div>
-		<div class='span4'>
+	</div>
+
+	<div class='row'>
+		<div class='col-sm-4'>
 			<div class='pull-right'>
 				@include('social')
 			</div>
 		</div>
-
 	</div>
 
 	<div class='row'>
 
-		<div class='span8 offset2'>
+		<div class='col-sm-10 col-sm-offset-1'>
 
 			<div class='post'>
 				<h3>{{ $post->title }}</h3>
@@ -52,4 +53,4 @@ $date = new DateTime($post->published_at);
 </div>
 
 
-@endsection
+@stop
