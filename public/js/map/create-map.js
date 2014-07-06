@@ -7,7 +7,8 @@
 		},
 		unproject: function (point) {
 			return new L.LatLng(point.x, point.y);
-		}
+		},
+		bounds: L.bounds([0,0],[256,256])
 	};
 
 	// Custom CRS
@@ -16,7 +17,9 @@
 		transformation: new L.Transformation(1, 0, 1, 0),
 		scale: function (zoom) {
 			return Math.pow(2, zoom);
-		}
+		},
+		wrapLat: null,
+		wrapLng: null
 	});
 
 	// Map Creation

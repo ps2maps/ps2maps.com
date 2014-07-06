@@ -12,7 +12,7 @@
 
 @section('scripts')
 	<script src="/js/main.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+	<script src="http://leaflet-cdn.s3.amazonaws.com/build/master/leaflet-src.js"></script>
 	<script src="/js/leaflet.label.js"></script>
 	<script src="/js/leaflet.divlayer.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
@@ -32,7 +32,7 @@
 @stop
 
 @section('head')
-	<link href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" media="all" type="text/css" rel="stylesheet">
+	<link href="http://leaflet-cdn.s3.amazonaws.com/build/master/leaflet.css" media="all" type="text/css" rel="stylesheet">
 	<link href="/css/map.css" media="all" type="text/css" rel="stylesheet">
 @stop
 
