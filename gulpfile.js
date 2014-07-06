@@ -1,40 +1,53 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+// var sass = require('gulp-ruby-sass');
 // var clean = require('gulp-clean');
 // var jshint = require('gulp-jshint');
 // var uglify = require('gulp-uglify');
 
-// map.js concatentation
-var map_js_sources = [
-	'./public/js/map/init.js',
-	'./public/js/map/create-map.js',
-	'./public/js/map/log.js',
-	'./public/js/map/markers.js',
-	'./public/js/map/functions.js',
-	'./public/js/map/create-regions.js',
-	'./public/js/map/create-markers.js',
-];
+var sources = {
+	js : {
+		map : [
+			'public/js/map/init.js',
+			'public/js/map/functions.js',
+			'public/js/map/create-map.js',
+			'public/js/map/create-regions.js',
+			'public/js/map/create-markers.js',
+			'public/js/map/log.js',
+		],
+		main : [
+			'public/js/main/script.js',
+			'public/js/main/cache.js'
+		]
+	}
+};
+
+// map.js build
 gulp.task('map.js', function(){
-	return gulp.src(map_js_sources)
+	return gulp.src(sources.js.map)
 		.pipe(concat('map.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
-// script.js concatentation
-var main_js_sources = [
-	'./public/js/main/script.js',
-	'./public/js/main/cache.js',
-];
-gulp.task('main.js', function(){
-	return gulp.src(main_js_sources)
+// script.js build
+gulp.task('main.js', function() {
+	return gulp.src(sources.js.main)
 		.pipe(concat('main.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
+// Sass
+// var sass_sources = ['./public/scss/*.scss'];
+// gulp.task('sass', function() {
+// 	return gulp.src('./public/scss/map.scss')
+// 		.pipe(sass())
+// 		.pipe(gulp.dest('./public/css'));
+// });
+
 // Watch
 gulp.task('watch', function() {
-	gulp.watch(map_js_sources, ['map.js']);
-	gulp.watch(main_js_sources, ['main.js']);
+	gulp.watch(sources.js.map, ['map.js']);
+	gulp.watch(sources.js.main, ['main.js']);
 });
 
-gulp.task('default', ['map.js']);
+gulp.task('default', []);
