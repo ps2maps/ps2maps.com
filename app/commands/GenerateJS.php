@@ -67,6 +67,12 @@ class GenerateJS extends Command {
 		parent::__construct();
 	}
 
+	private function feedback($message)
+	{
+		if ( $this->option('verbose') )
+			$this->info($message);
+	}
+
 	/**
 	 * Execute the console command.
 	 *
@@ -78,6 +84,8 @@ class GenerateJS extends Command {
 		foreach( $this->continents as $continent ) {
 			if ( $this->option($continent->slug) == false and $this->option('all') == false )
 				continue;
+
+			$this->feedback("Generating " . $continent->name . " script");
 
 			$regions = [];
 
@@ -97,15 +105,15 @@ class GenerateJS extends Command {
 
 			// JSON data
 			$regions = $this->json_pretty_print(json_encode($regions));
-			$regions = preg_replace('/"([^"]+)"\s*:\s*/','$1:', $regions);
 
 			// Facility + Facility Link data
+			$facilities = $this->json_pretty_print(json_encode($this->getFacilities($continent)));
 
 			// Marker data
 
 			$carbon = new Carbon\Carbon();
 
-			$data = compact('continent', 'carbon', 'regions');
+			$data = compact('continent', 'carbon', 'regions', 'facilities');
 
 			$output = View::make('js/continent', $data)->render();
 			$file = $this->outputPath.$continent->slug.'.js';
@@ -116,8 +124,27 @@ class GenerateJS extends Command {
 			$f = fopen($file, 'w');
 			fwrite($f, $output);
 			fclose($f);
-			die;
+
+			$this->feedback($file." generated");
 		}
+	}
+
+	public function getFacilities($continent)
+	{
+		$facilities = Facility::with('FacilityType')
+			->where('continent_id','=',$continent->id)
+			->orderBy('name')
+			->get();
+
+		$output = [];
+		foreach( $facilities as $facility ) {
+			$output[$facility->id] = [
+				'name' => $facility->name,
+				'type' => (int) $facility->facility_type_id,
+				'loc' => [ (float) $facility->z, ((float) $facility->x)*-1 ],
+			];
+		}
+		return $output;
 	}
 
 	public function calculateHexCoordinates($region)
@@ -149,22 +176,12 @@ class GenerateJS extends Command {
 		return $coordinates;
 	}
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
 	protected function getArguments()
 	{
 		return array(
 		);
 	}
 
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
 	protected function getOptions()
 	{
 		$options[] = ['all', null, InputOption::VALUE_NONE, 'Generate scripts for all continents.', null];
@@ -174,13 +191,6 @@ class GenerateJS extends Command {
 		return $options;
 	}
 
-	/**
-	 * Indents a flat JSON string to make it more human-readable.
-	 *
-	 * @param string $json The original JSON string to process.
-	 *
-	 * @return string Indented version of the original JSON string.
-	 */
 	private function json_pretty_print($json)
 	{
 		$result      = '';

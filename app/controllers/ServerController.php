@@ -26,8 +26,9 @@ Class ServerController extends BaseController
 		if ( is_null($server) or is_null($continent) )
 			return App::abort('404');
 
-		$regionScript = 'indar.js';
-		$tileVersion = 20140612;
+		// $regionScript = '.js';
+		$tileVersion ="/20140612";
+		$tileVersion ="";
 
 		$data = compact('server', 'continent', 'regionScript', 'tileVersion');
 

@@ -1,19 +1,18 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
+// Servers and Continents
+Route::get('{server}/{continent}', 'ServerController@continent');
+Route::get('{server}', 'ServerController@server');
 
-// Route::post('ajax/region-control', 'ajax@region_control');
+// Embedded maps
+Route::get('embed/{server}/{continent}', 'ServerController@embed');
 
-Route::controller('blog', 'BlogController');
+// Blog
+Route::get('blog/rss', 'BlogController@rss');
+Route::get('blog/{slug}', 'BlogController@article');
+Route::get('blog', 'BlogController@index');
 
+// Home
 Route::get('/', 'HomeController@getIndex');
+
 

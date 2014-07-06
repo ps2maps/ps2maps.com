@@ -1,15 +1,15 @@
 <?php
 
-// Get all servers
+// Get all enabled servers
 $views = array(
-	'menu/menu',
+	'menu',
 	'home/index',
 	'server/index',
 );
 View::composer($views, function($view)
 {
-	$servers = Server::where('enabled','=','yes')
-		->orderBy('name')
+	$servers = Server::orderBy('name')
+		->whereEnabled('yes')
 		->remember(1440)
 		->get();
 
@@ -17,15 +17,16 @@ View::composer($views, function($view)
 });
 
 
-// Get all continents
+// Get all enabled continents
 $views = array(
-	'home/indexnew',
+	'menu',
 	'server/index',
+	'home/indexnew',
 );
 View::composer($views, function($view)
 {
-	$continents = Continent::where('enabled','=','yes')
-		->orderBy('name')
+	$continents = Continent::orderBy('name')
+		->whereEnabled('yes')
 		->remember(1440)
 		->get();
 
