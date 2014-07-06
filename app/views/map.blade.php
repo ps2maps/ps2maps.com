@@ -1,19 +1,6 @@
-@layout('template')
+@extends('templates/default')
 
 <?php
-	// GET variables (x,y,z coordinates)
-	$x = Input::get('x');
-	if ( !is_numeric($x) )
-		$x = $continent->center_lat;
-
-	$y = Input::get('y');
-	if ( !is_numeric($y) )
-		$y = $continent->center_lng;
-
-	$z = Input::get('z');
-	if ( !is_numeric($z) )
-		$z = $continent->zoom_default;
-
 	// Title
 	if ( isset($server) )
 	{
@@ -23,56 +10,48 @@
 
 ?>
 
-@section('javascript-head')
+@section('scripts')
+	<script src="/js/main.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+	<script src="/js/leaflet.label.js"></script>
+	<script src="/js/leaflet.divlayer.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
 
-@if ( isset($server) )
-var server = { id: {{$server->id}}, name: "{{$server->name}}", slug: "{{$server->slug}}" };
-@else
-var server = null;
-@endif
+	<script src="/js/{{ $continent->slug }}.js"></script>
+	<script>
+		var server = { id: {{$server->id}}, name: "{{$server->name}}", slug: "{{$server->slug}}" };
+		var continent = {{ $continent->slug }};
+			continent.id = {{$continent->id}};
+			continent.name = "{{$continent->name}}";
+			continent.slug = "{{$continent->slug}}";
+		var tileVersion = "{{ $tileVersion }}";
+		var tilesCdn = "{{ Config::get('ps2maps.tiles-cdn') }}";
+	</script>
+	<script src="/js/map.js"></script>
+@stop
 
-var continent = { id: {{$continent->id}}, name: "{{$continent->name}}", slug: "{{$continent->slug}}", minZoom: "{{ $continent->zoom_min }}", maxZoom: "{{ $continent->zoom_max }}" };
-var defaultView = {lat:{{$x}},lng:{{$y}},zoom:{{$z}}};
-@endsection
+@section('head')
+	<link href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" media="all" type="text/css" rel="stylesheet">
+	<link href="/css/map.css" media="all" type="text/css" rel="stylesheet">
+@stop
 
 @section('content')
 
 	<div id='map'></div>
 
-	{{-- Sidebar
-	@include('sidebar/sidebar')
+	@include('map/log')
 
-	{{-- Permalink Modal
-	@include('modals/permalink')
+	{{-- Sidebar--}}
+	{{--@include('sidebar/sidebar')--}}
 
-	{{-- Layers Modal
-	@include('modals/icons')
+	{{-- Permalink Modal--}}
+	{{--@include('modals/permalink')--}}
 
-	{{-- UserEcho Feedback Widget
-	<script type='text/javascript'>
+	{{-- Layers Modal--}}
+	{{--@include('modals/icons')--}}
 
-	var _ues = {
-	host:'ps2maps.userecho.com',
-	forum:'18357',
-	lang:'en',
-	tab_corner_radius:5,
-	tab_font_size:20,
-	tab_image_hash:'ZmVlZGJhY2s%3D',
-	tab_chat_hash:'Y2hhdA%3D%3D',
-	tab_alignment:'left',
-	tab_text_color:'#FFFFFF',
-	tab_text_shadow_color:'#00000055',
-	tab_bg_color:'#57A957',
-	tab_hover_color:'#F45C5C'
-	};
+	{{-- UserEcho Feedback Widget--}}
+	@include('userecho')
 
-	(function() {
-	    var _ue = document.createElement('script'); _ue.type = 'text/javascript'; _ue.async = true;
-	    _ue.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.userecho.com/js/widget-1.4.gz.js';
-	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(_ue, s);
-	  })();
-
-	</script>
-	<a onmouseover="UE.Popin.preload();" href="#" onclick="UE.Popin.show(); return false;">feedback</a>
-
-@endsection
+@stop
