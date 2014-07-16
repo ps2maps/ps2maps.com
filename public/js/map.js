@@ -8,13 +8,81 @@ function Ps2maps()
 		lng: 128,
 		zoom: 2
 	};
+
 	this.options = {
-		'regions' : {
-			'default' :  {
+		regions: {
+			default:  {
 				weight: 1.2,
 				color: '#000',
 				opacity: 1,
-				fillOpacity: 0
+				fillOpacity: 0,
+				pane: 'regionsPane'
+			},
+			hover: {
+				color: '#EEE',
+				weight: 2
+			}
+		},
+		icons: {
+			default: {
+				className: 'svgIcon',
+				iconSize: [32,32],
+				iconAnchor: [16,16],
+				labelAnchor: [0,0]
+			},
+			large: {
+				className: 'svgIcon',
+				iconSize: [40,40],
+				iconAnchor: [20,20],
+				labelAnchor: [0,0]
+			}
+		},
+		labels: {
+			default: {
+				noHide:true,
+				offset: [0, 0]
+			}
+		}
+	};
+
+	this.icons = {
+		facilities: {},
+		outposts: {}
+	}
+
+	this.factions = ['ns','nc','tr','vs'];
+
+	this.facilityTypes = {
+		facilities: {
+			2: {
+				name: "Amp Station",
+				slug: "ampStation",
+			},
+			3: {
+				name: "Bio Lab",
+				slug: "bioLab",
+			},
+			4: {
+				name: "Tech Plant",
+				slug: "techPlant",
+			},
+			7: {
+				name: "Warpgate",
+				slug: "warpgate",
+			},
+			8: {
+				name: "Interlink Facility",
+				slug: "interlinkFacility"
+			}
+		},
+		outposts: {
+			5: {
+				name: "Large Outpost",
+				slug: "largeOutpost"
+			},
+			6: {
+				name: "Small Outpost",
+				slug: "smallOutpost"
 			}
 		}
 	};
@@ -29,13 +97,13 @@ Ps2maps.prototype.regionClick = function(e)
 // Region Mouse Over Handler
 Ps2maps.prototype.regionMouseOver = function(e)
 {
-
+	e.target.bringToFront().setStyle(ps2maps.options.regions.hover);
 };
 
 // Region Mouse Out Handler
 Ps2maps.prototype.regionMouseOut = function(e)
 {
-
+	e.target.setStyle(ps2maps.options.regions.default);
 };
 
 // Map Move/Zoom Handler
@@ -133,6 +201,93 @@ function hideLayer(layer)
 	map.removeLayer(layers[layer].layerGroup);
 }
 
+// Extend jQuery addClass, removeClass and hasClass for SVG elements
+(function($){
+
+  /* addClass shim
+   ****************************************************/
+  var addClass = $.fn.addClass;
+  $.fn.addClass = function(value) {
+    var orig = addClass.apply(this, arguments);
+
+    var elem,
+      i = 0,
+      len = this.length;
+
+    for (; i < len; i++ ) {
+      elem = this[ i ];
+      if ( elem instanceof SVGElement ) {
+        var classes = $(elem).attr('class');
+        if ( classes ) {
+            var index = classes.indexOf(value);
+            if (index === -1) {
+              classes = classes + " " + value;
+              $(elem).attr('class', classes);
+            }
+        } else {
+          $(elem).attr('class', value);
+        }
+      }
+    }
+    return orig;
+  };
+
+  /* removeClass shim
+   ****************************************************/
+  var removeClass = $.fn.removeClass;
+  $.fn.removeClass = function(value) {
+    var orig = removeClass.apply(this, arguments);
+
+    var elem,
+      i = 0,
+      len = this.length;
+
+    for (; i < len; i++ ) {
+      elem = this[ i ];
+      if ( elem instanceof SVGElement ) {
+        var classes = $(elem).attr('class');
+        if ( classes ) {
+          var index = classes.indexOf(value);
+          if (index !== -1) {
+            classes = classes.substring(0, index) + classes.substring((index + value.length), classes.length);
+            $(elem).attr('class', classes);
+          }
+        }
+      }
+    }
+    return orig;
+  };
+
+  /* hasClass shim
+   ****************************************************/
+  var hasClass = $.fn.hasClass;
+  $.fn.hasClass = function(value) {
+    var orig = hasClass.apply(this, arguments);
+
+    var elem,
+      i = 0,
+      len = this.length;
+
+    for (; i < len; i++ ) {
+      elem = this[ i ];
+      if ( elem instanceof SVGElement ) {
+        var classes = $(elem).attr('class');
+
+        if ( classes ) {
+          if ( classes.indexOf(value) === -1 ) {
+            return false;
+          } else {
+            return true;
+          }
+        } else {
+            return false;
+        }
+      }
+    }
+    return orig;
+  };
+})(jQuery);
+
 (function(){
 
 	// Custom Projection
@@ -142,7 +297,8 @@ function hideLayer(layer)
 		},
 		unproject: function (point) {
 			return new L.LatLng(point.x, point.y);
-		}
+		},
+		bounds: L.bounds([0,0],[256,256])
 	};
 
 	// Custom CRS
@@ -151,19 +307,21 @@ function hideLayer(layer)
 		transformation: new L.Transformation(1, 0, 1, 0),
 		scale: function (zoom) {
 			return Math.pow(2, zoom);
-		}
+		},
+		wrapLat: null,
+		wrapLng: null
 	});
 
 	// Map Creation
 	ps2maps.map = L.map('map',
 	{
 		crs: L.CRS.Screen,
-		minZoom: -10,
+		minZoom: 1,
 		maxZoom: 7,
 		attributionControl: false,
 	})
 	// Prevent Right-click context menu
-	.on('contextmenu', function(e){});
+	// .on('contextmenu', function(e){});
 
 	// Tile Layer
 	var tilesUrl = tilesCdn + "/tiles/" + continent.slug + tileVersion + "/zoom{z}/tile_{z}_{x}_{y}.jpg";
@@ -173,37 +331,30 @@ function hideLayer(layer)
 		continuousWorld: true
 	}).addTo(ps2maps.map);
 
-	// Canvas Tiles (for debugging)
-	// var canvasTiles = L.tileLayer.canvas({
-	//     minZoom: 0,
-	//     maxZoom: 16,
-	//     attribution: 'Map data &copy; FooBar',
-	//     continuousWorld: true,
-	//     tms: true
-	// });
+	/* Canvas Tiles (for debugging)
+	var canvasTiles = L.tileLayer.canvas({
+	    minZoom: 0,
+	    maxZoom: 16,
+	    attribution: 'Map data &copy; FooBar',
+	    continuousWorld: true,
+	    tms: true
+	});
+	canvasTiles.drawTile = function(canvas, point, zoom) {
+	    var context = canvas.getContext('2d');
+	    context.beginPath();
+	    context.rect(0, 0, 256, 256);
+	    context.lineWidth = 2;
+	    context.strokeStyle = 'white';
+	    context.stroke();
+	    context.font="20px Arial";
+	    context.fillStyle = 'white';
+	    context.fillText("x:" + point.x + " y:" + point.y + " z:" + zoom, 80, 140);
+	}
+	canvasTiles.addTo(ps2maps.map);
+	*/
 
-	// canvasTiles.drawTile = function(canvas, point, zoom) {
-	//     var context = canvas.getContext('2d');
-
-	//     context.beginPath();
-	//     context.rect(0, 0, 256, 256);
-	//     context.lineWidth = 2;
-	//     context.strokeStyle = 'white';
-	//     context.stroke();
-
-	//     context.font="20px Arial";
-	//     context.fillStyle = 'white';
-	//     context.fillText("x:" + point.x + " y:" + point.y + " z:" + zoom, 80, 140);
-	// }
-
-	// // add the layer to the map
-	// canvasTiles.addTo(ps2maps.map);
-
-	//Determine preset or default view
-	var view = window.location.hash.slice(1,-1).split(','),
-		lat,
-		lng,
-		zoom;
+	// Set view to either default view or use url hash
+	var lat, lng, zoom, view = window.location.hash.slice(1,-1).split(',');
 
 	// Do values exist and are they valid numbers?
 	if ( view[0] && view[1] && view[2] && !isNaN(view[0]) && !isNaN(view[1]) && !isNaN(view[2]) ) {
@@ -222,7 +373,6 @@ function hideLayer(layer)
 	// Set the move & zoom handler
 	// Do this after setting intial view or else URL is appended with default view hash
 	ps2maps.map.on('moveend', ps2maps.mapMoveZoom.bind(ps2maps));
-
 })();
 
 // Create Regions
@@ -233,25 +383,77 @@ function hideLayer(layer)
 
 	for( index in continent.regions )
 	{
+		// console.log(ps2maps.options.regions.default);
 		region = L.polygon( continent.regions[index].polygon, ps2maps.options.regions.default )
 			.on('click', ps2maps.regionClick)
 			.on('mouseover', ps2maps.regionMouseOver)
 			.on('mouseout', ps2maps.regionMouseOut);
 		region.id = continent.regions[index].id;
 		region.name = continent.regions[index].name;
+		region.addTo(ps2maps.map);
 		// region.type_id = continent.regions[index].type_id;
 		// region.resource = continent.regions[index].resource;
 		// region.markers = [];
 		regions.push(region);
 		// territories[regions[index].id] = region;
 	}
-	ps2maps.layers.regions = L.layerGroup(regions).addTo(ps2maps.map);
+	// L.layerGroup(regions).addTo(ps2maps.map);
 	regions = null;
 	//territoriesLayer.eachLayer(function(layer){ layer.on('click', function(e){ territoryClick(e) }).on('mouseover', function(e){ territoryOver(e) }).on('mouseout', function(e){ territoryOut(e) }); });
 })();
 
+(function(){
+
+ps2maps.icons = {
+	facilities: {},
+	outposts: {}
+};
+
+var options = ps2maps.options.icons.large;
+for( id in ps2maps.facilityTypes.facilities ) {
+	var facility = ps2maps.facilityTypes.facilities[id];
+	ps2maps.icons.facilities[id] = {};
+	for( f in ps2maps.factions ) {
+		options.html = "<svg viewBox='0 0 256 256' class='icon " + facility.slug + " " + ps2maps.factions[f] + "'><use xlink:href='#" + facility.slug + "'></use></svg>";
+		ps2maps.icons.facilities[id][ps2maps.factions[f]] = L.divIcon(options);
+	}
+}
+
+options = ps2maps.options.icons.default;
+for( id in ps2maps.facilityTypes.outposts ) {
+	var outpost = ps2maps.facilityTypes.outposts[id];
+	ps2maps.icons.outposts[id] = {};
+	for( f in ps2maps.factions ) {
+		options.html = "<svg viewBox='0 0 256 256' class='icon " + outpost.slug + " " + ps2maps.factions[f] + "'><use xlink:href='#" + outpost.slug + "'></use></svg>";
+		ps2maps.icons.outposts[id][ps2maps.factions[f]] = L.divIcon(options);
+	}
+}
+
+// ps2maps.icons = {
+// 	ampStation: L.divIcon({
+// 		className: 'svgIcon',
+// 		iconSize: [32,32],
+// 		iconAnchor: [16,16],
+// 		html: "<svg viewBox='0 0 256 256' class='icon ampStation'><use xlink:href='#ampStation'></use></svg>"
+// 	}),
+// 	bioLab: L.divIcon({
+// 		className: 'svgIcon',
+// 		iconSize: [32,32],
+// 		iconAnchor: [16,16],
+// 		html: "<svg viewBox='0 0 256 256' class='icon biolab'><use xlink:href='#bioLab'></use></svg>"
+// 	}),
+// 	techPlant:  L.divIcon({
+// 		className: 'svgIcon',
+// 		iconSize: [32,32],
+// 		iconAnchor: [16,16],
+// 		html: "<svg viewBox='0 0 256 256' class='icon techPlant'><use xlink:href='#techPlant'></use></svg>"
+// 	})
+// };
+
+})();
+
 // Marker Icons
-var icons = {
+var oldIcon = {
 	ampStation: {
 		ns: L.divIcon({
 			className: 'icon amp-station',
@@ -522,12 +724,44 @@ var icons = {
 // Create Markers
 (function(){
 
-	for( id in continent.facilities )
+	var facilities = continent.facilities,
+		markerOptions = {};
+
+	for( id in facilities )
 	{
-		continent.facilities[id].loc[0] = continent.facilities[id].loc[0] * 0.03126 + 128;
-		continent.facilities[id].loc[1] = continent.facilities[id].loc[1] * 0.03126 + 128;
-		var marker = L.marker(continent.facilities[id].loc)
-			.bindPopup(continent.facilities[id].name)
+		facilities[id].loc[0] = facilities[id].loc[0] * 0.03126 + 128;
+		facilities[id].loc[1] = facilities[id].loc[1] * 0.03126 + 128;
+
+		var label = facilities[id].name;
+
+		switch(facilities[id].type) {
+			case 2:
+			case 3:
+			case 4:
+				console.log(ps2maps.icons.facilities[facilities[id].type]);
+				options = {
+					icon: ps2maps.icons.facilities[facilities[id].type].ns,
+					pane: 'facilitiesPane'
+				};
+				label += " Facility";
+				break;
+			case 5:
+			case 6:
+				console.log(ps2maps.icons.outposts[facilities[id].type]);
+				options = {
+					icon: ps2maps.icons.outposts[facilities[id].type].ns,
+					pane: 'outpostsPane'
+				};
+				break;
+			case 7:
+				options = {
+					icon: ps2maps.icons.facilities[facilities[id].type].ns,
+					pane: 'facilitiesPane'
+				};
+				break;
+		}
+		var marker = L.marker(facilities[id].loc, options)
+			.bindLabel(label, ps2maps.options.labels.default)
 			.addTo(ps2maps.map);
 		continue;
 
@@ -608,4 +842,9 @@ var icons = {
 		e.preventDefault();
 	});
 
+});
+
+$(function(){
+	// Load svg sprites svg inline into document
+	$('#svg-sprites-container').load('/img/icons/sprites.svg');
 });

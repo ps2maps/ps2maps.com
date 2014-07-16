@@ -26,12 +26,12 @@
 	ps2maps.map = L.map('map',
 	{
 		crs: L.CRS.Screen,
-		minZoom: -10,
+		minZoom: 1,
 		maxZoom: 7,
 		attributionControl: false,
 	})
 	// Prevent Right-click context menu
-	.on('contextmenu', function(e){});
+	// .on('contextmenu', function(e){});
 
 	// Tile Layer
 	var tilesUrl = tilesCdn + "/tiles/" + continent.slug + tileVersion + "/zoom{z}/tile_{z}_{x}_{y}.jpg";
@@ -41,37 +41,30 @@
 		continuousWorld: true
 	}).addTo(ps2maps.map);
 
-	// Canvas Tiles (for debugging)
-	// var canvasTiles = L.tileLayer.canvas({
-	//     minZoom: 0,
-	//     maxZoom: 16,
-	//     attribution: 'Map data &copy; FooBar',
-	//     continuousWorld: true,
-	//     tms: true
-	// });
+	/* Canvas Tiles (for debugging)
+	var canvasTiles = L.tileLayer.canvas({
+	    minZoom: 0,
+	    maxZoom: 16,
+	    attribution: 'Map data &copy; FooBar',
+	    continuousWorld: true,
+	    tms: true
+	});
+	canvasTiles.drawTile = function(canvas, point, zoom) {
+	    var context = canvas.getContext('2d');
+	    context.beginPath();
+	    context.rect(0, 0, 256, 256);
+	    context.lineWidth = 2;
+	    context.strokeStyle = 'white';
+	    context.stroke();
+	    context.font="20px Arial";
+	    context.fillStyle = 'white';
+	    context.fillText("x:" + point.x + " y:" + point.y + " z:" + zoom, 80, 140);
+	}
+	canvasTiles.addTo(ps2maps.map);
+	*/
 
-	// canvasTiles.drawTile = function(canvas, point, zoom) {
-	//     var context = canvas.getContext('2d');
-
-	//     context.beginPath();
-	//     context.rect(0, 0, 256, 256);
-	//     context.lineWidth = 2;
-	//     context.strokeStyle = 'white';
-	//     context.stroke();
-
-	//     context.font="20px Arial";
-	//     context.fillStyle = 'white';
-	//     context.fillText("x:" + point.x + " y:" + point.y + " z:" + zoom, 80, 140);
-	// }
-
-	// // add the layer to the map
-	// canvasTiles.addTo(ps2maps.map);
-
-	//Determine preset or default view
-	var view = window.location.hash.slice(1,-1).split(','),
-		lat,
-		lng,
-		zoom;
+	// Set view to either default view or use url hash
+	var lat, lng, zoom, view = window.location.hash.slice(1,-1).split(',');
 
 	// Do values exist and are they valid numbers?
 	if ( view[0] && view[1] && view[2] && !isNaN(view[0]) && !isNaN(view[1]) && !isNaN(view[2]) ) {
@@ -90,5 +83,4 @@
 	// Set the move & zoom handler
 	// Do this after setting intial view or else URL is appended with default view hash
 	ps2maps.map.on('moveend', ps2maps.mapMoveZoom.bind(ps2maps));
-
 })();
