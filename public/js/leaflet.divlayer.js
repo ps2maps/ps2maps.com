@@ -1,13 +1,15 @@
 /*
- Copyright (c) 2013, Gunsight Labs, Jake Wilson
+ Copyright (c) 2013-2014 Jake Wilson
  Leaflet.DivLayer is a Leaflet plugin that allows creation of arbitrary div elements on the map
  https://github.com/jakobud
 */
 
-L.DivLayer = L.Class.extend({
+L.DivLayer = L.Layer.extend({
 
 	options: {
-		className: 'leaflet-divlayer'
+		className: 'leaflet-divlayer',
+		pane: 'markerPane',
+		html: ""
 	},
 
 	initialize: function (latlng, options)
@@ -22,19 +24,20 @@ L.DivLayer = L.Class.extend({
 
 		// create a DOM element
 		this._container = L.DomUtil.create('div', this.options.className + ' leaflet-zoom-animated');
+		this.style = this._container.style;
 
 		this._updateContent();
 
 		// Add to map pane
-		map.getPanes().markerPane.appendChild(this._container);
+		this._pane = map.getPane(this.options.pane);
+		this._pane.appendChild(this._container);
 
 		// add a viewreset event listener for updating layer's position, do the latter
 		map.on('viewreset', this._reset, this);
 		this._reset();
 
 		// Zoom Animation
-		if (L.Browser.any3d)
-		{
+		if (L.Browser.any3d) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 	},
@@ -47,44 +50,31 @@ L.DivLayer = L.Class.extend({
 
 	onRemove: function (map)
 	{
-		// console.log(map, map.getPanes(), map.getPanes().overlayPane, this._container);
-
-		// // remove layer's DOM elements and listeners
+		// remove layer's DOM elements and listeners
 		map.getPanes().markerPane.removeChild(this._container);
 		map.off('viewreset', this._reset, this);
 	},
 
-	setContent: function(content)
+	setHtml: function(html)
 	{
-		this.options.content = content;
+		this.options.html = html;
 		this._updateContent();
+	},
+
+	getContainer: function()
+	{
+		return this._container;
 	},
 
 	_updateContent: function()
 	{
-		if ( !this.options.content )
-		{
+		if (!this.options.html) {
 			return;
 		}
 
 		// Set the container content
-		if ( typeof this.options.content === 'string' )
-		{
-			this._container.innerHTML = this.options.content;
-		}
-
-		// Set the css
-		if ( this.options.css )
-		{
-			this._setCss(this.options.css);
-		}
-	},
-
-	_setCss: function(css)
-	{
-		for(attr in css)
-		{
-			this._container.style[attr] = css[attr];
+		if (typeof this.options.html === 'string')	{
+			this._container.innerHTML = this.options.html;
 		}
 	},
 
@@ -107,5 +97,8 @@ L.DivLayer = L.Class.extend({
 	}
 });
 
+L.divLayer = function (map, name, container) {
+	return new L.DivLayer(map, name, container);
+};
 
 
