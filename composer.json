@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"barryvdh/laravel-debugbar": "dev-master",
+		"barryvdh/laravel-debugbar": "1.*",
 		"raveren/kint": "1.0.*@dev"
 	},
 	"autoload": {
