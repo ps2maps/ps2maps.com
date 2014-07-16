@@ -1,5 +1,5 @@
-<div class='log'>
-	<div class='log-resize-handle'></div>
+<div class='history'>
+	<div class='resize-handle'></div>
 	<div class='header'>
 		Connery Indar
 	</div>
