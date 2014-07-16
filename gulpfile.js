@@ -12,11 +12,13 @@ var sources = {
 			'public/js/map/functions.js',
 			'public/js/map/create-map.js',
 			'public/js/map/create-regions.js',
+			'public/js/map/marker-defs.js',
 			'public/js/map/create-markers.js',
 			'public/js/map/log.js',
+			'public/js/map/jquery.js',
 		],
 		main : [
-			'public/js/main/script.js',
+			'public/js/main/main.js',
 			'public/js/main/cache.js'
 		]
 	}
