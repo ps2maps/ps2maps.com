@@ -1,0 +1,87 @@
+#svg-sprites-container {
+	display: none;
+}
+
+.svgIcon {
+	pointer-events: none;
+}
+
+svg.icon {
+	// Nanite Systems Color
+	fill: #79e0e1;
+
+	&.nc { fill: blue; }
+	&.tr { fill: red; }
+	&.vs { fill: purple; }
+}
+
+.myDivIcon {
+	pointer-events: none;
+}
+
+
+
+
+.oldicons {
+	background-image: url(../img/icons/sprites.png);
+	pointer-events: none;
+	height: 32px;
+	width: 32px;
+	display: inline-block;
+
+	&.warpgate { background-position: 0px 0px; }
+	&.warpgate.nc { background-position: 0px -32px; }
+	&.warpgate.tr { background-position: 0px -64px; }
+	&.warpgate.vs { background-position: 0px -96px; }
+
+	&.amp-station { background-position: -32px 0px; }
+	&.amp-station.nc { background-position: -32px -32px; }
+	&.amp-station.tr { background-position: -32px -64px; }
+	&.amp-station.vs { background-position: -32px -96px; }
+
+	&.bio-lab { background-position: -64px 0px; }
+	&.bio-lab.nc { background-position: -64px -32px; }
+	&.bio-lab.tr { background-position: -64px -64px; }
+	&.bio-lab.vs { background-position: -64px -96px; }
+
+	&.tech-plant { background-position: -96px 0px; }
+	&.tech-plant.nc { background-position: -96px -32px; }
+	&.tech-plant.tr { background-position: -96px -64px; }
+	&.tech-plant.vs { background-position: -96px -96px; }
+
+	&.large-outpost { background-position: -128px 0px; }
+	&.large-outpost.nc { background-position: -128px -32px; }
+	&.large-outpost.tr { background-position: -128px -64px; }
+	&.large-outpost.vs { background-position: -128px -96px; }
+
+	&.small-outpost { background-position: -160px 0px; }
+	&.small-outpost.nc { background-position: -160px -32px; }
+	&.small-outpost.tr { background-position: -160px -64px; }
+	&.small-outpost.vs { background-position: -160px -96px; }
+
+	&.forward-spawn { background-position: -96px -160px; }
+	&.aircraft-terminal { background-position: 0px -128px; }
+	&.galaxy-terminal { background-position: 0px -160px; }
+	&.ground-vehicle-terminal { background-position: -32px -128px; }
+	&.ground-transport-terminal { background-position: -32px -160px; }
+	&.equipment-terminal { background-position: -64px -128px; }
+	&.warpgate-terminal { background-position: -64px -160px; }
+	&.spawn-beacon { background-position: -96px -128px; }
+	&.vertical-shield-generator { background-position: -224px -32px; }
+	&.horizontal-shield-generator { background-position: -224px -64px; }
+	&.gate-shield-generator { background-position: -128px -128px; }
+	&.spawn-control-unit { background-position: -128px -160px; }
+	&.teleporter { background-position: -224px -96px; }
+	&.spawn-tube { background-position: -224px -128px; }
+	&.ammo-tower { background-position: -224px -160px; }
+	&.landing-pad { background-position: -256px 0px; }
+	&.scu-shield-generator { background-position: -160px -128px; }
+	&.capture-point { background-position: -192px 0px; }
+	&.nc { background-position: -192px -32px; }
+	&.tr { background-position: -192px -64px; }
+	&.vs { background-position: -192px -96px; }
+	&.aerospace { background-position: -192px -128px; }
+	&.mechanized { background-position: -192px -160px; }
+	&.infantry { background-position: -224px 0px; }
+
+}
