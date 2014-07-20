@@ -4,6 +4,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
+use Carbon\Carbon;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,8 +12,16 @@ use Illuminate\Database\Eloquent\Collection;
 class Census extends Command {
 
 	private $baseUrl = "http://census.soe.com/s:ps2maps/get/ps2:v2/";
-	private $log;
+	private $monolog;
 	private $verb = 'Comparing';
+	private $latScale = 0.03126;
+	private $lngScale = -0.03126;
+	private $elevationScale = 0.03126;
+	private $latOffset = 128;
+	private $lngOffset = 128;
+	private $elevationOffset = 0;
+	private $precision = 2; // Decimal place precision
+
 
 	/**
 	 * The console command name.
@@ -26,7 +35,7 @@ class Census extends Command {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Connect to Census API';
+	protected $description = 'Connect to Census API.';
 
 	/**
 	 * Create a new command instance.
@@ -35,8 +44,8 @@ class Census extends Command {
 	 */
 	public function __construct()
 	{
-		$this->log = new Logger('CENSUS');
-		$this->log->pushHandler(new StreamHandler(storage_path().'/logs/census.log', Logger::INFO));
+		$this->monolog = new Logger('CENSUS');
+		$this->monolog->pushHandler(new StreamHandler(storage_path().'/logs/census.log', Logger::INFO));
 
 		parent::__construct();
 	}
@@ -52,18 +61,36 @@ class Census extends Command {
 			$this->verb = "Syncing";
 
 		// Run
+		$methods = [];
 		foreach( $this->option() as $option => $value ) {
 			if ( method_exists($this, $option) and ( $value == true or $this->option('all') ) ) {
-				$this->$option();
+				$methods[] = $option;
 			}
 		}
+		// Reorder facilities so it runs after facility types
+		if ( in_array('facility_types', $methods) and in_array('facilities', $methods) ) {
+			$key = array_search('facilities', $methods);
+			unset($methods[$key]);
+			$methods[] = 'facilities';
+		}
+		foreach( $methods as $method )
+			$this->$method();
+	}
+
+	private function log($message, $extra=array())
+	{
+		if ( $this->option('verbose') ) {
+			$this->info($message." ".json_encode($extra));
+		}
+
+		$this->monolog->addNotice($message, $extra);
 	}
 
 	// Sync Continents
 	private function continents()
 	{
-		$name = 'Continent';
-		$this->log->addInfo($this->verb.' Continents');
+		$class = get_class(new Continent);
+		$this->log($this->verb.' Continents');
 
 		$url = $this->baseUrl . "zone?c:limit=100";
 		$data = $this->getCensusData($url);
@@ -76,23 +103,23 @@ class Census extends Command {
 			$values = [];
 			$values['id'] = isset($continent->zone_id) ? $continent->zone_id : null;
 			$values['name'] = isset($continent->name->en) ? $continent->name->en : null;
-			$values['slug'] = isset($continent->name->en) ? Str::slug($continent->name->en) : null;
+			$values['slug'] = isset($continent->name->en) ? Str::camel($continent->name->en) : null;
 			$values['description'] = isset($continent->description->en) ? $continent->description->en : null;
 			$apiCollection->add(new Continent($values));
 		}
 
 		$servers = Continent::all();
 
-		$this->addModels($name, $servers, $apiCollection);
-		$this->deleteModels($name, $servers, $apiCollection);
-		$this->updateModels($name, Continent::all(), $apiCollection, ['name','slug']);
+		$this->addModels($class, $servers, $apiCollection);
+		$this->deleteModels($class, $servers, $apiCollection);
+		$this->updateModels($class, Continent::all(), $apiCollection, ['name','slug']);
 	}
 
 	// Sync Servers
 	private function servers()
 	{
-		$name = 'Server';
-		$this->log->addInfo($this->verb.' Servers');
+		$class = get_class(new Server);
+		$this->log($this->verb.' Servers');
 
 		$url = $this->baseUrl . "world?c:limit=100";
 		$data = $this->getCensusData($url);
@@ -105,22 +132,22 @@ class Census extends Command {
 			$values = [];
 			$values['id'] = isset($server->world_id) ? $server->world_id : null;
 			$values['name'] = isset($server->name->en) ? $server->name->en : null;
-			$values['slug'] = isset($server->name->en) ? Str::slug($server->name->en) : null;
+			$values['slug'] = isset($server->name->en) ? Str::camel($server->name->en) : null;
 			$apiCollection->add(new Server($values));
 		}
 
 		$servers = Server::all();
 
-		$this->addModels($name, $servers, $apiCollection);
-		$this->deleteModels($name, $servers, $apiCollection);
-		$this->updateModels($name, Server::all(), $apiCollection, ['name','slug']);
+		$this->addModels($class, $servers, $apiCollection);
+		$this->deleteModels($class, $servers, $apiCollection);
+		$this->updateModels($class, Server::all(), $apiCollection, ['name','slug']);
 	}
 
 	// Sync Factions
 	private function factions()
 	{
-		$name = 'Faction';
-		$this->log->addInfo($this->verb.' Factions');
+		$class = get_class(new Faction);
+		$this->log($this->verb.' Factions');
 
 		$url = $this->baseUrl . "faction?c:limit=100";
 		$data = $this->getCensusData($url);
@@ -133,23 +160,23 @@ class Census extends Command {
 			$values = [];
 			$values['id'] = isset($faction->faction_id) ? $faction->faction_id : null;
 			$values['name'] = isset($faction->name->en) ? $faction->name->en : null;
-			$values['slug'] = isset($faction->name->en) ? Str::slug($faction->name->en) : null;
+			$values['slug'] = isset($faction->name->en) ? Str::camel($faction->name->en) : null;
 			$apiCollection->add(new Faction($values));
 		}
 
 		// Local factions
 		$factions = Faction::all();
 
-		$this->addModels($name, $factions, $apiCollection);
-		$this->deleteModels($name, $factions, $apiCollection);
-		$this->updateModels($name, Faction::all(), $apiCollection, ['name','slug']);
+		$this->addModels($class, $factions, $apiCollection);
+		$this->deleteModels($class, $factions, $apiCollection);
+		$this->updateModels($class, Faction::all(), $apiCollection, ['name','slug']);
 	}
 
 	// Sync Facility Types
-	private function facilityTypes()
+	private function facility_types()
 	{
-		$name = 'Facility Type';
-		$this->log->addInfo($this->verb.' Facility Types');
+		$class = get_class(new FacilityType);
+		$this->log($this->verb.' Facility Types');
 
 		$url = $this->baseUrl . "facility_type?c:limit=100";
 		$data = $this->getCensusData($url);
@@ -162,22 +189,22 @@ class Census extends Command {
 			$values = [];
 			$values['id'] = isset($type->facility_type_id) ? $type->facility_type_id : null;
 			$values['name'] = isset($type->description) ? $type->description : null;
-			$values['slug'] = isset($type->description) ? Str::slug($type->description) : null;
+			$values['slug'] = isset($type->description) ? Str::camel($type->description) : null;
 			$apiCollection->add(new FacilityType($values));
 		}
 
 		$facilityTypes = FacilityType::all();
 
-		$this->addModels($name, $facilityTypes, $apiCollection);
-		$this->deleteModels($name, $facilityTypes, $apiCollection);
-		$this->updateModels($name, FacilityType::all(), $apiCollection, ['name','slug']);
+		$this->addModels($class, $facilityTypes, $apiCollection);
+		$this->deleteModels($class, $facilityTypes, $apiCollection);
+		$this->updateModels($class, FacilityType::all(), $apiCollection, ['name','slug']);
 	}
 
 	// Sync Facilities
 	private function facilities()
 	{
-		$name = 'Facility';
-		$this->log->addInfo($this->verb.' Facilities');
+		$class = get_class(new Facility);
+		$this->log($this->verb.' Facilities');
 
 		$url = $this->baseUrl . "map_region?c:limit=1000";
 		$data = $this->getCensusData($url);
@@ -190,42 +217,52 @@ class Census extends Command {
 			$values = [];
 			$values['id'] = isset($facility->facility_id) ? $facility->facility_id : null;
 			$values['name'] = isset($facility->facility_name) ? $facility->facility_name : null;
-			$values['slug'] = isset($facility->facility_name) ? Str::slug($facility->facility_name) : null;
+			$values['slug'] = isset($facility->facility_name) ? Str::camel($facility->facility_name) : null;
 			$values['continent_id'] = isset($facility->zone_id) ? $facility->zone_id : null;
 			$values['facility_type_id'] = isset($facility->facility_type_id) ? $facility->facility_type_id : null;
 			$values['region_id'] = isset($facility->map_region_id) ? $facility->map_region_id : null;
-			$values['x'] = isset($facility->location_x) ? $facility->location_x : null;
-			$values['y'] = isset($facility->location_y) ? $facility->location_y : null;
-			$values['z'] = isset($facility->location_z) ? $facility->location_z : null;
 			$values['currency_amount'] = isset($facility->reward_amount) ? $facility->reward_amount : null;
 			$values['currency_id'] = isset($facility->reward_currency_id) ? $facility->reward_currency_id : null;
-			$apiCollection->add(new Facility($values));
+
+			$values['lat'] = isset($facility->location_z) ? $facility->location_z * $this->latScale + $this->latOffset : null;
+			$values['lng'] = isset($facility->location_x) ? $facility->location_x * $this->lngScale + $this->lngOffset : null;
+			$values['elevation'] = isset($facility->location_z) ? $facility->location_y * $this->elevationScale + $this->elevationOffset : null;
+
+			$facility = new Facility($values);
+
+			// Add facility type names to facilities
+			if ( in_array($facility->facilityType->name, ['Amp Station', 'Bio Lab', 'Interlink Facility', 'Tech Plant']) ) {
+				$facility->name .= " ".$facility->facilityType->name;
+				$facility->slug = Str::camel($facility->name);
+			}
+
+			$apiCollection->add($facility);
 		}
 
 		$facilities = Facility::all();
 
-		$this->addModels($name, $facilities, $apiCollection);
-		$this->deleteModels($name, $facilities, $apiCollection);
+		$this->addModels($class, $facilities, $apiCollection);
+		$this->deleteModels($class, $facilities, $apiCollection);
 		$compare = [
 			'name',
 			'slug',
 			'continent_id',
 			'facility_type_id',
 			'region_id',
-			'x',
-			'y',
-			'z',
+			'lat',
+			'lng',
+			'elevation',
 			'currency_amount',
 			'currency_id',
 		];
-		$this->updateModels($name, Facility::all(), $apiCollection, $compare);
+		$this->updateModels($class, Facility::all(), $apiCollection, $compare);
 	}
 
 	// Sync Currencies
 	private function currencies()
 	{
-		$name = 'Currency';
-		$this->log->addInfo($this->verb.' Currencies');
+		$class = get_class(new Currency);
+		$this->log($this->verb.' Currencies');
 
 		$url = $this->baseUrl . "currency?c:limit=100";
 		$data = $this->getCensusData($url);
@@ -243,16 +280,16 @@ class Census extends Command {
 
 		$currencies = Currency::all();
 
-		$this->addModels($name, $currencies, $apiCollection);
-		$this->deleteModels($name, $currencies, $apiCollection);
-		$this->updateModels($name, Currency::all(), $apiCollection, ['name']);
+		$this->addModels($class, $currencies, $apiCollection);
+		$this->deleteModels($class, $currencies, $apiCollection);
+		$this->updateModels($class, Currency::all(), $apiCollection, ['name']);
 	}
 
 	// Sync Regions
 	private function regions()
 	{
-		$name = 'Region';
-		$this->log->addInfo($this->verb.' Regions');
+		$class = get_class(new Region);
+		$this->log($this->verb.' Regions');
 
 		$url = $this->baseUrl . "region?c:limit=1000";
 		$data = $this->getCensusData($url);
@@ -271,16 +308,16 @@ class Census extends Command {
 
 		$regions = Region::all();
 
-		$this->addModels($name, $regions, $apiCollection);
-		$this->deleteModels($name, $regions, $apiCollection);
-		$this->updateModels($name, Region::all(), $apiCollection, ['name','continent_id']);
+		$this->addModels($class, $regions, $apiCollection);
+		$this->deleteModels($class, $regions, $apiCollection);
+		$this->updateModels($class, Region::all(), $apiCollection, ['name','continent_id']);
 	}
 
 	// Sync Hexes
 	private function hexes()
 	{
-		$name = 'Hex';
-		$this->log->addInfo($this->verb.' Hexes');
+		$class = get_class(new Hex);
+		$this->log($this->verb.' Hexes');
 
 		$url = $this->baseUrl . "map_hex?c:limit=10000";
 		$data = $this->getCensusData($url);
@@ -299,15 +336,15 @@ class Census extends Command {
 
 		$regions = Hex::all();
 
-		$this->addModels($name, $regions, $apiCollection);
-		$this->deleteModels($name, $regions, $apiCollection);
+		$this->addModels($class, $regions, $apiCollection);
+		$this->deleteModels($class, $regions, $apiCollection);
 	}
 
 	// Sync Links
 	private function links()
 	{
-		$name = 'Link';
-		$this->log->addInfo($this->verb.' Links');
+		$class = get_class(new Link);
+		$this->log($this->verb.' Links');
 
 		$url = $this->baseUrl . "facility_link?c:limit=1000";
 		$data = $this->getCensusData($url);
@@ -326,55 +363,74 @@ class Census extends Command {
 
 		$links = Link::all();
 
-		$this->addModels($name, $links, $apiCollection);
-		$this->deleteModels($name, $links, $apiCollection);
+		$this->addModels($class, $links, $apiCollection);
+		$this->deleteModels($class, $links, $apiCollection);
 	}
 
 	// Generic method for fetching Census API data
 	private function getCensusData($url)
 	{
+		$this->log("    Getting Census Data");
 		// Connect to Census
 		try {
 			$data = json_decode(file_get_contents($url));
 		} catch (Exception $e) {
-			$this->log->addError('Error connecting to Census', array('exception'=>$e, 'url'=>$url));
+			$this->log('Error connecting to Census', array('exception'=>$e, 'url'=>$url));
 			return false;
 		}
 
 		// Handle API Errors
 		if ( isset($data->error) ) {
-			$this->log->addError('API Error', array('error'=>$data->error, 'url'=>$url));
+			$this->log('API Error', array('error'=>$data->error, 'url'=>$url));
 			return false;
 		}
 
 		return $data;
 	}
 
-	private function addModels($name, $localCollection, $apiCollection)
+	private function addModels($class, $localCollection, $apiCollection)
 	{
+		// Get the model's table
+		$object = new $class;
+		$table = $object->getTable();
+		unset($object);
+
+		$timestamp = (new Carbon)->toDateTimeString();
+
+		$data = [];
 		foreach( $apiCollection->diff($localCollection) as $model ) {
-			if ( $this->option('sync') or $this->option('add') ) {
-				$model->save();
-				$this->log->addNotice('Adding '.$name, $model->toArray());
-			} else {
-				$this->log->addNotice($name.' not found locally', $model->toArray());
+			$tmp = $model->getAttributes();
+			$tmp['created_at'] = $timestamp;
+			$tmp['updated_at'] = $timestamp;
+			$data[] = $tmp;
+		}
+
+		if ( count($data) > 0 and ( $this->option('sync') or $this->option('add') ) ) {
+			foreach( $data as $d ) {
+				$this->log('    Adding '.$class, $d);
+			}
+			DB::table($table)->insert($data);
+		} else {
+			foreach( $data as $d ) {
+				$this->log('    '.$class.' not found locally', $d);
 			}
 		}
+
 	}
 
-	private function deleteModels($name, $localCollection, $apiCollection)
+	private function deleteModels($class, $localCollection, $apiCollection)
 	{
 		foreach( $localCollection->diff($apiCollection) as $model ) {
 			if ( $this->option('sync') or $this->option('delete') ) {
-				$this->log->addNotice('Deleting '.$name, $model->toArray());
+				$this->log('    Deleting '.$class, $model->toArray());
 				$model->delete();
 			} else {
-				$this->log->addNotice($name.' not found in Census', $model->toArray());
+				$this->log('    '.$class.' not found in Census', $model->toArray());
 			}
 		}
 	}
 
-	private function updateModels($name, $localCollection, $apiCollection, $comparisonAttributes)
+	private function updateModels($class, $localCollection, $apiCollection, $comparisonAttributes)
 	{
 		$apiCollection = $apiCollection->getDictionary();
 
@@ -397,9 +453,9 @@ class Census extends Command {
 
 				if ( $this->option('sync') or $this->option('update') ) {
 					$model->save();
-					$this->log->addNotice('Updating '.$name, $diff);
+					$this->log('    Updating '.$class, $diff);
 				} else {
-					$this->log->addNotice($name.' mismatch', $diff);
+					$this->log('    '.$class.' mismatch', $diff);
 				}
 
 			}
@@ -440,9 +496,6 @@ class Census extends Command {
 			array('all', null, InputOption::VALUE_NONE, 'Compare all assets.', null),
 
 			// Actions
-			array('add', null, InputOption::VALUE_NONE, 'Add missing assets from Census.', null),
-			array('delete', null, InputOption::VALUE_NONE, "Delete assets that are not in Census.", null),
-			array('update', null, InputOption::VALUE_NONE, 'Update assets that differ from Census.', null),
 			array('sync', null, InputOption::VALUE_NONE, 'Add, Delete & Update assets.', null),
 		);
 	}
