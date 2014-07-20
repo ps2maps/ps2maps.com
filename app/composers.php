@@ -27,6 +27,7 @@ View::composer($views, function($view)
 {
 	$continents = Continent::orderBy('name')
 		->whereEnabled('yes')
+		->where('slug','!=','vRTraining')
 		->remember(1440)
 		->get();
 
