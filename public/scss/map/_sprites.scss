@@ -6,13 +6,13 @@
 	pointer-events: none;
 }
 
-svg.icon {
+svg.marker-icon {
 	// Nanite Systems Color
 	fill: #79e0e1;
 
-	&.nc { fill: blue; }
-	&.tr { fill: red; }
-	&.vs { fill: purple; }
+	&.nc { fill: #33ADFF; }
+	&.tr { fill: #DF2020; }
+	&.vs { fill: #9E52E0; }
 }
 
 .myDivIcon {
