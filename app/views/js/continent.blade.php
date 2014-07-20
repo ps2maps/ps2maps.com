@@ -2,5 +2,7 @@
 
 var {{ $continent->slug }} = {
 	regions : {{ $regions }},
-	facilities : {{ $facilities }}
+	markers : {
+		facilities: {{ $facilities }}
+	}
 };
