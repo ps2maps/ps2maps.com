@@ -14,6 +14,8 @@ var sources = {
 			'public/js/map/create-regions.js',
 			'public/js/map/marker-defs.js',
 			'public/js/map/create-markers.js',
+			'public/js/map/create-lattice.js',
+			'public/js/map/associations.js',
 			'public/js/map/log.js',
 			'public/js/map/jquery.js',
 		],
