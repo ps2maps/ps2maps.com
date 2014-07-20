@@ -12,8 +12,8 @@
 
 @section('scripts')
 	<script src="/js/main.js"></script>
-	<script src="http://leaflet-cdn.s3.amazonaws.com/build/master/leaflet-src.js"></script>
-	<script src="/js/leaflet.label.js"></script>
+	<script src="http://augusta.gunsight/leaflet/dist/leaflet-src.js"></script>
+	<script src="/js/leaflet.label-src.js"></script>
 	<script src="/js/leaflet.divlayer.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
@@ -39,8 +39,8 @@
 @section('content')
 
 	<div id='map'></div>
-
-	@include('map/log')
+	@include('map/history')
+	<div id='svg-sprites-container'></div>
 
 	{{-- Sidebar--}}
 	{{--@include('sidebar/sidebar')--}}
