@@ -65,7 +65,6 @@
 
 	// Set view to either default view or use url hash
 	var lat, lng, zoom, view = window.location.hash.slice(1,-1).split(',');
-
 	// Do values exist and are they valid numbers?
 	if ( view[0] && view[1] && view[2] && !isNaN(view[0]) && !isNaN(view[1]) && !isNaN(view[2]) ) {
 		lat = view[0];
@@ -82,5 +81,16 @@
 
 	// Set the move & zoom handler
 	// Do this after setting intial view or else URL is appended with default view hash
-	ps2maps.map.on('moveend', ps2maps.mapMoveZoom.bind(ps2maps));
+	var mapMoveZoom = function(e)
+	{
+		var center = this.map.getCenter();
+		history.replaceState(null, null, continent.slug+'#'+center.lat+','+center.lng+','+this.map.getZoom()+'z');
+	};
+	ps2maps.map.on('moveend', mapMoveZoom.bind(ps2maps));
+
+	// var mapZoom = function(e)
+	// {
+	// 	console.log(e);
+	// };
+	// ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend');
 })();

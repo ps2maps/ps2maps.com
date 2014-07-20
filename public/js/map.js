@@ -20,20 +20,20 @@ function Ps2maps()
 			},
 			hover: {
 				color: '#EEE',
-				weight: 2
+				weight: 3
 			}
 		},
 		icons: {
 			default: {
 				className: 'svgIcon',
-				iconSize: [32,32],
-				iconAnchor: [16,16],
+				iconSize: [24,24],
+				iconAnchor: [12,12],
 				labelAnchor: [0,0]
 			},
 			large: {
 				className: 'svgIcon',
-				iconSize: [40,40],
-				iconAnchor: [20,20],
+				iconSize: [32,32],
+				iconAnchor: [16,16],
 				labelAnchor: [0,0]
 			}
 		},
@@ -45,72 +45,39 @@ function Ps2maps()
 		}
 	};
 
-	this.icons = {
-		facilities: {},
-		outposts: {}
-	}
-
 	this.factions = ['ns','nc','tr','vs'];
 
 	this.facilityTypes = {
-		facilities: {
-			2: {
-				name: "Amp Station",
-				slug: "ampStation",
-			},
-			3: {
-				name: "Bio Lab",
-				slug: "bioLab",
-			},
-			4: {
-				name: "Tech Plant",
-				slug: "techPlant",
-			},
-			7: {
-				name: "Warpgate",
-				slug: "warpgate",
-			},
-			8: {
-				name: "Interlink Facility",
-				slug: "interlinkFacility"
-			}
+		ampStation: {
+			name: "Amp Station",
+			id: 2
 		},
-		outposts: {
-			5: {
-				name: "Large Outpost",
-				slug: "largeOutpost"
-			},
-			6: {
-				name: "Small Outpost",
-				slug: "smallOutpost"
-			}
+		bioLab: {
+			name: "Bio Lab",
+			id: 3
+		},
+		techPlant: {
+			name: "Tech Plant",
+			id: 4
+		},
+		warpgate: {
+			name: "Warpgate",
+			id: 7
+		},
+		interlinkFacility: {
+			name: "Interlink Facility",
+			id: 8
+		},
+		largeOutpost: {
+			name: "Large Outpost",
+			id: 5
+		},
+		smallOutpost: {
+			name: "Small Outpost",
+			id: 6
 		}
 	};
-};
 
-// Region On Click Handler
-Ps2maps.prototype.regionClick = function(e)
-{
-
-};
-
-// Region Mouse Over Handler
-Ps2maps.prototype.regionMouseOver = function(e)
-{
-	e.target.bringToFront().setStyle(ps2maps.options.regions.hover);
-};
-
-// Region Mouse Out Handler
-Ps2maps.prototype.regionMouseOut = function(e)
-{
-	e.target.setStyle(ps2maps.options.regions.default);
-};
-
-// Map Move/Zoom Handler
-Ps2maps.prototype.mapMoveZoom = function(e)
-{
-	var center = this.map.getCenter();
-	history.replaceState(null, null, continent.slug+'#'+center.lat+','+center.lng+','+this.map.getZoom()+'z');
 };
 
 var ps2maps = new Ps2maps();
@@ -355,7 +322,6 @@ function hideLayer(layer)
 
 	// Set view to either default view or use url hash
 	var lat, lng, zoom, view = window.location.hash.slice(1,-1).split(',');
-
 	// Do values exist and are they valid numbers?
 	if ( view[0] && view[1] && view[2] && !isNaN(view[0]) && !isNaN(view[1]) && !isNaN(view[2]) ) {
 		lat = view[0];
@@ -372,60 +338,81 @@ function hideLayer(layer)
 
 	// Set the move & zoom handler
 	// Do this after setting intial view or else URL is appended with default view hash
-	ps2maps.map.on('moveend', ps2maps.mapMoveZoom.bind(ps2maps));
+	var mapMoveZoom = function(e)
+	{
+		var center = this.map.getCenter();
+		history.replaceState(null, null, continent.slug+'#'+center.lat+','+center.lng+','+this.map.getZoom()+'z');
+	};
+	ps2maps.map.on('moveend', mapMoveZoom.bind(ps2maps));
+
+	// var mapZoom = function(e)
+	// {
+	// 	console.log(e);
+	// };
+	// ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend');
 })();
 
 // Create Regions
 (function(){
 
-	// territories = [];
+	var regionClick = function(e)
+	{
+
+	};
+
+	var regionMouseOver = function(e)
+	{
+		e.target.bringToFront().setStyle(ps2maps.options.regions.hover);
+	};
+
+	var regionMouseOut = function(e)
+	{
+		e.target.setStyle(ps2maps.options.regions.default);
+	};
+
+	ps2maps.regions = {};
 	var regions = [], region;
 
-	for( index in continent.regions )
+	for( id in continent.regions )
 	{
-		// console.log(ps2maps.options.regions.default);
-		region = L.polygon( continent.regions[index].polygon, ps2maps.options.regions.default )
-			.on('click', ps2maps.regionClick)
-			.on('mouseover', ps2maps.regionMouseOver)
-			.on('mouseout', ps2maps.regionMouseOut);
-		region.id = continent.regions[index].id;
-		region.name = continent.regions[index].name;
+		region = L.polygon( continent.regions[id].points, ps2maps.options.regions.default )
+			.on('click', regionClick)
+			.on('mouseover', regionMouseOver)
+			.on('mouseout', regionMouseOut);
+		region.id = id;
+		region.name = continent.regions[id].name;
+		region.facility = null;
 		region.addTo(ps2maps.map);
-		// region.type_id = continent.regions[index].type_id;
-		// region.resource = continent.regions[index].resource;
-		// region.markers = [];
-		regions.push(region);
-		// territories[regions[index].id] = region;
+		ps2maps.regions[id] = region;
 	}
-	// L.layerGroup(regions).addTo(ps2maps.map);
-	regions = null;
-	//territoriesLayer.eachLayer(function(layer){ layer.on('click', function(e){ territoryClick(e) }).on('mouseover', function(e){ territoryOver(e) }).on('mouseout', function(e){ territoryOut(e) }); });
 })();
 
 (function(){
 
 ps2maps.icons = {
-	facilities: {},
-	outposts: {}
+	facilities: {}
 };
 
-var options = ps2maps.options.icons.large;
-for( id in ps2maps.facilityTypes.facilities ) {
-	var facility = ps2maps.facilityTypes.facilities[id];
-	ps2maps.icons.facilities[id] = {};
-	for( f in ps2maps.factions ) {
-		options.html = "<svg viewBox='0 0 256 256' class='icon " + facility.slug + " " + ps2maps.factions[f] + "'><use xlink:href='#" + facility.slug + "'></use></svg>";
-		ps2maps.icons.facilities[id][ps2maps.factions[f]] = L.divIcon(options);
-	}
-}
+// Facility and Outpost Icons
+var options;
+for( type in ps2maps.facilityTypes ) {
 
-options = ps2maps.options.icons.default;
-for( id in ps2maps.facilityTypes.outposts ) {
-	var outpost = ps2maps.facilityTypes.outposts[id];
-	ps2maps.icons.outposts[id] = {};
+	// Facilities get larger icons
+	switch(type){
+		case 'ampStation':
+		case 'bioLab':
+		case 'interlinkFacility':
+		case 'techPlant':
+		case 'warpgate':
+			options = ps2maps.options.icons.large;
+			break;
+		default:
+			options = ps2maps.options.icons.default;
+	}
+	ps2maps.icons.facilities[type] = {};
 	for( f in ps2maps.factions ) {
-		options.html = "<svg viewBox='0 0 256 256' class='icon " + outpost.slug + " " + ps2maps.factions[f] + "'><use xlink:href='#" + outpost.slug + "'></use></svg>";
-		ps2maps.icons.outposts[id][ps2maps.factions[f]] = L.divIcon(options);
+		options.html = "<svg viewBox='0 0 256 256' class='marker-icon " + type + " " + ps2maps.factions[f] + "'><use xlink:href='#" + type + "'></use></svg>";
+		ps2maps.icons.facilities[type][ps2maps.factions[f]] = L.divIcon(options);
 	}
 }
 
@@ -724,94 +711,171 @@ var oldIcon = {
 // Create Markers
 (function(){
 
-	var facilities = continent.facilities,
-		markerOptions = {};
+	ps2maps.facilities = {};
 
-	for( id in facilities )
+	var	options = {},
+		labelOptions,
+		marker;
+
+	labelOptions = ps2maps.options.labels.default;
+	for( type in continent.markers.facilities ) {
+		options = {
+			icon: ps2maps.icons.facilities[type].ns,
+		};
+		switch(type){
+			case 'ampStation':
+			case 'bioLab':
+			case 'interlinkFacility':
+			case 'techPlant':
+			case 'warpgate':
+				options.pane = 'facilitiesPane';
+				labelOptions.pane = 'facilitiesLabelsPane';
+				break;
+			default:
+				options.pane = 'outpostsPane';
+				labelOptions.pane = 'outpostsLabelsPane';
+		}
+		for( id in continent.markers.facilities[type] ) {
+			facility = continent.markers.facilities[type][id];
+			marker = L.marker(facility.xy, options)
+				.bindLabel(facility.name, ps2maps.options.labels.default)
+				.addTo(ps2maps.map);
+			marker.id = id;
+			marker.region = null;
+			marker.latticeLinks = [];
+			marker.facilities = [];
+			ps2maps.facilities[id] = marker;
+		}
+
+	}
+})();
+
+// Create Lattice Links
+(function(){
+
+	// Lattice object
+	var latticeLink = function(facilityA, facilityB)
 	{
-		facilities[id].loc[0] = facilities[id].loc[0] * 0.03126 + 128;
-		facilities[id].loc[1] = facilities[id].loc[1] * 0.03126 + 128;
+		this._facilityA = facilityA;
+		this._facilityB = facilityB;
+		this.facilities = [];
+		this.facilities[facilityA.id] = facilityA;
+		this.facilities[facilityB.id] = facilityB;
 
-		var label = facilities[id].name;
+		this._styles = {
+			ns: {
+				line: {
+					color: '#79e0e1',
+					weight: 4,
+					clickable: false,
+					dashArray: null
+				},
+				outline: {
+					color: '#FFF',
+					weight: 6,
+					clickable: false
+				}
+			},
+			nc: {
+				line: {
+					color: '#33ADFF',
+					weight: 5,
+					clickable: false,
+					dashArray: null
+				},
+				outline: {
+					color: '#FFF',
+					weight: 7,
+					clickable: false
+				}
+			},
+			tr: {
+				line: {
+					color: '#DF2020',
+					weight: 5,
+					clickable: false,
+					dashArray: null
+				},
+				outline: {
+					color: '#FFF',
+					weight: 7,
+					clickable: false
+				}
+			},
+			vs: {
+				line: {
+					color: '#9E52E0',
+					weight: 5,
+					clickable: false,
+					dashArray: null
+				},
+				outline: {
+					color: '#FFF',
+					weight: 7,
+					clickable: false
+				}
+			},
+			contested: {
+				line: {
+					color: '#FFFF00',
+					weight: 5,
+					clickable: false,
+					dashArray: [1,6]
+				},
+				outline: {
+					color: '#000',
+					weight: 6,
+					clickable: false
+				}
+			}
+		};
 
-		switch(facilities[id].type) {
-			case 2:
-			case 3:
-			case 4:
-				console.log(ps2maps.icons.facilities[facilities[id].type]);
-				options = {
-					icon: ps2maps.icons.facilities[facilities[id].type].ns,
-					pane: 'facilitiesPane'
-				};
-				label += " Facility";
-				break;
-			case 5:
-			case 6:
-				console.log(ps2maps.icons.outposts[facilities[id].type]);
-				options = {
-					icon: ps2maps.icons.outposts[facilities[id].type].ns,
-					pane: 'outpostsPane'
-				};
-				break;
-			case 7:
-				options = {
-					icon: ps2maps.icons.facilities[facilities[id].type].ns,
-					pane: 'facilitiesPane'
-				};
-				break;
-		}
-		var marker = L.marker(facilities[id].loc, options)
-			.bindLabel(label, ps2maps.options.labels.default)
-			.addTo(ps2maps.map);
-		continue;
+		// Draw the line and outline
+		var points = [this._facilityA.getLatLng(), this._facilityB.getLatLng()];
+		this._outline = L.polyline(points, this._styles.ns.outline).addTo(ps2maps.map);
+		this._line = L.polyline(points, this._styles.ns.line).addTo(ps2maps.map);
 
-		// The Marker's Icon
-		var icon = L.divIcon({
-			className: 'icon ' + marker_data[layer].icon.className,
-			iconSize: [ marker_data[layer].icon.size.x, marker_data[layer].icon.size.y ],
-			iconAnchor: [ marker_data[layer].icon.anchor.x, marker_data[layer].icon.anchor.y]
-		});
-
-		// Set the options
-		var options = marker_data[layer].options;
-		options.icon = icon;
-
-		var objects = [];
-		for( index in marker_data[layer].markers )
+		this.setFaction = function(faction)
 		{
-			// Create the Marker
-			var object = L.marker( [marker_data[layer].markers[index].lat, marker_data[layer].markers[index].lng], options );
+			this._outline.setStyle(this._styles[faction].outline);
+			this._line.setStyle(this._styles[faction].line);
+		};
+	}
 
-			// Set the ID
-			object.id = marker_data[layer].markers[index].id;
-
-			// Set the Marker Type
-			object.marker_type = layer;
-
-			// Set the Marker Text
-			object.text = marker_data[layer].markers[index].text;
-
-			// Bind Label
-			if ( marker_data[layer].hasLabel )
-				object.bindLabel(marker_data[layer].markers[index].text, marker_data[layer].labelOptions);
-
-			// Territory
-			if ( marker_data[layer].markers[index].territory_id )
-				object.territory = territories[ marker_data[layer].markers[index].territory_id ];
-
-			// Push to objects array
-			objects.push(object);
-
-			// Push to global markers array
-			markers[ marker_data[layer].markers[index].id ] = object;
+	var points,
+		lattice;
+	ps2maps.lattice = [];
+	// Iterate through the facilities
+	for( type in continent.markers.facilities ) {
+		for( id in continent.markers.facilities[type] ) {
+			// Create lattice links for all linked facilities
+			if ( continent.markers.facilities[type][id].links ) {
+				for( index in continent.markers.facilities[type][id].links ) {
+					ps2maps.lattice.push(new latticeLink(ps2maps.facilities[id], ps2maps.facilities[continent.markers.facilities[type][id].links[index]]));
+				}
+			}
 		}
+	}
 
-		// Create the LayerGroup
-		layers[layer].layerGroup = L.layerGroup(objects);
+})();
 
-		// Show Labels if exist
-		if ( marker_data[layer].hasLabel )
-			layers[layer].has_label = true;
+// Associate Regions, Facilities and Lattice Links
+(function(){
+
+	// Associate regions and facilities
+	for( region_id in continent.regions ) {
+		if ( ps2maps.facilities[continent.regions[region_id].facility_id] ) {
+			ps2maps.regions[region_id].facility = ps2maps.facilities[continent.regions[region_id].facility_id];
+			ps2maps.facilities[continent.regions[region_id].facility_id].region = ps2maps.regions[region_id];
+		}
+	}
+
+	// Associate facilities with lattice links
+	for( index in ps2maps.lattice ) {
+		for( facility_index in ps2maps.lattice[index].facilities) {
+			ps2maps.lattice[index].facilities[facility_index].latticeLinks.push(ps2maps.lattice[index]);
+
+		}
 	}
 })();
 

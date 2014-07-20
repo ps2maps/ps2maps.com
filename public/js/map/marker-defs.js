@@ -1,27 +1,29 @@
 (function(){
 
 ps2maps.icons = {
-	facilities: {},
-	outposts: {}
+	facilities: {}
 };
 
-var options = ps2maps.options.icons.large;
-for( id in ps2maps.facilityTypes.facilities ) {
-	var facility = ps2maps.facilityTypes.facilities[id];
-	ps2maps.icons.facilities[id] = {};
-	for( f in ps2maps.factions ) {
-		options.html = "<svg viewBox='0 0 256 256' class='icon " + facility.slug + " " + ps2maps.factions[f] + "'><use xlink:href='#" + facility.slug + "'></use></svg>";
-		ps2maps.icons.facilities[id][ps2maps.factions[f]] = L.divIcon(options);
-	}
-}
+// Facility and Outpost Icons
+var options;
+for( type in ps2maps.facilityTypes ) {
 
-options = ps2maps.options.icons.default;
-for( id in ps2maps.facilityTypes.outposts ) {
-	var outpost = ps2maps.facilityTypes.outposts[id];
-	ps2maps.icons.outposts[id] = {};
+	// Facilities get larger icons
+	switch(type){
+		case 'ampStation':
+		case 'bioLab':
+		case 'interlinkFacility':
+		case 'techPlant':
+		case 'warpgate':
+			options = ps2maps.options.icons.large;
+			break;
+		default:
+			options = ps2maps.options.icons.default;
+	}
+	ps2maps.icons.facilities[type] = {};
 	for( f in ps2maps.factions ) {
-		options.html = "<svg viewBox='0 0 256 256' class='icon " + outpost.slug + " " + ps2maps.factions[f] + "'><use xlink:href='#" + outpost.slug + "'></use></svg>";
-		ps2maps.icons.outposts[id][ps2maps.factions[f]] = L.divIcon(options);
+		options.html = "<svg viewBox='0 0 256 256' class='marker-icon " + type + " " + ps2maps.factions[f] + "'><use xlink:href='#" + type + "'></use></svg>";
+		ps2maps.icons.facilities[type][ps2maps.factions[f]] = L.divIcon(options);
 	}
 }
 

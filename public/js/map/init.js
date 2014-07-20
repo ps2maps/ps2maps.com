@@ -20,20 +20,20 @@ function Ps2maps()
 			},
 			hover: {
 				color: '#EEE',
-				weight: 2
+				weight: 3
 			}
 		},
 		icons: {
 			default: {
 				className: 'svgIcon',
-				iconSize: [32,32],
-				iconAnchor: [16,16],
+				iconSize: [24,24],
+				iconAnchor: [12,12],
 				labelAnchor: [0,0]
 			},
 			large: {
 				className: 'svgIcon',
-				iconSize: [40,40],
-				iconAnchor: [20,20],
+				iconSize: [32,32],
+				iconAnchor: [16,16],
 				labelAnchor: [0,0]
 			}
 		},
@@ -45,72 +45,39 @@ function Ps2maps()
 		}
 	};
 
-	this.icons = {
-		facilities: {},
-		outposts: {}
-	}
-
 	this.factions = ['ns','nc','tr','vs'];
 
 	this.facilityTypes = {
-		facilities: {
-			2: {
-				name: "Amp Station",
-				slug: "ampStation",
-			},
-			3: {
-				name: "Bio Lab",
-				slug: "bioLab",
-			},
-			4: {
-				name: "Tech Plant",
-				slug: "techPlant",
-			},
-			7: {
-				name: "Warpgate",
-				slug: "warpgate",
-			},
-			8: {
-				name: "Interlink Facility",
-				slug: "interlinkFacility"
-			}
+		ampStation: {
+			name: "Amp Station",
+			id: 2
 		},
-		outposts: {
-			5: {
-				name: "Large Outpost",
-				slug: "largeOutpost"
-			},
-			6: {
-				name: "Small Outpost",
-				slug: "smallOutpost"
-			}
+		bioLab: {
+			name: "Bio Lab",
+			id: 3
+		},
+		techPlant: {
+			name: "Tech Plant",
+			id: 4
+		},
+		warpgate: {
+			name: "Warpgate",
+			id: 7
+		},
+		interlinkFacility: {
+			name: "Interlink Facility",
+			id: 8
+		},
+		largeOutpost: {
+			name: "Large Outpost",
+			id: 5
+		},
+		smallOutpost: {
+			name: "Small Outpost",
+			id: 6
 		}
 	};
-};
 
-// Region On Click Handler
-Ps2maps.prototype.regionClick = function(e)
-{
-
-};
-
-// Region Mouse Over Handler
-Ps2maps.prototype.regionMouseOver = function(e)
-{
-	e.target.bringToFront().setStyle(ps2maps.options.regions.hover);
-};
-
-// Region Mouse Out Handler
-Ps2maps.prototype.regionMouseOut = function(e)
-{
-	e.target.setStyle(ps2maps.options.regions.default);
-};
-
-// Map Move/Zoom Handler
-Ps2maps.prototype.mapMoveZoom = function(e)
-{
-	var center = this.map.getCenter();
-	history.replaceState(null, null, continent.slug+'#'+center.lat+','+center.lng+','+this.map.getZoom()+'z');
 };
 
 var ps2maps = new Ps2maps();
