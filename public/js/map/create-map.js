@@ -88,9 +88,37 @@
 	};
 	ps2maps.map.on('moveend', mapMoveZoom.bind(ps2maps));
 
-	// var mapZoom = function(e)
-	// {
-	// 	console.log(e);
-	// };
-	// ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend');
+	// Show/hide panes at zoom levels
+	var mapZoom = function(e)
+	{
+		var zoom = e.target._zoom;
+		var map = ps2maps.map;
+
+		// Hide outposts at zoom level 1
+		if ( zoom <= 1 ) {
+			map.getPane('outpostsLabelsPane').style.opacity = 0;
+			map.getPane('outpostsPane').style.opacity = 0;
+		} else {
+			map.getPane('outpostsLabelsPane').style.opacity = 1;
+			map.getPane('outpostsPane').style.opacity = 1;
+		}
+
+		if ( zoom <= 4 ) {
+			map.getPane('latticePane').style.opacity = 0.8;
+		} else if ( zoom == 5 ) {
+			map.getPane('latticePane').style.opacity = 0.6;
+		} else if ( zoom == 6 ) {
+			map.getPane('latticePane').style.opacity = 0.4;
+		} else if ( zoom >= 7) {
+			map.getPane('latticePane').style.opacity = 0.2;
+		}
+
+	};
+	ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend');
+
+	// Function to set map view on the center of a facility
+	ps2maps.viewFacility = function(facility_id)
+	{
+		this.map.setView(ps2maps.facilities[facility_id].getLatLng(), 5);
+	}
 })();

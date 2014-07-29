@@ -1,8 +1,7 @@
 // Ps2maps Class
 function Ps2maps()
 {
-	this.layers = {};
-	this.styles = {};
+	this.sockets = {};
 	this.defaultView = {
 		lat: 128,
 		lng: 128,
@@ -11,16 +10,52 @@ function Ps2maps()
 
 	this.options = {
 		regions: {
-			default:  {
+			hover: {
+				color: '#EEE',
+				weight: 3
+			},
+			ns:  {
 				weight: 1.2,
 				color: '#000',
 				opacity: 1,
 				fillOpacity: 0,
 				pane: 'regionsPane'
 			},
-			hover: {
-				color: '#EEE',
-				weight: 3
+			nc: {
+				weight: 1.2,
+				fillColor: 'hsl(204,100%,60%)',
+				fillOpacity: 0.4,
+				color: '#000'
+			},
+			nc_dark: {
+				weight: 1.2,
+				fillColor: 'hsl(204,100%,30%)',
+				fillOpacity: 0.7,
+				color: '#000'
+			},
+			tr: {
+				weight: 1.2,
+				fillColor: 'hsl(0,75%,50%)',
+				fillOpacity: 0.4,
+				color: '#000'
+			},
+			tr_dark: {
+				weight: 1.2,
+				fillColor: 'hsl(0,75%,27%)',
+				fillOpacity: 0.8,
+				color: '#000'
+			},
+			vs: {
+				weight: 1.2,
+				fillColor: 'hsl(272,70%,60%)',
+				fillOpacity: 0.4,
+				color: '#000'
+			},
+			vs_dark: {
+				weight: 1.2,
+				fillColor: 'hsl(272,70%,30%)',
+				fillOpacity: 0.7,
+				color: '#000'
 			}
 		},
 		icons: {
@@ -45,7 +80,24 @@ function Ps2maps()
 		}
 	};
 
-	this.factions = ['ns','nc','tr','vs'];
+	this.factions = {
+		0: {
+			slug: 'ns',
+			name: 'Nanite Systems'
+		},
+		1: {
+			slug: 'vs',
+			name: 'Vanu Soverignty'
+		},
+		3: {
+			slug: 'tr',
+			name: 'Terran Republic'
+		},
+		2: {
+			slug: 'nc',
+			name: 'New Conglomerate'
+		}
+	};
 
 	this.facilityTypes = {
 		ampStation: {
@@ -77,6 +129,25 @@ function Ps2maps()
 			id: 6
 		}
 	};
+
+	this.linkedFacilities = {nc:[], tr:[], vs:[]};
+	this.findAllLinkedFacilities = function()
+	{
+		this.linkedFacilities = {nc:[], tr:[], vs:[]};
+		for( var index in this.warpgates ) {
+			this.calculateLinkedFacilities(this.warpgates[index]);
+		}
+	}
+	this.calculateLinkedFacilities = function(facility)
+	{
+		var faction = facility.faction;
+		this.linkedFacilities[faction][facility.id] = facility;
+		for( index in facility.facilities ) {
+			if ( facility.facilities[index].faction == faction && !(facility.facilities[index].id in this.linkedFacilities[faction]) ) {
+				this.calculateLinkedFacilities(facility.facilities[index]);
+			}
+		}
+	}
 
 };
 

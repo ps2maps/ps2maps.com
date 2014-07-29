@@ -8,7 +8,7 @@
 		marker;
 
 	labelOptions = ps2maps.options.labels.default;
-	for( type in continent.markers.facilities ) {
+	for( var type in continent.markers.facilities ) {
 		options = {
 			icon: ps2maps.icons.facilities[type].ns,
 		};
@@ -25,15 +25,38 @@
 				options.pane = 'outpostsPane';
 				labelOptions.pane = 'outpostsLabelsPane';
 		}
-		for( id in continent.markers.facilities[type] ) {
+		for( var id in continent.markers.facilities[type] ) {
 			facility = continent.markers.facilities[type][id];
 			marker = L.marker(facility.xy, options)
 				.bindLabel(facility.name, ps2maps.options.labels.default)
 				.addTo(ps2maps.map);
 			marker.id = id;
+			marker.faction = 'ns';
+			marker.name = facility.name;
+			marker.facilityType = type;
 			marker.region = null;
-			marker.latticeLinks = [];
+			marker.lattice = [];
 			marker.facilities = [];
+
+			marker.isConnected = function()
+			{
+				return (this.id in ps2maps.linkedFacilities[this.faction]);
+			}
+
+			marker.setFaction = function(faction)
+			{
+				this.faction = faction;
+				switch(faction){
+					case 'nc':
+					case 'tr':
+					case 'vs':
+						this.setIcon(ps2maps.icons.facilities[this.facilityType][faction]);
+						break;
+					default:
+						this.setIcon(ps2maps.icons.facilities[this.facilityType].ns);
+				}
+			}
+
 			ps2maps.facilities[id] = marker;
 		}
 
