@@ -1,11 +1,12 @@
 // Custom Values
 $body-bg: #051112;
-$text-color: #DDD;
+// $text-color: #DDD;
 $font-family-sans-serif: "Roboto Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
 
 $navbar-border-radius: 0;
 $navbar-default-link-color: #CCC;
 $navbar-default-link-hover-color: #FFF;
+$nav-link-padding: 10px 10px;
 
 // Core variables and mixins
 @import "bootstrap/variables";
@@ -29,7 +30,7 @@ $navbar-default-link-hover-color: #FFF;
 // @import "bootstrap/glyphicons";
 @import "bootstrap/dropdowns";
 // @import "bootstrap/button-groups";
-// @import "bootstrap/input-groups";
+@import "bootstrap/input-groups";
 @import "bootstrap/navs";
 @import "bootstrap/navbar";
 // @import "bootstrap/breadcrumbs";
@@ -39,13 +40,13 @@ $navbar-default-link-hover-color: #FFF;
 // @import "bootstrap/badges";
 // @import "bootstrap/jumbotron";
 // @import "bootstrap/thumbnails";
-// @import "bootstrap/alerts";
+@import "bootstrap/alerts";
 // @import "bootstrap/progress-bars";
 // @import "bootstrap/media";
 // @import "bootstrap/list-group";
 // @import "bootstrap/panels";
 // @import "bootstrap/wells";
-// @import "bootstrap/close";
+@import "bootstrap/close";
 
 // Components w/ JavaScript
 @import "bootstrap/modals";

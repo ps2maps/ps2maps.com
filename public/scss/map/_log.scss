@@ -1,0 +1,80 @@
+// Log Window
+.log-window {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 3;
+	color: #CCC;
+	width: 100%;
+	background-color: rgba(0,0,0,0.8);
+
+	.log-header {
+		cursor: n-resize;
+		height: 26px;
+		line-height: 26px;
+		border-width: 1px 0 1px 0;
+		border-color: #333;
+		border-style: solid;
+	}
+
+	.log-body {
+		position: relative;
+	}
+
+	.log-list {
+		height: 100%;
+		overflow-y: scroll;
+		width: 100%;
+		position: relative;
+
+		a {
+			color: #CCC;
+		}
+	}
+
+	.timestamp {
+		margin-right: 5px;
+	}
+
+	// Filters
+	.filters {
+		border-top: 1px solid #333;
+		position: absolute;
+		bottom: 0;
+		background-color: #000;
+		width: 100%;
+
+		span {
+			margin-right: 10px;
+		}
+
+		input {
+			position: relative;
+			top: 2px;
+		}
+
+		label {
+			font-weight: normal;
+		}
+	}
+
+	.facility-icon {
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 2px;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+
+		li {
+			border-bottom: 1px solid #333;
+			line-height: 30px;
+			height: 30px;
+		}
+	}
+}

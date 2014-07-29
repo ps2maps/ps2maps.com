@@ -15,7 +15,7 @@ body {
 
 // Translucent Navbar
 header.navbar {
-	background-color: rgba(5, 17, 18, 0.6);
+	background-color: rgba(5, 17, 18, 0.8);
 	z-index: 2;
 }
 
@@ -53,11 +53,27 @@ header.navbar {
 	z-index: 1;
 }
 
-@import "map/history";
+// Custom Pane ordering
+.leaflet-pane { @include transition(opacity 0.25s ease-in-out); }
+.leaflet-regions-pane { z-index: 4; }
+.leaflet-lattice-pane { z-index: 5; }
+.leaflet-facilities-pane { z-index: 6; }
+.leaflet-outposts-pane { z-index: 6; }
+.leaflet-facilitiesLabels-pane { z-index: 7; }
+.leaflet-outpostsLabels-pane { z-index: 7; }
+
+@import "map/log";
 
 @import "map/sidebar";
 
 @import "map/sprites";
+
+// Settings Modal
+#settings-modal {
+	@include respond($screen-sm) {
+		margin-top: 60px;
+	}
+}
 
 /* Layers Modal */
 #icons-modal {
@@ -160,30 +176,6 @@ header.navbar {
 	color: rgba(255,255,255,0.65);
 }
 
-/* Misc */
-.no-localstorage .old-browser-container,
-.no-svg .old-browser-container,
-.no-inlinesvg .old-browser-container,
-.no-canvas .old-browser-container,
-.no-canvastext .old-browser-container {
-	display: block;
-}
-
-#navbar-permalink {
-	width: 20px;
-	height: 20px;
-}
-
-#navbar-search input.hidden {
-	display: none;
-}
-
-#permalink-modal {
-	width: 580px;
-}
-
-.nomouse { pointer-events: none; }
-/* Responsive */
 
 @media (min-width: 980px) {
 

@@ -13,7 +13,13 @@ a:focus {
 	color: inherit;
 }
 
-// Bootstrap Tweaks //////////////////////////////
+// Settings
+.settings-flash-message {
+	position: absolute;
+	width: 100%;
+}
+
+// Bootstrap Tweaks
 
 .thumbnail > img,
 .thumbnail > a > img {
@@ -25,7 +31,7 @@ a:focus {
 
 @import "nav";
 
-// Social Media Buttons //////////////////////////////
+// Social Media Buttons
 
 #social-container {
 	height: 67px;

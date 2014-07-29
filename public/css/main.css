@@ -7,7 +7,12 @@ a:focus {
   outline: none;
   color: inherit; }
 
-/* line 18, ./main.scss */
+/* line 17, ./main.scss */
+.settings-flash-message {
+  position: absolute;
+  width: 100%; }
+
+/* line 24, ./main.scss */
 .thumbnail > img,
 .thumbnail > a > img {
   display: block;
@@ -98,258 +103,258 @@ header.navbar {
 .navbar .search-query {
   width: auto; }
 
-/* line 30, ./main.scss */
+/* line 36, ./main.scss */
 #social-container {
   height: 67px; }
 
-/* line 34, ./main.scss */
+/* line 40, ./main.scss */
 #social-container > div {
   display: inline-block;
   margin-left: 5px;
   height: 67px; }
 
-/* line 40, ./main.scss */
+/* line 46, ./main.scss */
 #twitter-container {
   width: 58px; }
 
-/* line 44, ./main.scss */
+/* line 50, ./main.scss */
 #facebook-container {
   position: relative;
   width: 44px; }
 
-/* line 48, ./main.scss */
+/* line 54, ./main.scss */
 #googleplus-container {
   position: relative;
   top: -2px;
   width: 50px; }
 
-/* line 56, ./main.scss */
+/* line 62, ./main.scss */
 .post img {
   width: 100%; }
 
-/* line 60, ./main.scss */
+/* line 66, ./main.scss */
 .rss-container {
   margin-top: 10px; }
 
-/* line 64, ./main.scss */
+/* line 70, ./main.scss */
 #disqus_thread {
   margin-top: 40px; }
 
-/* line 73, ./main.scss */
+/* line 79, ./main.scss */
 #continents hr {
   border-color: #b3b3b3; }
-/* line 77, ./main.scss */
+/* line 83, ./main.scss */
 #continents h2 {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 24px; }
-/* line 83, ./main.scss */
+/* line 89, ./main.scss */
 #continents .territory-control-bar {
   width: 100%;
   text-align: center; }
-  /* line 87, ./main.scss */
+  /* line 93, ./main.scss */
   #continents .territory-control-bar td {
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
     transition: all 0.1s linear; }
-  /* line 91, ./main.scss */
+  /* line 97, ./main.scss */
   #continents .territory-control-bar div {
     padding: 10px; }
-  /* line 95, ./main.scss */
+  /* line 101, ./main.scss */
   #continents .territory-control-bar .nc {
     background-color: #33adff;
     margin-right: 2px; }
-  /* line 99, ./main.scss */
+  /* line 105, ./main.scss */
   #continents .territory-control-bar .tr {
     background-color: #df2020;
     margin-right: 2px; }
-  /* line 103, ./main.scss */
+  /* line 109, ./main.scss */
   #continents .territory-control-bar .vs {
     background-color: #9e52e0; }
-/* line 108, ./main.scss */
+/* line 114, ./main.scss */
 #continents .icon {
   background-image: url(/img/icons/sprites.png);
   pointer-events: none;
   height: 32px;
   width: 32px;
   display: inline-block; }
-  /* line 115, ./main.scss */
+  /* line 121, ./main.scss */
   #continents .icon.nc {
     background-position: -192px -33px; }
-  /* line 116, ./main.scss */
+  /* line 122, ./main.scss */
   #continents .icon.tr {
     background-position: -192px -64px; }
-  /* line 117, ./main.scss */
+  /* line 123, ./main.scss */
   #continents .icon.vs {
     background-position: -192px -96px; }
-  /* line 119, ./main.scss */
+  /* line 125, ./main.scss */
   #continents .icon.warpgate {
     background-position: 0px 0px; }
-  /* line 120, ./main.scss */
+  /* line 126, ./main.scss */
   #continents .icon.warpgate.nc {
     background-position: 0px -32px; }
-  /* line 121, ./main.scss */
+  /* line 127, ./main.scss */
   #continents .icon.warpgate.tr {
     background-position: 0px -64px; }
-  /* line 122, ./main.scss */
+  /* line 128, ./main.scss */
   #continents .icon.warpgate.vs {
     background-position: 0px -96px; }
-  /* line 124, ./main.scss */
+  /* line 130, ./main.scss */
   #continents .icon.amp-station {
     background-position: -32px 0px; }
-  /* line 125, ./main.scss */
+  /* line 131, ./main.scss */
   #continents .icon.amp-station.nc {
     background-position: -32px -32px; }
-  /* line 126, ./main.scss */
+  /* line 132, ./main.scss */
   #continents .icon.amp-station.tr {
     background-position: -32px -64px; }
-  /* line 127, ./main.scss */
+  /* line 133, ./main.scss */
   #continents .icon.amp-station.vs {
     background-position: -32px -96px; }
-  /* line 129, ./main.scss */
+  /* line 135, ./main.scss */
   #continents .icon.bio-lab {
     background-position: -64px 0px; }
-  /* line 130, ./main.scss */
+  /* line 136, ./main.scss */
   #continents .icon.bio-lab.nc {
     background-position: -64px -32px; }
-  /* line 131, ./main.scss */
+  /* line 137, ./main.scss */
   #continents .icon.bio-lab.tr {
     background-position: -64px -64px; }
-  /* line 132, ./main.scss */
+  /* line 138, ./main.scss */
   #continents .icon.bio-lab.vs {
     background-position: -64px -96px; }
-  /* line 134, ./main.scss */
+  /* line 140, ./main.scss */
   #continents .icon.tech-plant {
     background-position: -96px 0px; }
-  /* line 135, ./main.scss */
+  /* line 141, ./main.scss */
   #continents .icon.tech-plant.nc {
     background-position: -96px -32px; }
-  /* line 136, ./main.scss */
+  /* line 142, ./main.scss */
   #continents .icon.tech-plant.tr {
     background-position: -96px -64px; }
-  /* line 137, ./main.scss */
+  /* line 143, ./main.scss */
   #continents .icon.tech-plant.vs {
     background-position: -96px -96px; }
-  /* line 139, ./main.scss */
+  /* line 145, ./main.scss */
   #continents .icon.large-outpost {
     background-position: -128px 0px; }
-  /* line 140, ./main.scss */
+  /* line 146, ./main.scss */
   #continents .icon.large-outpost.nc {
     background-position: -128px -32px; }
-  /* line 141, ./main.scss */
+  /* line 147, ./main.scss */
   #continents .icon.large-outpost.tr {
     background-position: -128px -64px; }
-  /* line 142, ./main.scss */
+  /* line 148, ./main.scss */
   #continents .icon.large-outpost.vs {
     background-position: -128px -96px; }
-  /* line 144, ./main.scss */
+  /* line 150, ./main.scss */
   #continents .icon.small-outpost {
     background-position: -160px 0px; }
-  /* line 145, ./main.scss */
+  /* line 151, ./main.scss */
   #continents .icon.small-outpost.nc {
     background-position: -160px -32px; }
-  /* line 146, ./main.scss */
+  /* line 152, ./main.scss */
   #continents .icon.small-outpost.tr {
     background-position: -160px -64px; }
-  /* line 147, ./main.scss */
+  /* line 153, ./main.scss */
   #continents .icon.small-outpost.vs {
     background-position: -160px -96px; }
-  /* line 149, ./main.scss */
+  /* line 155, ./main.scss */
   #continents .icon.forward-spawn {
     background-position: -96px -160px; }
-  /* line 150, ./main.scss */
+  /* line 156, ./main.scss */
   #continents .icon.aircraft-terminal {
     background-position: 0px -128px; }
-  /* line 151, ./main.scss */
+  /* line 157, ./main.scss */
   #continents .icon.galaxy-terminal {
     background-position: 0px -160px; }
-  /* line 152, ./main.scss */
+  /* line 158, ./main.scss */
   #continents .icon.ground-vehicle-terminal {
     background-position: -32px -128px; }
-  /* line 153, ./main.scss */
+  /* line 159, ./main.scss */
   #continents .icon.ground-transport-terminal {
     background-position: -32px -160px; }
-  /* line 154, ./main.scss */
+  /* line 160, ./main.scss */
   #continents .icon.equipment-terminal {
     background-position: -64px -128px; }
-  /* line 155, ./main.scss */
+  /* line 161, ./main.scss */
   #continents .icon.warpgate-terminal {
     background-position: -64px -160px; }
-  /* line 156, ./main.scss */
+  /* line 162, ./main.scss */
   #continents .icon.spawn-beacon {
     background-position: -96px -128px; }
-  /* line 157, ./main.scss */
+  /* line 163, ./main.scss */
   #continents .icon.vertical-shield-generator {
     background-position: -224px -32px; }
-  /* line 158, ./main.scss */
+  /* line 164, ./main.scss */
   #continents .icon.horizontal-shield-generator {
     background-position: -224px -64px; }
-  /* line 159, ./main.scss */
+  /* line 165, ./main.scss */
   #continents .icon.gate-shield-generator {
     background-position: -128px -128px; }
-  /* line 160, ./main.scss */
+  /* line 166, ./main.scss */
   #continents .icon.spawn-control-unit {
     background-position: -128px -160px; }
-  /* line 161, ./main.scss */
+  /* line 167, ./main.scss */
   #continents .icon.teleporter {
     background-position: -224px -96px; }
-  /* line 162, ./main.scss */
+  /* line 168, ./main.scss */
   #continents .icon.spawn-tube {
     background-position: -224px -128px; }
-  /* line 163, ./main.scss */
+  /* line 169, ./main.scss */
   #continents .icon.ammo-tower {
     background-position: -224px -160px; }
-  /* line 164, ./main.scss */
+  /* line 170, ./main.scss */
   #continents .icon.landing-pad {
     background-position: -256px 0px; }
-  /* line 165, ./main.scss */
+  /* line 171, ./main.scss */
   #continents .icon.scu-shield-generator {
     background-position: -160px -128px; }
-  /* line 166, ./main.scss */
+  /* line 172, ./main.scss */
   #continents .icon.capture-point {
     background-position: -192px 0px; }
-  /* line 167, ./main.scss */
+  /* line 173, ./main.scss */
   #continents .icon.aerospace {
     background-position: -192px -128px; }
-  /* line 168, ./main.scss */
+  /* line 174, ./main.scss */
   #continents .icon.mechanized {
     background-position: -192px -160px; }
-  /* line 169, ./main.scss */
+  /* line 175, ./main.scss */
   #continents .icon.infantry {
     background-position: -224px 0px; }
-/* line 173, ./main.scss */
+/* line 179, ./main.scss */
 #continents table td.name {
   line-height: 32px; }
-/* line 179, ./main.scss */
+/* line 185, ./main.scss */
 #continents .table .nc, #continents .table .tr, #continents .table .vs {
   background-image: url(../img/icons/sprites.png);
   height: 32px;
   width: 32px;
   display: inline-block; }
-/* line 185, ./main.scss */
+/* line 191, ./main.scss */
 #continents .table .nc {
   background-position: -192px -33px; }
-/* line 186, ./main.scss */
+/* line 192, ./main.scss */
 #continents .table .tr {
   background-position: -192px -64px; }
-/* line 187, ./main.scss */
+/* line 193, ./main.scss */
 #continents .table .vs {
   background-position: -192px -96px; }
-/* line 189, ./main.scss */
+/* line 195, ./main.scss */
 #continents .table th, #continents .table td {
   text-align: center; }
-  /* line 191, ./main.scss */
+  /* line 197, ./main.scss */
   #continents .table th.left, #continents .table td.left {
     text-align: left; }
-/* line 198, ./main.scss */
+/* line 204, ./main.scss */
 #continents .territory text {
   fill: white;
   font: 28px 'Roboto Condensed';
   text-anchor: middle; }
-/* line 207, ./main.scss */
+/* line 213, ./main.scss */
 #continents .map {
   width: 100%; }
   @media only screen and (min-width: 768px) {
-    /* line 207, ./main.scss */
+    /* line 213, ./main.scss */
     #continents .map {
       float: right; } }
