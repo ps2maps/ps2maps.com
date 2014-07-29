@@ -16,27 +16,42 @@ var sources = {
 			'public/js/map/create-markers.js',
 			'public/js/map/create-lattice.js',
 			'public/js/map/associations.js',
+			'public/js/map/fetch-facility-control.js',
+			'public/js/map/facility-control.js',
+			'public/js/map/alerts.js',
 			'public/js/map/log.js',
-			'public/js/map/jquery.js',
+			'public/js/map/final.js'
 		],
 		main : [
-			'public/js/main/main.js',
-			'public/js/main/cache.js'
+			'public/js/main/main.js'
+		],
+		plugins: [
+			'public/js/plugins/reconnecting-websocket.js',
+			'public/js/plugins/leaflet.label-src.js',
+			'public/js/plugins/leaflet.divlayer.js',
+			'public/js/plugins/cache.js'
 		]
 	}
 };
 
-// map.js build
+// map.js
 gulp.task('map.js', function(){
 	return gulp.src(sources.js.map)
 		.pipe(concat('map.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
-// script.js build
+// script.js
 gulp.task('main.js', function() {
 	return gulp.src(sources.js.main)
 		.pipe(concat('main.js'))
+		.pipe(gulp.dest('./public/js'));
+});
+
+// plugins.js
+gulp.task('plugins.js', function() {
+	return gulp.src(sources.js.plugins)
+		.pipe(concat('plugins.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
@@ -52,6 +67,7 @@ gulp.task('main.js', function() {
 gulp.task('watch', function() {
 	gulp.watch(sources.js.map, ['map.js']);
 	gulp.watch(sources.js.main, ['main.js']);
+	gulp.watch(sources.js.plugins, ['plugins.js']);
 });
 
 gulp.task('default', []);
