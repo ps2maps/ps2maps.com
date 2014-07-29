@@ -1,8 +1,7 @@
 // Ps2maps Class
 function Ps2maps()
 {
-	this.layers = {};
-	this.styles = {};
+	this.sockets = {};
 	this.defaultView = {
 		lat: 128,
 		lng: 128,
@@ -11,16 +10,52 @@ function Ps2maps()
 
 	this.options = {
 		regions: {
-			default:  {
+			hover: {
+				color: '#EEE',
+				weight: 3
+			},
+			ns:  {
 				weight: 1.2,
 				color: '#000',
 				opacity: 1,
 				fillOpacity: 0,
 				pane: 'regionsPane'
 			},
-			hover: {
-				color: '#EEE',
-				weight: 3
+			nc: {
+				weight: 1.2,
+				fillColor: 'hsl(204,100%,60%)',
+				fillOpacity: 0.4,
+				color: '#000'
+			},
+			nc_dark: {
+				weight: 1.2,
+				fillColor: 'hsl(204,100%,30%)',
+				fillOpacity: 0.7,
+				color: '#000'
+			},
+			tr: {
+				weight: 1.2,
+				fillColor: 'hsl(0,75%,50%)',
+				fillOpacity: 0.4,
+				color: '#000'
+			},
+			tr_dark: {
+				weight: 1.2,
+				fillColor: 'hsl(0,75%,27%)',
+				fillOpacity: 0.8,
+				color: '#000'
+			},
+			vs: {
+				weight: 1.2,
+				fillColor: 'hsl(272,70%,60%)',
+				fillOpacity: 0.4,
+				color: '#000'
+			},
+			vs_dark: {
+				weight: 1.2,
+				fillColor: 'hsl(272,70%,30%)',
+				fillOpacity: 0.7,
+				color: '#000'
 			}
 		},
 		icons: {
@@ -45,7 +80,24 @@ function Ps2maps()
 		}
 	};
 
-	this.factions = ['ns','nc','tr','vs'];
+	this.factions = {
+		0: {
+			slug: 'ns',
+			name: 'Nanite Systems'
+		},
+		1: {
+			slug: 'vs',
+			name: 'Vanu Soverignty'
+		},
+		3: {
+			slug: 'tr',
+			name: 'Terran Republic'
+		},
+		2: {
+			slug: 'nc',
+			name: 'New Conglomerate'
+		}
+	};
 
 	this.facilityTypes = {
 		ampStation: {
@@ -78,95 +130,28 @@ function Ps2maps()
 		}
 	};
 
+	this.linkedFacilities = {nc:[], tr:[], vs:[]};
+	this.findAllLinkedFacilities = function()
+	{
+		this.linkedFacilities = {nc:[], tr:[], vs:[]};
+		for( var index in this.warpgates ) {
+			this.calculateLinkedFacilities(this.warpgates[index]);
+		}
+	}
+	this.calculateLinkedFacilities = function(facility)
+	{
+		var faction = facility.faction;
+		this.linkedFacilities[faction][facility.id] = facility;
+		for( index in facility.facilities ) {
+			if ( facility.facilities[index].faction == faction && !(facility.facilities[index].id in this.linkedFacilities[faction]) ) {
+				this.calculateLinkedFacilities(facility.facilities[index]);
+			}
+		}
+	}
+
 };
 
 var ps2maps = new Ps2maps();
-
-// Map Zoomend Event
-// map.on('zoomend', function(e)
-// {
-// 	if ( typeof layers != 'undefined' )
-// 		checkLayers();
-// });
-
-// Check Layer Visibility
-function checkLayer(layer)
-{
-	if ( !layers[layer] )
-		return false;
-
-	var zoom = map.getZoom();
-	if (
-		( layers[layer].iconZoomMin <= zoom || !layers[layer].iconZoomMin ) &&
-		( zoom <= layers[layer].iconZoomMax || !layers[layer].iconZoomMax ) &&
-		$('input#checkbox-' + layer).is(':checked')
-	)
-	{
-		showLayer(layer);
-	}
-	else
-	{
-		hideLayer(layer);
-	}
-}
-
-// Check All Layers Visibility
-function checkLayers()
-{
-	var zoom = map.getZoom();
-
-	for( layer in layers )
-	{
-		var checkbox = $('input#checkbox-' + layer);
-		if (
-			( $(checkbox).is(':checked') || $(checkbox).length == 0 ) &&
-			( layers[layer].iconZoomMin <= zoom || !layers[layer].iconZoomMin ) &&
-			( zoom <= layers[layer].iconZoomMax || !layers[layer].iconZoomMax )
-		)
-		{
-			showLayer(layer);
-		}
-		else
-		{
-			hideLayer(layer);
-		}
-	}
-}
-
-// Show Layer
-function showLayer(layer)
-{
-	// Layer already visible
-	if ( layers[layer].visible == true )
-		return false;
-
-	// Showing Layer
-	layers[layer].visible = true;
-
-	// Show layer
-	layers[layer].layerGroup.addTo(map);
-
-	// Show label (if applicable)
-	if ( layers[layer].has_label == true )
-		layers[layer].layerGroup.eachLayer(function(layer){ layer.showLabel() });
-}
-
-// Hide Layer
-function hideLayer(layer)
-{
-	// Layer already hidden
-	if ( layers[layer].visible == false )
-		return false;
-
-	// Hiding Layer
-	layers[layer].visible = false;
-
-	// Layer hasn't been generated yet
-	if ( !layers[layer].layerGroup )
-		return false;
-
-	map.removeLayer(layers[layer].layerGroup);
-}
 
 // Extend jQuery addClass, removeClass and hasClass for SVG elements
 (function($){
@@ -345,11 +330,39 @@ function hideLayer(layer)
 	};
 	ps2maps.map.on('moveend', mapMoveZoom.bind(ps2maps));
 
-	// var mapZoom = function(e)
-	// {
-	// 	console.log(e);
-	// };
-	// ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend');
+	// Show/hide panes at zoom levels
+	var mapZoom = function(e)
+	{
+		var zoom = e.target._zoom;
+		var map = ps2maps.map;
+
+		// Hide outposts at zoom level 1
+		if ( zoom <= 1 ) {
+			map.getPane('outpostsLabelsPane').style.opacity = 0;
+			map.getPane('outpostsPane').style.opacity = 0;
+		} else {
+			map.getPane('outpostsLabelsPane').style.opacity = 1;
+			map.getPane('outpostsPane').style.opacity = 1;
+		}
+
+		if ( zoom <= 4 ) {
+			map.getPane('latticePane').style.opacity = 0.8;
+		} else if ( zoom == 5 ) {
+			map.getPane('latticePane').style.opacity = 0.6;
+		} else if ( zoom == 6 ) {
+			map.getPane('latticePane').style.opacity = 0.4;
+		} else if ( zoom >= 7) {
+			map.getPane('latticePane').style.opacity = 0.2;
+		}
+
+	};
+	ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend');
+
+	// Function to set map view on the center of a facility
+	ps2maps.viewFacility = function(facility_id)
+	{
+		this.map.setView(ps2maps.facilities[facility_id].getLatLng(), 5);
+	}
 })();
 
 // Create Regions
@@ -367,21 +380,53 @@ function hideLayer(layer)
 
 	var regionMouseOut = function(e)
 	{
-		e.target.setStyle(ps2maps.options.regions.default);
+		e.target.setStyle(ps2maps.options.regions[e.target.style]);
 	};
 
 	ps2maps.regions = {};
 	var regions = [], region;
 
-	for( id in continent.regions )
+	for( var id in continent.regions )
 	{
-		region = L.polygon( continent.regions[id].points, ps2maps.options.regions.default )
+		region = L.polygon( continent.regions[id].points, ps2maps.options.regions.ns )
 			.on('click', regionClick)
 			.on('mouseover', regionMouseOver)
 			.on('mouseout', regionMouseOut);
 		region.id = id;
-		region.name = continent.regions[id].name;
+		region.faction = 'ns';
 		region.facility = null;
+		region.style = null;
+
+		// Set the region's name
+		var facility_id = continent.regions[id].facility_id;
+		if ( continent.markers.facilities[facility_id] ) {
+			region.name = continent.markers.facilities[continent.regions[id].facility_id].name;
+		}
+
+		region.setFaction = function(faction, animate)
+		{
+			if ( faction == null && this.facility ) {
+				this.faction = this.facility.faction;
+
+				if ( this.facility.isConnected() ) {
+					this.style = this.faction;
+				} else {
+					this.style = this.faction + "_dark";
+				}
+
+			} else {
+				this.faction = this.style = faction;
+			}
+
+			if ( animate == true ) {
+				d3.select(this._path)
+					.transition().duration(500).attr({fill: '#FFFFFF', 'fill-opacity': 1})
+					.transition().duration(1000).attr({fill: ps2maps.options.regions[this.style].fillColor, 'fill-opacity': ps2maps.options.regions[this.style].fillOpacity});
+			} else {
+				this.setStyle(ps2maps.options.regions[this.style]);
+			}
+		}
+
 		region.addTo(ps2maps.map);
 		ps2maps.regions[id] = region;
 	}
@@ -395,7 +440,7 @@ ps2maps.icons = {
 
 // Facility and Outpost Icons
 var options;
-for( type in ps2maps.facilityTypes ) {
+for( var type in ps2maps.facilityTypes ) {
 
 	// Facilities get larger icons
 	switch(type){
@@ -410,303 +455,13 @@ for( type in ps2maps.facilityTypes ) {
 			options = ps2maps.options.icons.default;
 	}
 	ps2maps.icons.facilities[type] = {};
-	for( f in ps2maps.factions ) {
-		options.html = "<svg viewBox='0 0 256 256' class='marker-icon " + type + " " + ps2maps.factions[f] + "'><use xlink:href='#" + type + "'></use></svg>";
-		ps2maps.icons.facilities[type][ps2maps.factions[f]] = L.divIcon(options);
+	for( var id in ps2maps.factions ) {
+		options.html = "<svg viewBox='0 0 256 256' class='marker-icon " + type + " " + ps2maps.factions[id].slug + "'><use xlink:href='#" + type + "'></use></svg>";
+		ps2maps.icons.facilities[type][ps2maps.factions[id].slug] = L.divIcon(options);
 	}
 }
 
-// ps2maps.icons = {
-// 	ampStation: L.divIcon({
-// 		className: 'svgIcon',
-// 		iconSize: [32,32],
-// 		iconAnchor: [16,16],
-// 		html: "<svg viewBox='0 0 256 256' class='icon ampStation'><use xlink:href='#ampStation'></use></svg>"
-// 	}),
-// 	bioLab: L.divIcon({
-// 		className: 'svgIcon',
-// 		iconSize: [32,32],
-// 		iconAnchor: [16,16],
-// 		html: "<svg viewBox='0 0 256 256' class='icon biolab'><use xlink:href='#bioLab'></use></svg>"
-// 	}),
-// 	techPlant:  L.divIcon({
-// 		className: 'svgIcon',
-// 		iconSize: [32,32],
-// 		iconAnchor: [16,16],
-// 		html: "<svg viewBox='0 0 256 256' class='icon techPlant'><use xlink:href='#techPlant'></use></svg>"
-// 	})
-// };
-
 })();
-
-// Marker Icons
-var oldIcon = {
-	ampStation: {
-		ns: L.divIcon({
-			className: 'icon amp-station',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		nc: L.divIcon({
-			className: 'icon amp-station nc',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		tr: L.divIcon({
-			className: 'icon amp-station tr',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		vs: L.divIcon({
-			className: 'icon amp-station vs',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	bioLab: {
-		ns: L.divIcon({
-			className: 'icon bio-lab',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		nc: L.divIcon({
-			className: 'icon bio-lab nc',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		tr: L.divIcon({
-			className: 'icon bio-lab tr',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		vs: L.divIcon({
-			className: 'icon bio-lab vs',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	techPlant: {
-		ns: L.divIcon({
-			className: 'icon tech-plant',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		nc: L.divIcon({
-			className: 'icon tech-plant nc',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		tr: L.divIcon({
-			className: 'icon tech-plant tr',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		vs: L.divIcon({
-			className: 'icon tech-plant vs',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	largeOutpost: {
-		ns: L.divIcon({
-			className: 'icon large-outpost',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		nc: L.divIcon({
-			className: 'icon large-outpost nc',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		tr: L.divIcon({
-			className: 'icon large-outpost tr',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		vs: L.divIcon({
-			className: 'icon large-outpost vs',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	smallOutpost: {
-		ns: L.divIcon({
-			className: 'icon small-outpost',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		nc: L.divIcon({
-			className: 'icon small-outpost nc',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		tr: L.divIcon({
-			className: 'icon small-outpost tr',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		vs: L.divIcon({
-			className: 'icon small-outpost vs',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	warpgate: {
-		ns: L.divIcon({
-			className: 'icon warpgate',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		nc: L.divIcon({
-			className: 'icon warpgate nc',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		tr: L.divIcon({
-			className: 'icon warpgate tr',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-		vs: L.divIcon({
-			className: 'icon warpgate vs',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	forwardSpawnLabeled: {
-		ns: L.divIcon({
-			className: 'icon forward-spawn',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-	},
-	forwardSpawn: {
-		ns: L.divIcon({
-			className: 'icon forward-spawn',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		}),
-	},
-	aircraftTerminal: {
-		ns: L.divIcon({
-			className: 'icon aircraft-terminal',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	galaxyTerminal: {
-		ns: L.divIcon({
-			className: 'icon galaxy-terminal',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	groundVehicleTerminal: {
-		ns: L.divIcon({
-			className: 'icon ground-vehicle-terminal',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	groundTransportTerminal: {
-		ns: L.divIcon({
-			className: 'icon ground-transport-terminal',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	equipmentTerminal: {
-		ns: L.divIcon({
-			className: 'icon equipment-terminal',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	warpgateTerminal: {
-		ns: L.divIcon({
-			className: 'icon warpgate-terminal',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	verticalShieldGenerator: {
-		ns: L.divIcon({
-			className: 'icon vertical-shield-generator',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	horizontalShieldGenerator: {
-		ns: L.divIcon({
-			className: 'icon horizontal-shield-generator',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	gateShieldGenerator: {
-		ns: L.divIcon({
-			className: 'icon gate-shield-generator',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	spawnControlUnitShieldGenerator: {
-		ns: L.divIcon({
-			className: 'icon scu-shield-generator',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	spawnBeacon: {
-		ns: L.divIcon({
-			className: 'icon spawn-beacon',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	spawnControlUnit: {
-		ns: L.divIcon({
-			className: 'icon spawn-control-unit',
-			iconSize: [64,32],
-			iconAnchor: [32,16]
-		}),
-	},
-	teleporter: {
-		ns: L.divIcon({
-			className: 'icon teleporter',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	spawnTube: {
-		ns: L.divIcon({
-			className: 'icon spawn-tube',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	ammoTower: {
-		ns: L.divIcon({
-			className: 'icon ammo-tower',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	landingPad: {
-		ns: L.divIcon({
-			className: 'icon landing-pad',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	},
-	capturePoint: {
-		ns: L.divIcon({
-			className: 'icon capture-point',
-			iconSize: [32,32],
-			iconAnchor: [16,16]
-		})
-	}
-};
 
 // Create Markers
 (function(){
@@ -718,7 +473,7 @@ var oldIcon = {
 		marker;
 
 	labelOptions = ps2maps.options.labels.default;
-	for( type in continent.markers.facilities ) {
+	for( var type in continent.markers.facilities ) {
 		options = {
 			icon: ps2maps.icons.facilities[type].ns,
 		};
@@ -735,15 +490,38 @@ var oldIcon = {
 				options.pane = 'outpostsPane';
 				labelOptions.pane = 'outpostsLabelsPane';
 		}
-		for( id in continent.markers.facilities[type] ) {
+		for( var id in continent.markers.facilities[type] ) {
 			facility = continent.markers.facilities[type][id];
 			marker = L.marker(facility.xy, options)
 				.bindLabel(facility.name, ps2maps.options.labels.default)
 				.addTo(ps2maps.map);
 			marker.id = id;
+			marker.faction = 'ns';
+			marker.name = facility.name;
+			marker.facilityType = type;
 			marker.region = null;
-			marker.latticeLinks = [];
+			marker.lattice = [];
 			marker.facilities = [];
+
+			marker.isConnected = function()
+			{
+				return (this.id in ps2maps.linkedFacilities[this.faction]);
+			}
+
+			marker.setFaction = function(faction)
+			{
+				this.faction = faction;
+				switch(faction){
+					case 'nc':
+					case 'tr':
+					case 'vs':
+						this.setIcon(ps2maps.icons.facilities[this.facilityType][faction]);
+						break;
+					default:
+						this.setIcon(ps2maps.icons.facilities[this.facilityType].ns);
+				}
+			}
+
 			ps2maps.facilities[id] = marker;
 		}
 
@@ -761,70 +539,85 @@ var oldIcon = {
 		this.facilities = [];
 		this.facilities[facilityA.id] = facilityA;
 		this.facilities[facilityB.id] = facilityB;
+		this.faction = 'ns';
 
-		this._styles = {
+		var options = {
+			pane: 'latticePane'
+		};
+
+		this._options = {
 			ns: {
 				line: {
 					color: '#79e0e1',
-					weight: 4,
+					pane: 'latticePane',
+					weight: 2,
 					clickable: false,
 					dashArray: null
 				},
 				outline: {
 					color: '#FFF',
-					weight: 6,
+					pane: 'latticePane',
+					weight: 4,
 					clickable: false
 				}
 			},
 			nc: {
 				line: {
-					color: '#33ADFF',
-					weight: 5,
+					color: factionColors.nc,
+					pane: 'latticePane',
+					weight: 2,
 					clickable: false,
 					dashArray: null
 				},
 				outline: {
 					color: '#FFF',
-					weight: 7,
+					pane: 'latticePane',
+					weight: 4,
 					clickable: false
 				}
 			},
 			tr: {
 				line: {
-					color: '#DF2020',
-					weight: 5,
+					color: factionColors.tr,
+					pane: 'latticePane',
+					weight: 2,
 					clickable: false,
 					dashArray: null
 				},
 				outline: {
 					color: '#FFF',
-					weight: 7,
+					pane: 'latticePane',
+					weight: 4,
 					clickable: false
 				}
 			},
 			vs: {
 				line: {
-					color: '#9E52E0',
-					weight: 5,
+					color: factionColors.vs,
+					pane: 'latticePane',
+					weight: 2,
 					clickable: false,
 					dashArray: null
 				},
 				outline: {
 					color: '#FFF',
-					weight: 7,
+					pane: 'latticePane',
+					weight: 4,
 					clickable: false
 				}
 			},
 			contested: {
 				line: {
 					color: '#FFFF00',
-					weight: 5,
+					pane: 'latticePane',
+					weight: 3,
 					clickable: false,
-					dashArray: [1,6]
+					dashArray: [3,6]
 				},
 				outline: {
 					color: '#000',
-					weight: 6,
+					pane: 'latticePane',
+					weight: 5,
 					clickable: false
 				}
 			}
@@ -832,13 +625,19 @@ var oldIcon = {
 
 		// Draw the line and outline
 		var points = [this._facilityA.getLatLng(), this._facilityB.getLatLng()];
-		this._outline = L.polyline(points, this._styles.ns.outline).addTo(ps2maps.map);
-		this._line = L.polyline(points, this._styles.ns.line).addTo(ps2maps.map);
+		this._outline = L.polyline(points, this._options.ns.outline).addTo(ps2maps.map);
+		this._line = L.polyline(points, this._options.ns.line).addTo(ps2maps.map);
 
-		this.setFaction = function(faction)
+		this.setFaction = function()
 		{
-			this._outline.setStyle(this._styles[faction].outline);
-			this._line.setStyle(this._styles[faction].line);
+			var faction;
+			if ( this._facilityA.faction == this._facilityB.faction ) {
+				this.faction = this._facilityA.faction;
+			} else {
+				this.faction = 'contested';
+			}
+			this._outline.setStyle(this._options[this.faction].outline);
+			this._line.setStyle(this._options[this.faction].line);
 		};
 	}
 
@@ -846,11 +645,11 @@ var oldIcon = {
 		lattice;
 	ps2maps.lattice = [];
 	// Iterate through the facilities
-	for( type in continent.markers.facilities ) {
-		for( id in continent.markers.facilities[type] ) {
+	for( var type in continent.markers.facilities ) {
+		for( var id in continent.markers.facilities[type] ) {
 			// Create lattice links for all linked facilities
 			if ( continent.markers.facilities[type][id].links ) {
-				for( index in continent.markers.facilities[type][id].links ) {
+				for( var index in continent.markers.facilities[type][id].links ) {
 					ps2maps.lattice.push(new latticeLink(ps2maps.facilities[id], ps2maps.facilities[continent.markers.facilities[type][id].links[index]]));
 				}
 			}
@@ -862,34 +661,158 @@ var oldIcon = {
 // Associate Regions, Facilities and Lattice Links
 (function(){
 
-	// Associate regions and facilities
-	for( region_id in continent.regions ) {
-		if ( ps2maps.facilities[continent.regions[region_id].facility_id] ) {
-			ps2maps.regions[region_id].facility = ps2maps.facilities[continent.regions[region_id].facility_id];
-			ps2maps.facilities[continent.regions[region_id].facility_id].region = ps2maps.regions[region_id];
+// Associate regions and facilities
+for( var region_id in continent.regions ) {
+	if ( ps2maps.facilities[continent.regions[region_id].facility_id] ) {
+		ps2maps.regions[region_id].facility = ps2maps.facilities[continent.regions[region_id].facility_id];
+		ps2maps.facilities[continent.regions[region_id].facility_id].region = ps2maps.regions[region_id];
+	}
+}
+
+for( var index in ps2maps.lattice ) {
+	// Iterate through facilities on each lattice link
+	for( var facility_id in ps2maps.lattice[index].facilities) {
+
+		// Associate facilities with lattice links
+		ps2maps.facilities[facility_id].lattice.push(ps2maps.lattice[index]);
+
+		// Associate facilities with other linked facilities
+		for( var linked_facility_id in ps2maps.lattice[index].facilities ) {
+			if ( facility_id != linked_facility_id ) {
+				ps2maps.facilities[facility_id].facilities.push(ps2maps.facilities[linked_facility_id]);
+			}
 		}
 	}
+}
 
-	// Associate facilities with lattice links
-	for( index in ps2maps.lattice ) {
-		for( facility_index in ps2maps.lattice[index].facilities) {
-			ps2maps.lattice[index].facilities[facility_index].latticeLinks.push(ps2maps.lattice[index]);
-
-		}
-	}
 })();
 
-(function(){
-	var logWindow = $('.log');
 
+(function(){
+
+if ( "WebSocket" in window ) {
+	var socketUrl = "wss://push.planetside2.com/streaming?service-id=s:ps2maps";
+	ps2maps.sockets.facilityControl = new ReconnectingWebSocket(socketUrl);
+	ps2maps.sockets.facilityControl.debug = true;
+
+	ps2maps.sockets.facilityControl.onopen = function()
+	{
+		// Fetch current facility control statistics
+		var url = "http://census.soe.com/s:ps2maps/get/ps2:v2/map/?world_id=" + server.id + "&zone_ids=" + continent.id + "&callback=?";
+		$.getJSON(url)
+			.done(function(data){
+
+				// Set faction ownership of all facilties
+				var faction, region;
+				for ( var row in data.map_list[0].Regions.Row ) {
+
+					// The faction
+					faction = ps2maps.factions[data.map_list[0].Regions.Row[row].RowData.FactionId].slug;
+
+					// The region id
+					region_id = data.map_list[0].Regions.Row[row].RowData.RegionId;
+
+					// ps2maps.regions[region_id].setFaction(faction);
+
+					// If a facility exists, set it's faction
+					if ( ps2maps.regions[region_id].facility ) {
+						ps2maps.regions[region_id].facility.setFaction(faction);
+					} else { // Otherwise, just set the region's faction
+						ps2maps.regions[region_id].setFaction(faction);
+					}
+				}
+
+				// Find each factions warpgates
+				ps2maps.warpgates = {};
+				for( id in continent.markers.facilities.warpgate ) {
+					ps2maps.warpgates[ps2maps.facilities[id].faction] = ps2maps.facilities[id];
+				}
+
+				// Set lattice colors
+				for( var index in ps2maps.lattice ) {
+					ps2maps.lattice[index].setFaction();
+				}
+
+				// Calculate Linked Facilities
+				ps2maps.findAllLinkedFacilities();
+
+				// Set region colors
+				for( var facility_id in ps2maps.facilities ) {
+					if ( ps2maps.facilities[facility_id].region ) {
+						ps2maps.facilities[facility_id].region.setFaction();
+					}
+				}
+
+				ps2maps.logText("Facility & Region Ownership data loaded");
+
+				// Subscribe to facility control changes via websocket service
+				var subscription = '{"service":"event","action":"subscribe","worlds":["' + server.id + '"],"eventNames":["FacilityControl"]}';
+				ps2maps.sockets.facilityControl.send(subscription);
+
+			})
+			// Cannot connect to Census API
+			.fail(function(){
+				alert('Error connecting to SOE Census API');
+			});
+	};
+
+	ps2maps.sockets.facilityControl.onmessage = function(message)
+	{
+		// Receive Faction Control messages
+		var data = JSON.parse(message.data);
+		if ( data.payload ) {
+			// For this continent only
+			if ( data.payload.zone_id == continent.id ) {
+
+				var faction = ps2maps.factions[data.payload.new_faction_id].slug;
+				var facility_id = data.payload.facility_id;
+
+				if ( ps2maps.facilities[facility_id] !== undefined ) {
+
+					// Log facility control event
+					ps2maps.logFacilityControl(facility_id, data.payload.old_faction_id, data.payload.new_faction_id, data.payload.timestamp);
+
+					// If recapture, don't change color of the region
+					if ( data.payload.old_faction_id == data.payload.new_faction_id ) {
+						return true;
+					}
+
+					// Set the facility faction
+					ps2maps.facilities[facility_id].setFaction(faction);
+
+					// Set the lattice colors
+					for ( var lattice_id in ps2maps.facilities[facility_id].lattice ) {
+						ps2maps.facilities[facility_id].lattice[lattice_id].setFaction();
+					}
+
+					// Calculate Linked Facilities
+					ps2maps.findAllLinkedFacilities();
+
+					// Set the region color
+					ps2maps.facilities[facility_id].region.setFaction(null, true);
+				}
+			}
+		}
+	};
+} else {
+	console.log("Web sockets are not supported on your browser");
+}
+
+})();
+
+
+
+(function(){
+	// Initialize Log Window
+	var logWindow = $('.log-body');
 	// Set height from localStorage or default value
 	var height = cache.getItem('ps2maps.log.height');
-	if ( !height || height <= 0 )
+	if ( !height || height < 0 )
 		height = '30%';
 	logWindow.css('height', height);
 
 	// Resize Handle
-	$('.log-resize-handle').on('mousedown', function(e){
+	$('.log-header').on('mousedown', function(e){
 		var orig_h = logWindow.height(), pos_y = e.pageY;
 		dragging = true;
 
@@ -906,7 +829,75 @@ var oldIcon = {
 		e.preventDefault();
 	});
 
-});
+	ps2maps.logText = function(message)
+	{
+		var list = $('.log-list ul');
+		var time = moment().format(timeFormat);
+		console.log('test');
+		var html = "<li class='misc'><div class='col-xs-12'><span class='timestamp'>" + time + "</span> " + message + "</div></li>";
+		if ( $('#filter-misc').is(':checked') ) {
+			$(html).hide().css('opacity',0).prependTo(list).slideDown('slow').animate({opacity: 1.0});
+		} else {
+			$(html).hide().prependTo(list);
+		}
+	}
+
+	ps2maps.logFacilityControl = function(facility_id, old_faction_id, new_faction_id, timestamp)
+	{
+		// Delete old values off end of list
+		// var max = 50;
+		// var children = list.children();
+		// for ( var c = children.length-1; c >= max-1; c-- ) {
+		// 	children[c].fadeOut().remove();
+		// }
+
+		// Add new list item
+		var list = $('.log-list ul');
+		var faction = ps2maps.factions[new_faction_id];
+		var facility = ps2maps.facilities[facility_id];
+
+		// Determine the local capture time
+		var time = moment.unix(timestamp).format(timeFormat);
+
+		// Resecured or Captured?
+		var verb = old_faction_id == new_faction_id ? "resecured" : "captured";
+
+		// The facility icon
+		var icon = "<div class='facility-icon'><svg viewBox='0 0 256 256' class='marker-icon " + facility.facilityType + " " + faction.slug + "'><use xlink:href='#" + facility.facilityType + "'></use></svg></div>";
+
+		// The HTML
+		var html = "<li class='" + faction.slug + " " + verb + "'><div class='col-xs-12'><span class='timestamp'>" + time + "</span> " + icon + " <a class='" + faction.slug + "' href='javascript:ps2maps.viewFacility("+ facility_id + ");'>" + facility.name +"</a> - ";
+		html += verb + " by the <span class='" + faction.slug + "'>" + faction.name +"</span></div></li>";
+
+		// Hide or show log item depending on current filters
+		if ( $('#filter-' + faction.slug).is(':checked') && $('#filter-' + verb).is(':checked') ) {
+			$(html).hide().css('opacity',0).prependTo(list).slideDown('slow').animate({opacity: 1.0});
+		} else {
+			$(html).hide().prependTo(list);
+		}
+	}
+
+	$(function(){
+		// Set Filter checkbox values
+		$('.filter-checkbox').each(function(){
+			$(this).prop('checked', cache.getItem('ps2maps.log.filter.' + $(this).data('filter'), true));
+		});
+
+		// Filter checkbox handling
+		ps2maps.logList = $('.log-list ul');
+		$('.filter-checkbox').on('click', function(){
+			var type = $(this).data('filter');
+			var checked = $(this).is(':checked');
+			if ( checked ) {
+				ps2maps.logList.find('.'+type).fadeIn();
+			} else {
+				ps2maps.logList.find('.'+type).fadeOut();
+			}
+			cache.setItem('ps2maps.log.filter.' + type, checked);
+		});
+	});
+
+})();
 
 $(function(){
 	// Load svg sprites svg inline into document
