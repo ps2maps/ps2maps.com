@@ -86,7 +86,10 @@ class GenerateJS extends Command {
 			return false;
 		}
 
-		$this->continents = Continent::whereEnabled('yes')->orderBy('name')->get();
+		$this->continents = Continent::whereEnabled('yes')
+			->where('slug','!=','vRTraining')
+			->orderBy('name')
+			->get();
 
 		// Loop through available continents
 		foreach( $this->continents as $continent ) {
@@ -129,10 +132,9 @@ class GenerateJS extends Command {
 		// Loop through regions, calculate hex coordinates
 		foreach( $continent->regions as $region ) {
 
-			$tmp['name'] = $region->name;
-			$tmp['facility_id'] = $region->facility->id;
-			$tmp['currency'] = $region->facility->currency_amount;
-			$tmp['currency_id'] = $region->facility->currency_id;
+			$tmp['facility_id'] = (int)$region->facility->id;
+			$tmp['currency'] = (int)$region->facility->currency_amount;
+			$tmp['currency_id'] = (int)$region->facility->currency_id;
 			$tmp['points'] = $this->calculateHexCoordinates($region);
 
 			$regions[(int)$region->id] = $tmp;
@@ -195,16 +197,24 @@ class GenerateJS extends Command {
 			// Add the facilities to the output
 			foreach( $facilities as $facility ) {
 
-				// Ignore if facility has no position
-				if ( is_null($facility->lat) or is_null($facility->lng) or $facility->lat == 0 or $facility->lng == 0 ) {
+				// Ignore if Warpgate facility has no position
+				if ( strpos($facility->name, 'Warpgate') !== false and (is_null($facility->lat) or is_null($facility->lng) or $facility->lat == 0 or $facility->lng == 0 )) {
 					$this->log($facility->name." has no position");
 					continue;
 				}
 
+				// Facility Name
 				$output[$type->slug][$facility->id] = [
-					'name' => $facility->name,
-					'xy' => [(float)$facility->lat, (float)$facility->lng ],
+					'name' => $facility->name
 				];
+
+				// Facility Position
+				if ( !is_null($facility->lat) or !is_null($facility->lng) ) {
+					$output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat, (float)$facility->lng ];
+				} else {
+					$output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat_override, (float)$facility->lng_override ];
+				}
+
 
 				// Lattice Links
 				if ( count($facility->linkedFacilities) > 0 ) {
