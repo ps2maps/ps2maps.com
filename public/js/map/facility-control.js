@@ -1,11 +1,13 @@
 (function(){
-
+ps2maps.facilityControl = {};
 if ( "WebSocket" in window ) {
 	var socketUrl = "wss://push.planetside2.com/streaming?service-id=s:ps2maps";
-	ps2maps.sockets.facilityControl = new ReconnectingWebSocket(socketUrl);
-	ps2maps.sockets.facilityControl.debug = true;
 
-	ps2maps.sockets.facilityControl.onopen = function()
+	// Create the Web Socket Connection
+	ps2maps.facilityControl.socket = new ReconnectingWebSocket(socketUrl);
+	ps2maps.facilityControl.socket.debug = true;
+
+	ps2maps.facilityControl.socket.onopen = function()
 	{
 		// Fetch current facility control statistics
 		var url = "http://census.soe.com/s:ps2maps/get/ps2:v2/map/?world_id=" + server.id + "&zone_ids=" + continent.id + "&callback=?";
@@ -57,7 +59,7 @@ if ( "WebSocket" in window ) {
 
 				// Subscribe to facility control changes via websocket service
 				var subscription = '{"service":"event","action":"subscribe","worlds":["' + server.id + '"],"eventNames":["FacilityControl"]}';
-				ps2maps.sockets.facilityControl.send(subscription);
+				ps2maps.facilityControl.socket.send(subscription);
 
 			})
 			// Cannot connect to Census API
@@ -66,18 +68,24 @@ if ( "WebSocket" in window ) {
 			});
 	};
 
-	ps2maps.sockets.facilityControl.onmessage = function(message)
+	ps2maps.facilityControl.socket.onmessage = function(message)
 	{
 		// Receive Faction Control messages
 		var data = JSON.parse(message.data);
 		if ( data.payload ) {
-			// For this continent only
+
+			// Ignore if not the current continent
 			if ( data.payload.zone_id == continent.id ) {
 
 				var faction = ps2maps.factions[data.payload.new_faction_id].slug;
 				var facility_id = data.payload.facility_id;
 
 				if ( ps2maps.facilities[facility_id] !== undefined ) {
+
+					// If it's been more than 10 minutes since last update (maybe computer went to sleep), then refresh the whole map first
+					if ( ps2maps.facilityControl.lastTimestamp && moment().diff(ps2maps.facilityControl.lastTimestamp, 'seconds') >= 600 ) {
+						ps2maps.facilityControl.socket.onopen();
+					}
 
 					// Log facility control event
 					ps2maps.logFacilityControl(facility_id, data.payload.old_faction_id, data.payload.new_faction_id, data.payload.timestamp);
@@ -100,6 +108,9 @@ if ( "WebSocket" in window ) {
 
 					// Set the region color
 					ps2maps.facilities[facility_id].region.setFaction(null, true);
+
+					// Timestamp it
+					ps2maps.facilityControl.lastTimestamp = moment();
 				}
 			}
 		}
