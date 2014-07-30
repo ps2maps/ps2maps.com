@@ -25,9 +25,9 @@
 				<li class='dropdown solo-dropdown hidden-xs hidden-ms'>
 					<a class='dropdown-toggle' data-toggle='dropdown' href="javascript:;"><i class="fa fa-caret-down"></i></a>
 					<ul class="dropdown-menu">
-						<li><a href="/blog"><i class='icon-book'></i> Read the Blog</a></li>
-						<li><a href="/upcoming"><i class='icon-star'></i> Upcoming Features</a></li>
-						<li><a href="http://ps2maps.userecho.com" target="ps2maps.userecho.com"><i class='icon-comment'></i> Give us Feedback!</a></li>
+						<li><a href="/blog"><i class='fa fa-book'></i> Read the Blog</a></li>
+						<li><a href="/upcoming"><i class="fa fa-asterisk"></i> Upcoming Features</a></li>
+						<li><a href="http://ps2maps.userecho.com" target="ps2maps.userecho.com"><i class='fa fa-comment'></i> Give us Feedback!</a></li>
 						<li class='divider'></li>
 						<li class="dropdown-header">Servers</li>
 						@foreach( $servers as $server )
@@ -48,7 +48,12 @@
 				@endforeach
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-
+				<li>
+					<a href="javascript:;">Search&nbsp;&nbsp;<i class="fa fa-search"></i></a>
+				</li>
+				<li>
+					<a href="/settings">Settings&nbsp;&nbsp;<i class="fa fa-cog"></i></a>
+				</li>
 			</ul>
 		</nav>
 	</div>
