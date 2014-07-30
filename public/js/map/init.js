@@ -1,7 +1,6 @@
 // Ps2maps Class
 function Ps2maps()
 {
-	this.sockets = {};
 	this.defaultView = {
 		lat: 128,
 		lng: 128,
