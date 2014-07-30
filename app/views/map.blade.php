@@ -8,15 +8,31 @@
 		$metaDescription = "Interactive continent map of " . $continent->name . " on the " . $server->name . " server.";
 	}
 
+	$factionColorsNc = Session::get('faction-colors.nc', Config::get('ps2maps.faction-colors.nc'));
+	$factionColorsTr = Session::get('faction-colors.tr', Config::get('ps2maps.faction-colors.tr'));
+	$factionColorsVs = Session::get('faction-colors.vs', Config::get('ps2maps.faction-colors.vs'));
+
 ?>
+
+@section('head')
+	<link href="http://leaflet-cdn.s3.amazonaws.com/build/master/leaflet.css" media="all" type="text/css" rel="stylesheet">
+	<link href="/css/map.css" media="all" type="text/css" rel="stylesheet">
+	<style>
+		svg.marker-icon.nc { fill: {{ $factionColorsNc }}; }
+		svg.marker-icon.tr { fill: {{ $factionColorsTr }}; }
+		svg.marker-icon.vs { fill: {{ $factionColorsVs }}; }
+		.log-window .nc { color: {{ $factionColorsNc }};}
+		.log-window .tr { color: {{ $factionColorsTr }};}
+		.log-window .vs { color: {{ $factionColorsVs }};}
+	</style>
+@stop
 
 @section('scripts')
 	<script src="/js/main.js"></script>
-	<script src="http://augusta.gunsight/leaflet/dist/leaflet-src.js"></script>
-	<script src="/js/leaflet.label-src.js"></script>
-	<script src="/js/leaflet.divlayer.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+	<script src="//augusta.gunsight/leaflet/dist/leaflet-src.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+	<script src="/js/plugins.js"></script>
 
 	<script src="/js/{{ $continent->slug }}.js"></script>
 	<script>
@@ -27,19 +43,24 @@
 			continent.slug = "{{$continent->slug}}";
 		var tileVersion = "{{ $tileVersion }}";
 		var tilesCdn = "{{ Config::get('ps2maps.tiles-cdn') }}";
+		var factionColors = {
+			nc: "{{ $factionColorsNc }}",
+			tr: "{{ $factionColorsTr }}",
+			vs: "{{ $factionColorsVs }}"
+		};
+		var timeFormat = "{{ Session::get('time-format', Config::get('ps2maps.time-format')) }}";
 	</script>
 	<script src="/js/map.js"></script>
 @stop
 
-@section('head')
-	<link href="http://leaflet-cdn.s3.amazonaws.com/build/master/leaflet.css" media="all" type="text/css" rel="stylesheet">
-	<link href="/css/map.css" media="all" type="text/css" rel="stylesheet">
-@stop
+
 
 @section('content')
 
 	<div id='map'></div>
-	@include('map/history')
+
+	@include('map/log')
+
 	<div id='svg-sprites-container'></div>
 
 	{{-- Sidebar--}}
