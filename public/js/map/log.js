@@ -1,6 +1,8 @@
 (function(){
+
 	// Initialize Log Window
 	var logWindow = $('.log-body');
+
 	// Set height from localStorage or default value
 	var height = cache.getItem('ps2maps.log.height');
 	if ( !height || height < 0 )
@@ -15,6 +17,8 @@
 		$(document).on('mousemove', function(e) {
 			if (dragging) {
 				var h = orig_h + (pos_y - e.pageY);
+				if ( h < 0 )
+					h = 0;
 				logWindow.css('height', h);
 				cache.setItem('ps2maps.log.height', h);
 			}
@@ -29,7 +33,7 @@
 	{
 		var list = $('.log-list ul');
 		var time = moment().format(timeFormat);
-		console.log('test');
+
 		var html = "<li class='misc'><div class='col-xs-12'><span class='timestamp'>" + time + "</span> " + message + "</div></li>";
 		if ( $('#filter-misc').is(':checked') ) {
 			$(html).hide().css('opacity',0).prependTo(list).slideDown('slow').animate({opacity: 1.0});
@@ -40,15 +44,16 @@
 
 	ps2maps.logFacilityControl = function(facility_id, old_faction_id, new_faction_id, timestamp)
 	{
+		var list = $('.log-list ul');
+
 		// Delete old values off end of list
-		// var max = 50;
+		// var max = 100;
 		// var children = list.children();
 		// for ( var c = children.length-1; c >= max-1; c-- ) {
 		// 	children[c].fadeOut().remove();
 		// }
 
 		// Add new list item
-		var list = $('.log-list ul');
 		var faction = ps2maps.factions[new_faction_id];
 		var facility = ps2maps.facilities[facility_id];
 

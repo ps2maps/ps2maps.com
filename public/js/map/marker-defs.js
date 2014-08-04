@@ -4,6 +4,21 @@ ps2maps.icons = {
 	facilities: {}
 };
 
+iconOptions = {
+	default: {
+		className: 'svgIcon',
+		iconSize: [24,24],
+		iconAnchor: [12,12],
+		labelAnchor: [0,0]
+	},
+	large: {
+		className: 'svgIcon',
+		iconSize: [32,32],
+		iconAnchor: [16,16],
+		labelAnchor: [0,0]
+	}
+};
+
 // Facility and Outpost Icons
 var options;
 for( var type in ps2maps.facilityTypes ) {
@@ -15,10 +30,10 @@ for( var type in ps2maps.facilityTypes ) {
 		case 'interlinkFacility':
 		case 'techPlant':
 		case 'warpgate':
-			options = ps2maps.options.icons.large;
+			options = iconOptions.large;
 			break;
 		default:
-			options = ps2maps.options.icons.default;
+			options = iconOptions.default;
 	}
 	ps2maps.icons.facilities[type] = {};
 	for( var id in ps2maps.factions ) {

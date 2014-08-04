@@ -84,3 +84,54 @@
     return orig;
   };
 })(jQuery);
+
+// Page Visibility
+(function($){
+
+// Page Visibility
+function getHiddenProp()
+{
+  var prefixes = ['webkit','moz','ms','o'];
+
+  // if 'hidden' is natively supported just return it
+  if ('hidden' in document) return 'hidden';
+
+  // otherwise loop over all the known prefixes until we find one
+  for (var i = 0; i < prefixes.length; i++){
+    if ((prefixes[i] + 'Hidden') in document)
+      return prefixes[i] + 'Hidden';
+  }
+
+  // otherwise it's not supported
+  return null;
+}
+
+function pageIsHidden()
+{
+  var prop = getHiddenProp();
+  if (!prop) return false;
+  return document[prop];
+}
+
+function pageIsVisible()
+{
+  return !pageIsHidden();
+}
+
+function pageVisibilityChange()
+{
+  // If it's been more than 10 minutes since last update (maybe computer went to sleep), then refresh the whole map first
+  if ( pageIsVisible() && ps2maps.facilityControl.lastTimestamp && moment().diff(ps2maps.facilityControl.lastTimestamp, 'seconds') >= 600 ) {
+    ps2maps.facilityControl.socket.onopen();
+  }
+}
+
+// Register
+var visbilityProperty = getHiddenProp();
+if ( visbilityProperty )
+{
+  var event = visbilityProperty.replace(/[H|h]idden/,'') + 'visibilitychange';
+  document.addEventListener(event, pageVisibilityChange);
+}
+
+})();

@@ -1,11 +1,16 @@
 (function(){
 ps2maps.facilityControl = {};
 if ( "WebSocket" in window ) {
-	var socketUrl = "wss://push.planetside2.com/streaming?service-id=s:ps2maps";
 
-	// Create the Web Socket Connection
-	ps2maps.facilityControl.socket = new ReconnectingWebSocket(socketUrl);
-	ps2maps.facilityControl.socket.debug = true;
+	ps2maps.facilityControl.createSocket = function()
+	{
+		var socketUrl = "wss://push.planetside2.com/streaming?service-id=s:ps2maps";
+
+		// Create the Web Socket Connection
+		ps2maps.facilityControl.socket = new ReconnectingWebSocket(socketUrl);
+		ps2maps.facilityControl.socket.debug = true;
+	};
+	ps2maps.facilityControl.createSocket();
 
 	ps2maps.facilityControl.socket.onopen = function()
 	{
@@ -37,7 +42,9 @@ if ( "WebSocket" in window ) {
 				// Find each factions warpgates
 				ps2maps.warpgates = {};
 				for( id in continent.markers.facilities.warpgate ) {
-					ps2maps.warpgates[ps2maps.facilities[id].faction] = ps2maps.facilities[id];
+					if ( continent.markers.facilities.warpgate[id].xy ) {
+						ps2maps.warpgates[ps2maps.facilities[id].faction] = ps2maps.facilities[id];
+					}
 				}
 
 				// Set lattice colors
@@ -64,9 +71,13 @@ if ( "WebSocket" in window ) {
 			})
 			// Cannot connect to Census API
 			.fail(function(){
-				alert('Error connecting to SOE Census API');
+				console.error('Error connecting to SOE Census API');
 			});
 	};
+
+	// ps2maps.facilityControl.socket.onclose = function()
+	// {
+	// }
 
 	ps2maps.facilityControl.socket.onmessage = function(message)
 	{
@@ -116,7 +127,7 @@ if ( "WebSocket" in window ) {
 		}
 	};
 } else {
-	console.log("Web sockets are not supported on your browser");
+	console.info("Web sockets are not supported on your browser");
 }
 
 })();
