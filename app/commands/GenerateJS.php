@@ -86,6 +86,7 @@ class GenerateJS extends Command {
 			return false;
 		}
 
+		// Get all the continents
 		$this->continents = Continent::whereEnabled('yes')
 			->where('slug','!=','vRTraining')
 			->orderBy('name')
@@ -106,7 +107,7 @@ class GenerateJS extends Command {
 			$this->log('Fetching Facilities');
 			$facilities = $this->json_pretty_print(json_encode($this->getFacilities($continent)));
 
-			// Marker data
+			// Marker data here
 
 			$carbon = new Carbon\Carbon();
 
@@ -198,10 +199,10 @@ class GenerateJS extends Command {
 			foreach( $facilities as $facility ) {
 
 				// Ignore if Warpgate facility has no position
-				if ( strpos($facility->name, 'Warpgate') !== false and (is_null($facility->lat) or is_null($facility->lng) or $facility->lat == 0 or $facility->lng == 0 )) {
-					$this->log($facility->name." has no position");
-					continue;
-				}
+				// if ( strpos($facility->name, 'Warpgate') !== false and (is_null($facility->lat) or is_null($facility->lng) or $facility->lat == 0 or $facility->lng == 0 )) {
+				// 	$this->log($facility->name." has no position");
+				// 	continue;
+				// }
 
 				// Facility Name
 				$output[$type->slug][$facility->id] = [
@@ -210,10 +211,18 @@ class GenerateJS extends Command {
 
 				// Facility Position
 				if ( !is_null($facility->lat) or !is_null($facility->lng) ) {
-					$output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat, (float)$facility->lng ];
+					$x = (float)$facility->lat;
+					$y = (float)$facility->lng;
+					// $output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat, (float)$facility->lng ];
 				} else {
-					$output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat_override, (float)$facility->lng_override ];
+					$x = (float)$facility->lat_override;
+					$y = (float)$facility->lng_override;
+					// $output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat_override, (float)$facility->lng_override ];
 				}
+				if ( !is_null($x) and !is_null($y) and $x != 0 and $y != 0 ) {
+					$output[$type->slug][$facility->id]['xy'] = [$x,$y];
+				}
+
 
 
 				// Lattice Links
