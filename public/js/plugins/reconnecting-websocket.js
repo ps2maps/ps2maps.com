@@ -93,7 +93,11 @@
 		this.onerror = function(event) {
 		};
 
-		function connect(reconnectAttempt) {
+		this.reconnect = function() {
+			this.connect(false);
+		};
+
+		this.connect = function(reconnectAttempt) {
 			ws = new WebSocket(url, protocols);
 
 			self.onconnecting();
@@ -139,7 +143,7 @@
 					}
 					setTimeout(function() {
 						self.reconnectAttempts++;
-						connect(true);
+						self.connect(true);
 					}, self.reconnectInterval * Math.pow(self.reconnectDecay, self.reconnectAttempts));
 				}
 			};
@@ -156,7 +160,7 @@
 				self.onerror(event);
 			};
 		}
-		connect(false);
+		this.connect(false);
 
 		this.send = function(data) {
 			if (ws) {
