@@ -1,13 +1,14 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var sass = require('gulp-sass');
 // var sass = require('gulp-ruby-sass');
 // var clean = require('gulp-clean');
 // var jshint = require('gulp-jshint');
 // var uglify = require('gulp-uglify');
 
 var sources = {
-	js : {
-		map : [
+	js: {
+		map: [
 			'public/js/map/init.js',
 			'public/js/map/functions.js',
 			'public/js/map/create-map.js',
@@ -22,7 +23,7 @@ var sources = {
 			'public/js/map/log.js',
 			'public/js/map/final.js'
 		],
-		main : [
+		main: [
 			'public/js/main/main.js'
 		],
 		plugins: [
@@ -30,6 +31,11 @@ var sources = {
 			'public/js/plugins/leaflet.label-src.js',
 			'public/js/plugins/leaflet.divlayer.js',
 			'public/js/plugins/cache.js'
+		]
+	},
+	sass: {
+		all: [
+			'public/scss/*.scss'
 		]
 	}
 };
@@ -55,19 +61,19 @@ gulp.task('plugins.js', function() {
 		.pipe(gulp.dest('./public/js'));
 });
 
-// Sass
-// var sass_sources = ['./public/scss/*.scss'];
-// gulp.task('sass', function() {
-// 	return gulp.src('./public/scss/map.scss')
-// 		.pipe(sass())
-// 		.pipe(gulp.dest('./public/css'));
-// });
+// map.css
+gulp.task('sass', function() {
+	return gulp.src(sources.sass.all)
+		.pipe(sass())
+		.pipe(gulp.dest('./public/css'));
+});
 
 // Watch
 gulp.task('watch', function() {
 	gulp.watch(sources.js.map, ['map.js']);
 	gulp.watch(sources.js.main, ['main.js']);
 	gulp.watch(sources.js.plugins, ['plugins.js']);
+	gulp.watch(sources.sass.all, ['sass']);
 });
 
 gulp.task('default', []);
