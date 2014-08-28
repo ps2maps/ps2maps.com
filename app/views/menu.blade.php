@@ -39,11 +39,11 @@
 					</ul>
 				</li>
 				<li class='server'>
-					<a href="/connery">Connery</a>
+					<a href="/{{ $sessionServer->slug }}">{{ $sessionServer->name }}</a>
 				</li>
 				@foreach( $continents as $continent )
 				<li class='continent'>
-					<a href="/connery/{{ $continent->slug }}">{{ $continent->name }}</a>
+					<a href="/{{ $sessionServer->slug }}/{{ $continent->slug }}">{{ $continent->name }} <i class='fa fa-lock lock'></i></a>
 				</li>
 				@endforeach
 			</ul>
