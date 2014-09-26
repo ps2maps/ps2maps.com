@@ -16,6 +16,7 @@
 	<link rel="canonical" href="{{ Request::url() }}" />
 
 	<link href="/css/bootstrap.css" rel="stylesheet" media="screen"/>
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" media="all" type="text/css" rel="stylesheet">
 	<link href="/css/main.css" rel="stylesheet" type="text/css" charset="utf-8"/>
 	<link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
 	@yield('styles')
@@ -23,10 +24,13 @@
 	<script src='/js/modernizr.custom.js'></script>
 
 	@yield('head')
+
 </head>
 <body>
 
 	@include('menu')
+
+	@include('factionColors')
 
 	@yield('content')
 
@@ -35,6 +39,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
 	@yield('scripts')
+
+	<script src="/js/census.js"></script>
 
 	<script>
 		@yield('javascript')

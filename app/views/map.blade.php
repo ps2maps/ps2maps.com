@@ -59,6 +59,8 @@
 
 	<div id='map'></div>
 
+	@include('map/sidebar')
+
 	@include('map/log')
 
 	<div id='svg-sprites-container'></div>
