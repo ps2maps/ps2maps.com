@@ -8,11 +8,26 @@ return array(
 	'tiles-cdn' => '//cdn{s}.ps2maps.com',
 
 	'faction-colors' => [
-		'ns' => '#79e0e1',
-		'nc' => '#33ADFF',
-		'tr' => '#DF2020',
-		'vs' => '#9E52E0',
+		'ns' => [
+			'default' => '#79e0e1',
+			'dark' => '#249C9E',
+		],
+		'nc' => [
+			'default' => '#33ADFF',
+			'dark' => '#1A5780',
+		],
+		'tr' => [
+			'default' => '#DF2020',
+			'dark' => '#701010',
+		],
+		'vs' => [
+			'default' => '#9E52E0',
+			'dark' => '#4F2970',
+		],
 	],
 
-	'time-format' => 'h:mm:ss a',
+	'time-formats' => [
+		'12' => 'h:mm:ss a',
+		'24' => 'H:mm:ss',
+	],
 );
