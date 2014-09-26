@@ -42,19 +42,28 @@
 					<a href="/{{ $sessionServer->slug }}">{{ $sessionServer->name }}</a>
 				</li>
 				@foreach( $continents as $continent )
-				<li class='continent'>
+				<li class='continent' data-id='{{ $continent->id }}' data-slug='{{ $continent->slug }}'>
 					<a href="/{{ $sessionServer->slug }}/{{ $continent->slug }}">{{ $continent->name }} <i class='fa fa-lock lock'></i></a>
 				</li>
 				@endforeach
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-					<a href="javascript:;">Search&nbsp;&nbsp;<i class="fa fa-search"></i></a>
+					<a href="javascript:;">Search <i class="fa fa-search"></i></a>
 				</li>
 				<li>
-					<a href="/settings">Settings&nbsp;&nbsp;<i class="fa fa-cog"></i></a>
+					<a href="/settings">Settings <i class="fa fa-cog"></i></a>
+				</li>
+				<li>
+					<a href="javascript:;">Sidebar <i class="fa fa-bar-chart"></i></a>
 				</li>
 			</ul>
 		</nav>
 	</div>
 </header>
+
+
+
+@section('jquery')
+
+@append
