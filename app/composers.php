@@ -56,15 +56,10 @@ View::composer($views, function($view)
 
 // Get Faction Colors
 $views = [
-	'server/index',
-	'server/continent',
+	'factionColors',
 ];
 View::composer($views, function($view)
 {
-	$factionColors = [
-		'nc' => Session::get('faction-colors.nc', Config::get('ps2maps.faction-colors.nc')),
-		'tr' => Session::get('faction-colors.tr', Config::get('ps2maps.faction-colors.tr')),
-		'vs' => Session::get('faction-colors.vs', Config::get('ps2maps.faction-colors.vs')),
-	];
+	$factionColors = Session::get('faction-colors', Config::get('ps2maps.faction-colors'));
 	$view->with('factionColors', $factionColors);
 });
