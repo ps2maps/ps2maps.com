@@ -223,8 +223,6 @@ class GenerateJS extends Command {
 					$output[$type->slug][$facility->id]['xy'] = [$x,$y];
 				}
 
-
-
 				// Lattice Links
 				if ( count($facility->linkedFacilities) > 0 ) {
 					$output[$type->slug][$facility->id]['links'] = [];
