@@ -1,8 +1,8 @@
 dataset = [0,0,0]
 factions = ['vs','tr','nc']
 
-w = 180
-h = 180
+w = 190
+h = 190
 paddingTop = 15
 paddingBottom = 15
 strokeWidth = 2
@@ -24,49 +24,49 @@ defs = svg.append('svg:defs')
 percentageTextContainer = svg.append('g')
 factionTextContainer = svg.append('g')
 
+# Create the gradient
+gradient = defs.selectAll('linearGradient')
+	.data(dataset)
+	.enter()
+	.append("svg:linearGradient")
+	.attr("id", (d,i) ->
+		return "gradient_" + i
+	)
+	.attr("x1", "0%")
+	.attr("y1", "0%")
+	.attr("x2", "0%")
+	.attr("y2", "100%")
+	.attr("spreadMethod", "pad")
+
+# Gradient start color
+gradient.append("svg:stop")
+	.data(dataset)
+	.attr("offset", "0%")
+	.attr("stop-color", (d,i) ->
+		if i == 0
+			return colors.vs.default
+		else if i == 1
+			return colors.tr.default
+		else
+			return colors.nc.default
+	)
+	.attr("stop-opacity", 1)
+
+# Gradient end color
+gradient.append("svg:stop")
+	.data(dataset)
+	.attr("offset", "100%")
+	.attr("stop-color", (d,i) ->
+		if i == 0
+			return colors.vs.dark
+		else if i == 1
+			return colors.tr.dark
+		else
+			return colors.nc.dark
+	)
+	.attr("stop-opacity", 1)
+
 window.updateTerritoryChart = (data) ->
-
-	# Create the gradient
-	gradient = defs.selectAll('linearGradient')
-		.data(data)
-		.enter()
-		.append("svg:linearGradient")
-		.attr("id", (d,i) ->
-			return "gradient_" + i
-		)
-		.attr("x1", "0%")
-		.attr("y1", "0%")
-		.attr("x2", "0%")
-		.attr("y2", "100%")
-		.attr("spreadMethod", "pad")
-
-	# Gradient start color
-	gradient.append("svg:stop")
-		.data(data)
-		.attr("offset", "0%")
-		.attr("stop-color", (d,i) ->
-			if i == 0
-				return factionColors.vs.default
-			else if i == 1
-				return factionColors.tr.default
-			else
-				return factionColors.nc.default
-		)
-		.attr("stop-opacity", 1)
-
-	# Gradient end color
-	gradient.append("svg:stop")
-		.data(data)
-		.attr("offset", "100%")
-		.attr("stop-color", (d,i) ->
-			if i == 0
-				return factionColors.vs.dark
-			else if i == 1
-				return factionColors.tr.dark
-			else
-				return factionColors.nc.dark
-		)
-		.attr("stop-opacity", 1)
 
 	# Rect
 	rect = svg.selectAll('rect')
@@ -75,8 +75,12 @@ window.updateTerritoryChart = (data) ->
 	# Update
 	rect.transition()
 		.attr('y', (d,i) ->
-			offset = d == 1 ? 1 : 0
-			return h - yScale(d) - paddingBottom - offset
+			if d == 1
+				offset = 1
+			else
+				offset = 0
+			value = h - yScale(d) - paddingBottom - offset
+			return value
 		)
 		.attr('height', (d) ->
 			stroke = d == 1 ? 1 : strokeWidth
@@ -110,11 +114,11 @@ window.updateTerritoryChart = (data) ->
 		)
 		.style('stroke', (d,i) ->
 			if i == 0
-				return factionColors.vs.default
+				return colors.vs.default
 			else if i == 1
-				return factionColors.tr.default
+				return colors.tr.default
 			else
-				return factionColors.nc.default
+				return colors.nc.default
 		)
 		.style('stroke-width', strokeWidth)
 
@@ -162,7 +166,83 @@ window.updateTerritoryChart = (data) ->
 		)
 		.attr('text-anchor', 'middle')
 		.attr('fill', (d,i) ->
-			return factionColors[factions[i]].default
+			return colors[factions[i]].default
 		)
 
+	return
+
 window.updateTerritoryChart(dataset)
+
+# Sidebar hide/show
+sidebar = $('.sidebar')
+$('.sidebar-toggle').on('click', (e) ->
+	console.log 'here'
+	if sidebar.hasClass('visible')
+		sidebar.removeClass('visible')
+		store.set('ps2maps.sidebar.visible', false)
+	else
+		sidebar.addClass('visible')
+		store.set('ps2maps.sidebar.visible', true)
+)
+
+# Sidebar init hide/show
+if store.get('ps2maps.sidebar.visible', true) == true
+	sidebar.addClass('visible')
+
+
+# Sidebar Layer Controls
+
+# Terrain / Tiles
+$('.control-terrain').on('change', (e) ->
+	if $(this).is(':checked')
+		$('.leaflet-tile-pane').show()
+	else
+		$('.leaflet-tile-pane').hide()
+)
+
+# Facilities
+$('.control-facilities').on('change', (e) ->
+	if $(this).is(':checked')
+		$('.leaflet-facilities-pane, .leaflet-facilitiesLabels-pane, .leaflet-outposts-pane, .leaflet-outpostsLabels-pane').show()
+	else
+		$('.leaflet-facilities-pane, .leaflet-facilitiesLabels-pane, .leaflet-outposts-pane, .leaflet-outpostsLabels-pane').hide()
+)
+
+# Lattice
+$('.control-lattice').on('change', (e) ->
+	if $(this).is(':checked')
+		$('.leaflet-lattice-pane').show()
+	else
+		$('.leaflet-lattice-pane').hide()
+)
+
+$('.control-regions').on('change', (e) ->
+	switch $(this).find('option:selected').val()
+		when 'control'
+			ps2maps.regionsLayerGroup.eachLayer( (layer)->
+				console.log layer
+			)
+		when 'territories'
+			ps2maps.regionsLayerGroup.eachLayer( (layer)->
+				console.log layer
+			)
+		when 'hide'
+			ps2maps.regionsLayerGroup.eachLayer( (layer)->
+				console.log layer
+			)
+)
+
+$('.control-grid').on('change', (e) ->
+
+	switch $(this).find('option:selected').val()
+		when 'grid'
+			$('.leaflet-grid-pane, .leaflet-gridLabels-pane').show()
+			$('.leaflet-subGrid-pane').hide()
+		when 'both'
+			$('.leaflet-grid-pane, .leaflet-gridLabels-pane, .leaflet-subGrid-pane').show()
+		when 'hide'
+			$('.leaflet-grid-pane, .leaflet-gridLabels-pane, .leaflet-subGrid-pane').hide()
+)
+
+
+
