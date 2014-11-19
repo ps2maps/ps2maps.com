@@ -3,44 +3,42 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var gutil = require('gulp-util');
 var plumber = require('gulp-plumber');
-
-// var sass = require('gulp-ruby-sass');
-// var clean = require('gulp-clean');
-// var jshint = require('gulp-jshint');
-// var uglify = require('gulp-uglify');
+var debug = require('gulp-debug');
+var coffee = require('gulp-coffee');
+var uglify = require('gulp-uglify');
 
 // Handle Errors
-var onError = function(error)
+var errorFunction = function(error)
 {
 	gutil.beep();
 	console.log(error);
 }
 
-
 var sources = {
-	js: {
+	coffee: {
 		map: [
-		'public/js/map/init.js',
-		'public/js/map/functions.js',
-		'public/js/map/create-map.js',
-		'public/js/map/create-regions.js',
-		'public/js/map/marker-defs.js',
-		'public/js/map/create-markers.js',
-		'public/js/map/create-lattice.js',
-		'public/js/map/associations.js',
-		'public/js/map/sidebar.js',
-		'public/js/map/alerts.js',
-		'public/js/map/log.js',
-		'public/js/map/final.js'
+			'app/assets/coffee/map/ps2maps.coffee',
+			'app/assets/coffee/map/functions.coffee',
+			'app/assets/coffee/map/map.coffee',
+			'app/assets/coffee/map/regions.coffee',
+			'app/assets/coffee/map/markers.coffee',
+			'app/assets/coffee/map/lattice.coffee',
+			'app/assets/coffee/map/associations.coffee',
+			'app/assets/coffee/map/sidebar.coffee',
+			'app/assets/coffee/map/alerts.coffee',
+			'app/assets/coffee/map/log.coffee',
+			'app/assets/coffee/map/grid.coffee'
 		],
+		census: [
+			'app/assets/coffee/census/census.coffee'
+		]
+	},
+	js: {
 		main: [
-		'public/js/main/main.js'
+			'public/js/main/main.js'
 		],
 		plugins: [
-		'public/js/plugins/reconnecting-websocket.js',
-		'public/js/plugins/leaflet.label-src.js',
-		'public/js/plugins/leaflet.divlayer.js',
-		'public/js/plugins/cache.js'
+			'public/js/plugins/**/*.js',
 		]
 	},
 	sass: {
@@ -50,14 +48,29 @@ var sources = {
 	}
 };
 
-// map.js
+// map.js (CoffeeScript)
 gulp.task('map.js', function(){
-	return gulp.src(sources.js.map)
+	return gulp.src(sources.coffee.map)
+	.pipe(plumber({
+		errorHandler: errorFunction
+	}))
 	.pipe(concat('map.js'))
+	.pipe(coffee())
 	.pipe(gulp.dest('./public/js'));
 });
 
-// script.js
+// census.js (CoffeeScript)
+gulp.task('census.js', function(){
+	return gulp.src(sources.coffee.census)
+	.pipe(plumber({
+		errorHandler: errorFunction
+	}))
+	.pipe(concat('census.js'))
+	.pipe(coffee())
+	.pipe(gulp.dest('./public/js'));
+});
+
+// main.js
 gulp.task('main.js', function() {
 	return gulp.src(sources.js.main)
 	.pipe(concat('main.js'))
@@ -75,7 +88,7 @@ gulp.task('plugins.js', function() {
 gulp.task('sass', function() {
 	gulp.src(sources.sass.all)
 		.pipe(plumber({
-			errorHandler: onError
+			errorHandler: errorFunction
 		}))
 		.pipe(sass())
 		.pipe(gulp.dest('./public/css'));
@@ -83,11 +96,12 @@ gulp.task('sass', function() {
 
 // Watch
 gulp.task('watch', function() {
-	gulp.watch(sources.js.map, ['map.js']);
+	gulp.watch(sources.coffee.map, ['map.js']);
+	gulp.watch(sources.coffee.census, ['census.js']);
 	gulp.watch(sources.js.main, ['main.js']);
 	gulp.watch(sources.js.plugins, ['plugins.js']);
 	gulp.watch(sources.sass.all, ['sass']);
 });
 
-gulp.task('default', ['sass','watch']);
+gulp.task('default', ['sass', 'map.js', 'census.js', 'main.js', 'plugins.js', 'watch']);
 
