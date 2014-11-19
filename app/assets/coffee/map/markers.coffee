@@ -14,7 +14,7 @@ optionsLarge =
 
 # Create Icon for each facility type
 iconCache = {}
-svgContainer = $('#svg-sprites-container')
+svgContainer = $('#svg-sprites')
 
 for type of ps2maps.facilityTypes
 
@@ -29,7 +29,7 @@ for type of ps2maps.facilityTypes
 
 	ps2maps.icons[type] = {}
 
-	$svgContainer = $('#svg-sprites-container')
+	$svgContainer = $('#svg-sprites')
 
 	# Define the Icons
 	for id,faction of ps2maps.factions
@@ -158,5 +158,3 @@ for facility_type, facilities of continent.facilities
 
 		# Add marker to list of facilities
 		ps2maps.facilities[id] = marker
-
-$svgContainer.remove()
