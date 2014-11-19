@@ -74,12 +74,16 @@ mapZoom = (e) ->
 	# Lattice opacity
 	if zoom <= 4
 		map.getPane('latticePane').style.opacity = 0.8
+		map.getPane('regionsPane').style.opacity = 1
 	else if zoom == 5
 		map.getPane('latticePane').style.opacity = 0.6
+		map.getPane('regionsPane').style.opacity = 0.8
 	else if zoom == 6
 		map.getPane('latticePane').style.opacity = 0.4
-	else if zoom == 7
+		map.getPane('regionsPane').style.opacity = 0.6
+	else if zoom >= 7
 		map.getPane('latticePane').style.opacity = 0.2
+		map.getPane('regionsPane').style.opacity = 0.4
 
 	return true;
 ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend')
