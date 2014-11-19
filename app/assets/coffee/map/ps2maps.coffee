@@ -21,6 +21,20 @@ class Ps2maps
 			slug: 'tr'
 			name: 'Terran Republic'
 
+	factionSlugs:
+		ns:
+			id: 0
+			name: 'Nanite Systems'
+		vs:
+			id: 1
+			name: 'Vanu Soverignty'
+		nc:
+			id: 2
+			name: 'New Conglomerate'
+		tr:
+			id: 3
+			name: 'Terran Republic'
+
 	# Facility types
 	facilityTypes:
 		amp_station:
@@ -54,7 +68,7 @@ class Ps2maps
 					color: '#000'
 					opacity: 1
 					fillOpacity: 0
-					pane: 'regionsPane'
+					pane: 'regions'
 				hover:
 					color: '#EEE'
 					weight: 3
@@ -63,59 +77,59 @@ class Ps2maps
 			vs:
 				default:
 					weight: 1.2
-					fillColor: factionColors.vs.default
+					fillColor: colors.vs.default
 					fillOpacity: 0.4
 					color: '#000'
 				default_hover:
 					weight: 3
-					fillColor: factionColors.vs.default
+					fillColor: colors.vs.default
 					color: '#EEE'
 				dark:
 					weight: 1.2
-					fillColor: factionColors.vs.dark
+					fillColor: colors.vs.dark
 					fillOpacity: 0.7
 					color: '#000'
 				dark_hover:
 					weight: 3
-					fillColor: factionColors.vs.dark
+					fillColor: colors.vs.dark
 					color: '#EEE'
 			nc:
 				default:
 					weight: 1.2
-					fillColor: factionColors.nc.default
+					fillColor: colors.nc.default
 					fillOpacity: 0.4
 					color: '#000'
 				default_hover:
 					weight: 3
-					fillColor: factionColors.nc.default
+					fillColor: colors.nc.default
 					color: '#EEE'
 				dark:
 					weight: 1.2
-					fillColor: factionColors.nc.dark
+					fillColor: colors.nc.dark
 					fillOpacity: 0.7
 					color: '#000'
 				dark_hover:
 					weight: 3
-					fillColor: factionColors.nc.dark
+					fillColor: colors.nc.dark
 					color: '#EEE'
 			tr:
 				default:
 					weight: 1.2
-					fillColor: factionColors.tr.default
+					fillColor: colors.tr.default
 					fillOpacity: 0.4
 					color: '#000'
 				default_hover:
 					weight: 3
-					fillColor: factionColors.tr.default
+					fillColor: colors.tr.default
 					color: '#EEE'
 				dark:
 					weight: 1.2
-					fillColor: factionColors.tr.dark
+					fillColor: colors.tr.dark
 					fillOpacity: 0.7
 					color: '#000'
 				dark_hover:
 					weight: 3
-					fillColor: factionColors.tr.dark
+					fillColor: colors.tr.dark
 					color: '#EEE'
 
 	# pageVisibilityChange: ->
