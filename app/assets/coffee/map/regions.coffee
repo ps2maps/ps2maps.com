@@ -1,5 +1,26 @@
 # Region Click
 regionClick = (e) ->
+	details = $('#facility-details')
+
+	# Set the facility name
+	details.find('h2.name').text(e.target.facility.name)
+
+	# Set the icon
+	svg  = "<svg viewBox='0 0 256 256' class='marker-icon " + e.target.facility.facilityType + " " + e.target.facility.faction + "' style='width:20px;'>";
+	svg += $('#svg-sprites').find('#' + e.target.facility.facilityType).html()
+	svg += "</svg>"
+	details.find('.type .icon').html( svg )
+
+	# Set the facility type name
+	details.find('.type .name').html( ps2maps.facilityTypes[e.target.facility.facilityType].name )
+
+	# Set the faction name
+	details.find('.faction').html( ps2maps.factionSlugs[e.target.facility.faction].name + " controlled")
+
+	# Set the faction icon
+	details.find('.faction-logo').hide().siblings('.'+e.target.facility.faction).show();
+
+	details.slideDown()
 
 # Region Mouse Over
 regionMouseOver = (e) ->
@@ -58,4 +79,11 @@ for id,value of continent.regions
 	region.addTo(ps2maps.map)
 	ps2maps.regions[id] = region
 
-ps2maps.map.getPane('regionsPane').getRenderer().options.padding = 0.75
+	# Create regions with no fill color
+	options = jQuery.extend({}, ps2maps.styles.regions.ns.default)
+	options.pane = 'regionsNoColorPane'
+	L.polygon(value.points, options).addTo(ps2maps.map)
+
+# ps2maps.regionsLayerGroup = L.layerGroup(regions).addTo(ps2maps.map)
+ps2maps.map.getPane('regionsPane').getRenderer().options.padding = 0.85
+ps2maps.map.getPane('regionsNoColorPane').getRenderer().options.padding = 0.85
