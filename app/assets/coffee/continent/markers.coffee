@@ -98,14 +98,12 @@ for facility_type, facilities of continent.facilities
 			marker.name = facility.name
 
 		# Set marker attributes
-		marker.id = id
+		marker.id = parseInt(id)
 		marker.faction = 'ns'
 		marker.facilityType = facility_type
 		marker.region = null
 		marker.lattice = []
 		marker.facilities = []
-
-
 
 		# Is the marker linked to the warpgate
 		marker.isLinked = () ->
@@ -136,9 +134,7 @@ for facility_type, facilities of continent.facilities
 				return false
 
 			# Check linked facilities starting with warpgate
-			return checkLinkedFacilities(ps2maps.warpgates[this.faction])
-
-
+			return checkLinkedFacilities(ps2maps.warpgates[faction])
 
 		# Set the marker faction
 		marker.setFaction = (faction) ->

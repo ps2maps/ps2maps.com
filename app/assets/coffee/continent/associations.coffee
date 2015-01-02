@@ -3,6 +3,8 @@ for id,region of continent.regions
 	if ps2maps.facilities[region.facility_id]
 		ps2maps.regions[id].facility = ps2maps.facilities[region.facility_id]
 		ps2maps.facilities[region.facility_id].region = ps2maps.regions[id]
+		# if region.facility_id == 261000
+		# 	console.log ps2maps.regions[id]
 
 # Loop through lattice links
 for index,link of ps2maps.lattice

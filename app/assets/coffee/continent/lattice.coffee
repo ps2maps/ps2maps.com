@@ -21,7 +21,7 @@ class LatticeLink
 	colors:
 		ns:
 			line:
-				color: factionColors.ns.default
+				color: colors.ns.default
 				pane: 'latticePane'
 				weight: 2
 				clickable: false
@@ -33,7 +33,7 @@ class LatticeLink
 				clickable: false
 		nc:
 			line:
-				color: factionColors.nc.default
+				color: colors.nc.default
 				pane: 'latticePane'
 				weight: 2
 				clickable: false
@@ -45,7 +45,7 @@ class LatticeLink
 				clickable: false
 		tr:
 			line:
-				color: factionColors.tr.default
+				color: colors.tr.default
 				pane: 'latticePane'
 				weight: 2
 				clickable: false
@@ -57,7 +57,7 @@ class LatticeLink
 				clickable: false
 		vs:
 			line:
-				color: factionColors.vs.default
+				color: colors.vs.default
 				pane: 'latticePane'
 				weight: 2
 				clickable: false

@@ -19,7 +19,7 @@ L.CRS.Screen = L.extend({}, L.CRS, {
 # Create Map
 mapOptions =
 	crs: L.CRS.Screen
-	minZoom: 1
+	minZoom: 0
 	maxZoom: 10
 	maxNativeZoom: 5
 	attributionControl: false
@@ -45,51 +45,25 @@ if view[0] and view[1] and view[2]
 	lat = view[0]
 	lng = view[1]
 	zoom = view[2]
+	# Set the view based on the hash coordinates & zoom
+	ps2maps.map.setView([lat,lng],zoom)
 else
-	lat = ps2maps.defaultView.lat
-	lng = ps2maps.defaultView.lng
-	zoom = ps2maps.defaultView.zoom
-
-# Set the map view
-ps2maps.map.setView([lat,lng],zoom)
+	# Otherwise zoom map to fit browser
+	ps2maps.map.fitBounds([[0,0],[256,256]])
 
 mapMoveZoom = (e) ->
 	center = this.map.getCenter()
-	history.replaceState(null,null,continent.slug+'#'+center.lat+","+center.lng+','+this.map.getZoom()+'z')
+	window.history.replaceState(null, null, continent.slug + '#'+center.lat+","+center.lng+','+this.map.getZoom()+'z')
+	return true
 ps2maps.map.on('moveend', mapMoveZoom.bind(ps2maps))
 
 # Map event handlers
 mapZoom = (e) ->
-	zoom = e.target._zoom
-	map = ps2maps.map
-
-	# Hide outposts at zoom level 1
-	if zoom <= 1
-		map.getPane('outpostsLabelsPane').style.opacity = 0;
-		map.getPane('outpostsPane').style.opacity = 0;
-	else
-		map.getPane('outpostsLabelsPane').style.opacity = 1;
-		map.getPane('outpostsPane').style.opacity = 1;
-
-	# Lattice opacity
-	if zoom <= 4
-		map.getPane('latticePane').style.opacity = 0.8
-		map.getPane('regionsPane').style.opacity = 1
-	else if zoom == 5
-		map.getPane('latticePane').style.opacity = 0.6
-		map.getPane('regionsPane').style.opacity = 0.8
-	else if zoom == 6
-		map.getPane('latticePane').style.opacity = 0.4
-		map.getPane('regionsPane').style.opacity = 0.6
-	else if zoom >= 7
-		map.getPane('latticePane').style.opacity = 0.2
-		map.getPane('regionsPane').style.opacity = 0.4
-
+	$('.leaflet-map-pane').attr('data-zoom',e.target._zoom)
 	return true;
+
 ps2maps.map.on('zoomend', mapZoom.bind(ps2maps)).fireEvent('zoomend')
 
 # Zoom map to facility
 ps2maps.viewFacility = (id) ->
 	this.map.setView(ps2maps.facilities[id].getLatLng(), 5)
-
-

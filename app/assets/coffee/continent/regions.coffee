@@ -1,6 +1,6 @@
 # Region Click
 regionClick = (e) ->
-	details = $('#facility-details')
+	details = $('.facility-details')
 
 	# Set the facility name
 	details.find('h2.name').text(e.target.facility.name)
@@ -18,7 +18,7 @@ regionClick = (e) ->
 	details.find('.faction').html( ps2maps.factionSlugs[e.target.facility.faction].name + " controlled")
 
 	# Set the faction icon
-	details.find('.faction-logo').hide().siblings('.'+e.target.facility.faction).show();
+	details.find('.faction-logo').hide().siblings('.' + e.target.facility.faction).show();
 
 	details.slideDown()
 
@@ -58,10 +58,7 @@ for id,value of continent.regions
 	# Method for setting the region's faction
 	region.setFaction = (faction, animate) ->
 
-		if faction
-			this.faction = faction
-		else if this.facility
-			this.faction = this.facility.faction
+		this.faction = faction;
 
 		# If region is connected to the warpgate
 		if this.facility.isLinked()
