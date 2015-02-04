@@ -1,0 +1,118 @@
+// Log Window
+.log-window {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 3;
+	color: #CCC;
+	width: 100%;
+	max-width: 100%;
+	background-color: rgba(5, 17, 18, 0.8);
+
+	li.log-item {
+		color: inherit;
+	}
+
+	span.faction {
+		font-weight: 700;
+	}
+
+	.log-count {
+		background-color: yellow;
+		color: #000;
+	}
+
+	.log-header {
+		cursor: n-resize;
+		height: 30px;
+		line-height: 30px;
+		border-width: 1px 0 1px 0;
+		border-color: #333;
+		border-style: solid;
+	}
+
+	.log-minimize {
+		cursor: pointer;
+		@include transition(transform 0.2s ease-in-out);
+	}
+
+	.log-body {
+		position: relative;
+	}
+
+	&.closed {
+		.log-body {
+			display: none;
+		}
+
+		.log-minimize {
+			@include transform(rotate(-180deg));
+		}
+	}
+
+	.log-list {
+		height: 100%;
+		overflow-y: scroll;
+		width: 100%;
+		position: relative;
+
+		a {
+			color: #CCC;
+			border-bottom: 1px dotted #CCC;
+			@include transition(color 0.2s ease-in-out, border 0.2s ease);
+		}
+
+		a:hover {
+			color: #FFF;
+			text-decoration: none;
+			border-bottom: 1px solid #FFF;
+		}
+	}
+
+	// Filters
+	.filters {
+		height: 30px;
+
+		span {
+			margin-left: 10px;
+		}
+
+		input {
+			position: relative;
+			top: 2px;
+		}
+
+		label {
+			font-weight: normal;
+			height: 26px;
+			margin-bottom: 0;
+		}
+	}
+
+	.facility-icon {
+		width: 20px;
+		height: 20px;
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0 5px 0 5px;
+	}
+
+	.clear-button {
+		top: -2px;
+		position: relative;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+
+		li {
+			border-bottom: 1px solid #333;
+			line-height: 30px;
+			height: 30px;
+		}
+	}
+}

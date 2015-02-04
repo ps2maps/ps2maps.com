@@ -1,0 +1,229 @@
+// Navbar
+
+// Ps2maps logo rotation definition
+// @include keyframes(ps2maps-logo-rotating) {
+//   from { @include transform(rotate(0deg)); }
+//   to { @include transform(rotate(360deg)); }
+// }
+
+$height: 40px;
+
+header.navbar {
+	background: #051112;
+	margin-bottom: 0;
+	color: #CCC;
+	border-bottom: 1px solid #555;
+	z-index: 998;
+	height: $height;
+	font-family: $roboto;
+
+	.nav .open > a,
+	.nav .open > a:hover,
+	.nav .open > a:focus {
+		background: inherit;
+	}
+
+	& > div.container-fluid {
+		position: relative;
+	}
+
+	ul.nav {
+		list-style-type: none;
+		height: $height;
+		margin: 0;
+		padding: 0;
+		white-space: nowrap;
+
+		& > li {
+			display: inline-block;
+			position: relative;
+			line-height: $height;
+			height: $height - 1;
+			float: none;
+
+			@include respond($screen-sm) {
+				float: left;
+			}
+
+			& > a {
+				text-shadow: 2px 2px 1px #000;
+			}
+
+			& > a {
+				padding: 0;
+				display: block;
+				color: #CCC;
+				transition: text-shadow 0.15s ease, color 0.15s ease;
+
+				&:focus,
+				&:hover {
+					text-decoration: none;
+					text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+					color: #FFF;
+					background-color: inherit;
+				}
+			}
+
+			&.nav-sidebar-open {
+				font-size: 22px;
+				cursor: pointer;
+				margin-right: 10px;
+				user-select: none;
+				position: relative;
+				top: -3px;
+
+				a {
+					padding-left: 5px;
+					padding-right: 5px;
+				}
+				&:hover,
+				&:focus {
+					text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+					color: #FFF;
+				}
+			}
+
+			&.ps2maps-logo {
+				user-select: none;
+				font-size: 22px;
+				font-weight: bold;
+				margin-right: 5px;
+
+				a {
+					position: relative;
+					top: -3px;
+				}
+
+				svg {
+					width: 30px;
+					top: 7px;
+					position: relative;
+				}
+
+				// &.loading {
+				// 	@include animation(ps2maps-logo-rotating 1s linear infinite);
+				// }
+
+			}
+
+			&.dropdown {
+				border-left: 1px solid #555;
+				border-right: 1px solid #555;
+
+				& > a {
+					padding-left: 9px;
+					padding-right: 9px;
+				}
+
+				ul {
+					a {
+						color: #000;
+					}
+				}
+			}
+
+			&.server {
+				border-right: 1px solid #555;
+				text-transform: uppercase;
+
+				a {
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+			}
+
+			&.continent {
+				border-right: 1px solid #555;
+				position: relative;
+				overflow: hidden;
+
+				a {
+					position: relative;
+					z-index: 2;
+					padding-left: 10px;
+					padding-right: 10px;
+				}
+
+				.faction-logo {
+					position: absolute;
+					top: 0;
+					display: none;
+					width: 100%;
+					opacity: 0.75;
+				}
+
+				.logo-inner {
+					display: inline-block;
+					position: relative;
+					left: 50%;
+				}
+
+				svg {
+					margin-left: -50%;
+					width: 90px;
+					position: relative;
+				}
+
+				@each $faction in nc, tr, vs {
+					&.#{$faction} {
+						a { text-shadow: 2px 2px 1px #000; }
+						div.#{$faction} { display: block; }
+					}
+				}
+
+				.nc svg {
+					top: -15px;
+					left: 3px;
+					width: 80px;
+				}
+				.tr svg {
+					top: -15px;
+					left: 2px;
+				}
+				.vs svg {
+					top: -10px;
+					left: 1px;
+				}
+			}
+
+			&.icon {
+				font-size: 22px;
+				margin-left: 5px;
+				margin-right: 5px;
+			}
+
+			&.icon.sidebar {
+				display: none;
+			}
+
+		}
+	}
+
+	ul.dropdown-menu {
+		li {
+			// padding: 5px;
+		}
+	}
+
+	.dropdown-header {
+		text-transform: uppercase;
+	}
+
+	@import "nav/search";
+
+}
+
+header.navbar li.nav-sidebar-open i.fa-close {
+	display: none;
+	width: 19px;
+}
+
+#wrapper.toggled {
+	header.navbar li.nav-sidebar-open i.fa-bars {
+		display: none;
+	}
+	header.navbar li.nav-sidebar-open i.fa-close {
+		display: block;
+	}
+}
+

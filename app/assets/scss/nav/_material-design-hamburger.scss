@@ -1,0 +1,138 @@
+.material-design-hamburger {
+	$width: 22px;
+	$height: 20px;
+
+	position: relative;
+	top: 16px;
+
+	button {
+		display: block;
+		border: none;
+		background: none;
+		outline: 0;
+		cursor: pointer;
+	}
+
+	span {
+		display: block;
+		width: $width;
+		height: $height/5;
+		background: #eee;
+		position: relative;
+		animation-duration: $speed;
+		animation-timing-function: ease-in-out;
+
+		&:before,
+		&:after {
+			display: block;
+			width: inherit;
+			height: $height/5;
+			position: absolute;
+			background: inherit;
+			left: 0;
+			content: '';
+			animation-duration: $speed;
+			animation-timing-function: ease-in-out;
+		}
+
+		&:before {
+			bottom: 200%;
+		}
+
+		&:after {
+		 top: 200%;
+		}
+
+		&.to-arrow {
+			animation-name: material-design-hamburger-icon-slide;
+			animation-fill-mode: forwards;
+		}
+
+		&.to-arrow:before {
+			// bottom: 120%;
+			animation-name: material-design-hamburger-icon-slide-before;
+			animation-fill-mode: forwards;
+		}
+
+		&.to-arrow:after {
+			// top: 120%;
+			animation-name: material-design-hamburger-icon-slide-after;
+			animation-fill-mode: forwards;
+		}
+
+		&.from-arrow {
+			animation-name: material-design-hamburger-icon-slide-from;
+		}
+
+		&.from-arrow:before {
+			animation-name: material-design-hamburger-icon-slide-before-from;
+		}
+
+		&.from-arrow:after {
+			animation-name: material-design-hamburger-icon-slide-after-from;
+		}
+	}
+}
+
+$width: 86%;
+$margin: 3% 20%;
+
+@keyframes material-design-hamburger-icon-slide {
+	0% {
+	}
+	100% {
+		transform: rotate(180deg);
+	}
+}
+
+@keyframes material-design-hamburger-icon-slide-before {
+	0% {
+	}
+	100% {
+		transform: rotate(45deg);
+		margin: $margin;
+		width: $width;
+	}
+}
+
+@keyframes material-design-hamburger-icon-slide-after {
+	0% {
+	}
+	100% {
+		transform: rotate(-45deg);
+		margin: $margin;
+		width: $width;
+	}
+}
+
+@keyframes material-design-hamburger-icon-slide-from {
+	0% {
+		transform: rotate(-180deg);
+	}
+	100% {
+	}
+}
+
+@keyframes material-design-hamburger-icon-slide-before-from {
+	0% {
+		transform: rotate(45deg);
+		margin: $margin;
+		width: $width;
+	}
+	100% {
+	}
+}
+
+@keyframes material-design-hamburger-icon-slide-after-from {
+	0% {
+		transform: rotate(-45deg);
+		margin: $margin;
+		width: $width;
+	}
+	100% {
+	}
+}
+
+
+
+

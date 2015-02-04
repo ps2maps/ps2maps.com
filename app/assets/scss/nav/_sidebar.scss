@@ -1,0 +1,153 @@
+// Toggle Styles
+
+$width: 250px;
+$speed: 0.25s;
+
+#sidebar-wrapper {
+	z-index: 1000;
+	position: fixed;
+	left: 0;
+	top: 40px;
+	width: $width;
+	height: 100%;
+	margin-left: -$width;
+	overflow-y: auto;
+	background-color: #111;
+	color: #CCC;
+	transition: all $speed ease;
+
+	& > ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		padding-left: 20px;
+		padding-right: 20px;
+		font-size: 16px;
+		height: 40px;
+		line-height: 40px;
+		list-style-type: none;
+		border-bottom: 1px solid #555;
+
+		&.current {
+			height: 80px;
+
+			.chart {
+
+			}
+		}
+
+		&.continent {
+			overflow: hidden;
+			position: relative;
+
+			.faction-logo {
+				position: absolute;
+				top: -30px;
+				width: 160px;
+				left: 80px;
+				display: none;
+				z-index: 1;
+				opacity: 0.75;
+				transition: opacity $speed ease;
+			}
+
+			.nc {
+				left: 100px;
+				width: 130px;
+			}
+
+			.vs {
+				top: -20px;
+			}
+
+			&.nc .nc { display: block; }
+			&.tr .tr { display: block; }
+			&.vs .vs { display: block; }
+		}
+
+		&.server {
+			text-transform: uppercase;
+		}
+
+		a {
+			display: block;
+			color: #CCC;
+			text-decoration: none;
+			text-shadow: 2px 2px 1px #000;
+			z-index: 2;
+			padding: 0;
+			position: relative;
+			transition: text-shadow 0.15s ease-in-out, color 0.15s ease-in-out;
+
+			&:hover,
+			&:focus {
+				text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+				color: #FFF;
+				background: inherit;
+			}
+		}
+
+		&:hover,
+		&:focus {
+
+			.faction-logo {
+				opacity: 1;
+			}
+		}
+
+
+	}
+}
+
+#overlay {
+	display: none;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 999;
+	cursor: pointer;
+}
+
+#page-content-wrapper {
+	width: 100%;
+}
+
+#wrapper {
+	padding-left: 0;
+	transition: all 0.5s ease;
+
+	// Menu Opened
+	&.toggled {
+
+		#overlay {
+			display: block;
+		}
+
+		#sidebar-wrapper {
+			// width: $width;
+			left: $width;
+			border-right: 1px solid #555;
+		}
+
+		#page-content-wrapper {
+			margin-right: -$width;
+		}
+	}
+}
+
+@media(min-width:768px) {
+	#wrapper.toggled {
+
+		#overlay {
+			display: none;
+		}
+
+		#sidebar-wrapper {
+			left: 0;
+		}
+	}
+}
