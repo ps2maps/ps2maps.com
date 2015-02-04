@@ -1,9 +1,16 @@
 {
   "dependencies": {
     "gulp": "*",
-    "gulp-concat": "*",
     "gulp-clean": "*",
+    "gulp-coffee": "^2.2.0",
+    "gulp-concat": "*",
+    "gulp-imagemin": "*",
+    "gulp-sass": "*",
+    "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "*",
-    "gulp-imagemin": "*"
+    "node-sass": "0.9.3"
+  },
+  "devDependencies": {
+    "gulp-debug": "^1.0.1"
   }
 }
