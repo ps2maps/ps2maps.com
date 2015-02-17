@@ -1,44 +1,56 @@
-{{-- Faction Colors --}}
-<style>
-	svg.marker-icon.nc { fill: {{ $factionColors['nc']['default'] }}; }
-	svg.marker-icon.tr { fill: {{ $factionColors['tr']['default'] }}; }
-	svg.marker-icon.vs { fill: {{ $factionColors['vs']['default'] }}; }
-	.log-window .nc,
-	.nav .continent.nc a { color: {{ $factionColors['nc']['default'] }}; }
-	.nav .continent.nc a:hover,
-	.nav .continent.nc a:focus {
-		color: {{ $factionColors['nc']['default'] }};
-		text-shadow: 0 0 10px {{ $factionColors['nc']['default'] }};
-	}
-	.log-window .tr,
-	.nav .continent.tr a { color: {{ $factionColors['tr']['default'] }}; }
-	.nav .continent.tr a:hover,
-	.nav .continent.tr a:focus {
-		color: {{ $factionColors['tr']['default'] }};
-		text-shadow: 0 0 10px {{ $factionColors['tr']['default'] }};
-	}
-	.log-window .vs,
-	.nav .continent.vs a { color: {{ $factionColors['vs']['default'] }}; }
-	.nav .continent.vs a:hover,
-	.nav .continent.vs a:focus {
-		color: {{ $factionColors['vs']['default'] }};
-		text-shadow: 0 0 10px {{ $factionColors['vs']['default'] }};
-	}
+<?php
+	// Faction Colors
+	$nsDefault = Session::get('faction-colors.ns.default', Config::get('ps2maps.faction-colors.ns.default'));
+	$nsDark = Session::get('faction-colors.ns.dark', Config::get('ps2maps.faction-colors.ns.dark'));
+	$nsOutline = Session::get('faction-colors.ns.outline', Config::get('ps2maps.faction-colors.ns.outline'));
+	$ncDefault = Session::get('faction-colors.nc.default', Config::get('ps2maps.faction-colors.nc.default'));
+	$ncDark = Session::get('faction-colors.nc.dark', Config::get('ps2maps.faction-colors.nc.dark'));
+	$ncOutline = Session::get('faction-colors.nc.outline', Config::get('ps2maps.faction-colors.nc.outline'));
+	$trDefault = Session::get('faction-colors.tr.default', Config::get('ps2maps.faction-colors.tr.default'));
+	$trDark = Session::get('faction-colors.tr.dark', Config::get('ps2maps.faction-colors.tr.dark'));
+	$trOutline = Session::get('faction-colors.tr.outline', Config::get('ps2maps.faction-colors.tr.outline'));
+	$vsDefault = Session::get('faction-colors.vs.default', Config::get('ps2maps.faction-colors.vs.default'));
+	$vsDark = Session::get('faction-colors.vs.dark', Config::get('ps2maps.faction-colors.vs.dark'));
+	$vsOutline = Session::get('faction-colors.vs.outline', Config::get('ps2maps.faction-colors.vs.outline'));
+?>
+<style id='faction-colors-id' class='faction-colors-class'>
+	{{-- Marker Icons --}}
+	svg.marker-icon.ns { fill: {{ $nsDefault }}; }
+	svg.marker-icon.ns circle { stroke: {{ $nsOutline }}; }
+	svg.marker-icon.ns path, svg.marker-icon.ns polygon { fill: {{ $nsOutline }}; }
+	svg.marker-icon.nc { fill: {{ $ncDefault }}; }
+	svg.marker-icon.nc circle { stroke: {{ $ncOutline }}; }
+	svg.marker-icon.nc path, svg.marker-icon.nc polygon { fill: {{ $ncOutline }}; }
+	svg.marker-icon.tr { fill: {{ $trDefault }}; }
+	svg.marker-icon.tr circle { stroke: {{ $trOutline }}; }
+	svg.marker-icon.tr path, svg.marker-icon.tr polygon { fill: {{ $trOutline }}; }
+	svg.marker-icon.vs { fill: {{ $vsDefault }}; }
+	svg.marker-icon.vs circle { stroke: {{ $vsOutline }}; }
+	svg.marker-icon.vs path, svg.marker-icon.vs polygon { fill: {{ $vsOutline }}; }
+
+	{{-- Log Window --}}
+	.log-window .nc { color: {{ $ncDefault }}; }
+	.log-window .tr { color: {{ $trDefault }}; }
+	.log-window .vs { color: {{ $vsDefault }}; }
 </style>
 
 <script>
-var factionColors = {
+var colors = {
+	ns: {
+		'default': "{{ $nsDefault }}",
+		'dark': "{{ $nsDark }}"
+	},
 	nc: {
-		'default': "{{ $factionColors['nc']['default'] }}",
-		'dark': "{{ $factionColors['nc']['dark'] }}",
+		'default': "{{ $ncDefault }}",
+		'dark': "{{ $ncDark }}"
 	},
 	tr: {
-		'default': "{{ $factionColors['tr']['default'] }}",
-		'dark': "{{ $factionColors['tr']['dark'] }}",
+		'default': "{{ $trDefault }}",
+		'dark': "{{ $trDark }}"
 	},
 	vs: {
-		'default': "{{ $factionColors['vs']['default'] }}",
-		'dark': "{{ $factionColors['vs']['dark'] }}"
+		'default': "{{ $vsDefault }}",
+		'dark': "{{ $vsDark }}"
 	}
 };
 
@@ -47,5 +59,4 @@ var continents = {
 	{{ $continent->id }}: { name: "{{ $continent->name }}", slug: "{{ $continent->slug }}" },
 	@endforeach
 };
-var continentIds = "{{ implode(',',array_keys($continents)) }}";
 </script>
