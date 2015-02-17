@@ -1,4 +1,4 @@
-*.sublime-workspace
+/*.sublime-*
 /bootstrap/compiled.php
 /vendor
 composer.phar
@@ -11,3 +11,16 @@ Thumbs.db
 /assets
 /node_modules
 /build
+
+/public/css/embed.css
+/public/css/server.css
+/public/css/map.css
+/public/css/main.css
+/public/css/bootstrap.css
+
+/public/js/continent.js
+/public/js/server.js
+/public/js/main.js
+/public/js/plugins.js
+/public/js/map-plugins.js
+/public/js/embed.js
