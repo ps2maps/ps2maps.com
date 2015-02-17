@@ -10,3 +10,4 @@ Thumbs.db
 .sass-cache
 /assets
 /node_modules
+/build
