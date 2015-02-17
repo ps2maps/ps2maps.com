@@ -13,7 +13,32 @@
 
 App::before(function($request)
 {
-	//
+	// Get the current session server, default to Connery
+	$server = Session::get('server', function(){
+		return Server::where('slug','=','connery')
+			->remember(1440)
+			->first();
+	});
+	View::share('sessionServer', $server);
+
+	// Get all enabled continents
+	$continents = Continent::orderBy('name')
+		->whereEnabled('yes')
+		->where('slug','!=','vRTraining')
+		->remember(1440)
+		->get();
+	View::share('continents', $continents);
+
+	// Get all servers
+	$servers = Server::whereEnabled('yes')
+		->orderBy('name')
+		->remember(1440)
+		->get();
+	View::share('servers', $servers);
+
+	// Faction Colors
+	$factionColors = Session::get('faction-colors', Config::get('ps2maps.faction-colors'));
+	View::share('factionColors', $factionColors);
 });
 
 
