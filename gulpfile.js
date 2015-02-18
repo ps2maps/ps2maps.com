@@ -1,19 +1,7 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
-var sass = require('gulp-sass');
-var gutil = require('gulp-util');
-var plumber = require('gulp-plumber');
-var coffee = require('gulp-coffee');
-var uglify = require('gulp-uglify');
-var autoprefixer = require('gulp-autoprefixer');
-var imagemin = require('gulp-imagemin');
-var pngquant = require('imagemin-pngquant');
-var bytediff = require('gulp-bytediff');
-var sequence = require('run-sequence');
-var fs = require('fs');
-var del = require('del');
-var print = require('gulp-print');
-var ignore = require('gulp-ignore');
+var gp = require('gulp-load-plugins')({
+	pattern: ['gulp-*', 'gulp.*', '*']
+});
 
 // Handle Errors
 var errorFunction = function(error)
@@ -22,22 +10,31 @@ var errorFunction = function(error)
 	console.log(error);
 }
 
-var build = "build";
+var build = "./build";
 
 var src = {
 	build: [
-		// 'app/**/*',
-		// 'bootstrap/**/*',
-		'public/**/*',
-		// 'vendor/**/*',
-		'artisan',
+		'./artisan',
+		'./app/**/*',
+		'./bootstrap/**/*',
+		'./public/**/*',
+		'./vendor/**/*',
+		'!./app/{assets,assets/**}',
+		'!./app/storage/cache/**',
+		'!./app/storage/{debugbar,debugbar/**}',
+		'!./app/storage/logs/**',
+		'!./app/storage/meta/**',
+		'!./app/storage/sessions/**',
+		'!./app/storage/views/**',
+		'!./public/js/{old,old/**}',
+		'!./public/{packages,packages/**}',
 	],
-	buildIgnore: [
-		'app/assets',
-		'public/packages',
-		'public/js/old',
+	buildImages: [
+		'./build/public/img/**/*.jpg',
+		'./build/public/img/**/*.jpeg',
+		'./build/public/img/**/*.png',
+		'./build/public/img/**/*.gif',
 	],
-	images: 'public/img/*/**',
 	coffee: {
 		continent: [
 			'app/assets/coffee/continent/map.coffee',
@@ -161,51 +158,52 @@ gulp.task('sass', function() {
 		.pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('build:images:clean', function(){
-	return del.sync([build + '/public/img']);
-});
-
-gulp.task('build:images', ['build:images:clean'], function(){
-	return gulp.src(src.images)
-		.pipe(imagemin({
+// Build Images
+// Optimize and compress images
+gulp.task('build:images', function(){
+	return gulp.src([build + '/public/img/**/*.jpg', build + '/public/img/**/*.png'])
+		.pipe(gp.imagemin({
 			optimizationLevel: 5,
 			progressive: true,
 			interlaced: true,
 			verbose: true,
-			use: [pngquant()]
+			use: [gp.imageminPngquant()]
 		}))
 		.pipe(gulp.dest(build + "/public/img"));
 });
 
-gulp.task('build:js:clean', function(){
-	return del.sync([build + '/public/js']);
-});
-
-gulp.task('build:js:copy', function(){
-	return gulp.src('public/js/**/*')
-		.pipe(gulp.dest(build + '/public/js'));
-});
-
-gulp.task('build:js:minify', function(){
+// Build JavaScript
+gulp.task('build:js', function(){
 	return gulp.src(build + '/public/js/**/*.js')
-		.pipe(ignore.exclude('*.min.js'))
-		.pipe(bytediff.start())
-		.pipe(uglify())
-		.pipe(bytediff.stop())
+		.pipe(gp.ignore.exclude('*.min.js'))
+		.pipe(gp.bytediff.start())
+		.pipe(gp.uglify())
+		.pipe(gp.bytediff.stop())
 		.pipe(gulp.dest(build + '/public/js'));
 });
 
-gulp.task('build:js', function(cb){
-	return sequence('build:js:clean', 'build:js:copy', 'build:js:minify', cb);
+// Clean (delete) the build directory
+gulp.task('build:clean', function(){
+	return gp.del.sync(build);
 });
 
-gulp.task('build', function(){
+// Copy Build files to build directory
+gulp.task('build:copy', function(){
 
-	del.sync(build);
-
-	return gulp.src(src.build)
-		.pipe(ignore.exclude('public/favicon.ico'))
+	return gulp.src(src.build, {base:'.'})
 		.pipe(gulp.dest(build));
+});
+
+gulp.task('build:zip', function(){
+	return gulp.src(build + '/**')
+		.pipe(gp.zip('build.zip'))
+		.pipe(gulp.dest('.'));
+});
+
+// Master build task
+gulp.task('build', function(cb){
+
+	return gp.runSequence('build:clean', 'build:copy', 'build:js', 'build:images', 'build:zip', cb);
 
 });
 
