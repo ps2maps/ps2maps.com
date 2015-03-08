@@ -5,7 +5,5 @@ var {{ $continent->slug }} = {
 	name: "{{ $continent->name }}",
 	slug: "{{ $continent->slug }}",
 	regions : {{ $regions }},
-	markers : {
-		facilities: {{ $facilities }}
-	}
+	facilities: {{ $facilities }}
 };
