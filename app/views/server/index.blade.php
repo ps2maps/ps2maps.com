@@ -1,72 +1,51 @@
 @extends('templates/default')
 
+@section('title')
+{{ $server->name }} server maps of Amerish, Esamir, Hossin and Indar continents for PlanetSide 2 Maps - ps2maps.com
+@stop
+
+@section('meta_description')
+Live, interactive continent maps for {{ $server->name }} server for PlanetSide 2 Maps - ps2maps.com
+@stop
+
 @section('content')
 
 <div class='container-fluid'>
-	<div id='continents' class='row'>
+	<div class='continents' class='row'>
 
-		@foreach( $continents as $continent )
-		<div class='continent {{ $continent->slug }} col-sm-12 col-lg-4'>
+		<h1>{{ $server->name }} Server - Global Operations</h1>
+		<h4 class='text-center'><a href="/embeddable?server={{ $server->slug }}">Embed these maps on your own website</a></h4>
+
+		@foreach( $continents as $c )
+		<div class='continent {{ $c->slug }} col-xs-12 col-sm-6 col-md-3 col-lg-3' data-id="{{ $c->id }}">
+			<script src="/js/{{ $c->slug }}.js"></script>
 
 			<div class='row'>
 
-				<div class='col-sm-6 col-ms-6 col-lg-12'>
-					<h2>{{ $continent->name }}</h2>
-					<div id='{{ $continent->slug }}-map' class='map'></div>
-				</div>
+				<div class='col-xs-12 col-ms-6'>
 
-				<div class='col-sm-6 col-ms-6 col-lg-12'>
-					<div class='territory'>
-						<table class='territory-control-bar'>
-							<tr>
-								<td data-value='20' style='width: 20%'>
-									<div class='nc'>20%</div>
-								</td>
-								<td data-value='15' style='width: 15%'>
-									<div class='tr'>15%</div>
-								</td>
-								<td data-value='65' style='width: 65%'>
-									<div class='vs'>65%</div>
-								</td>
-							</tr>
-						</table>
+					<a href='/{{ $server->slug }}/{{ $c->slug }}'>
+						<div id='{{ $c->slug }}-map' class='map'></div>
+						<h2>
+								{{ $c->name }} <i class="fa fa-arrow-circle-right"></i>
+						</h2>
+					</a>
+
+					<div class="last-activity clearfix">
+						<span>Last Updated: </span><span class='timestamp-actual'></span>
+						<div><small>(<span class='timestamp-duration' data-id="{{ $c->id }}">Just now</span>)</small></div>
 					</div>
-					<table class='table table-bordered table-condensed'>
-						<tr>
-							<td class='name'>Amp Stations</td>
-							<td>
-								<span class='icon amp-station nc'></span>
-								<span class='icon amp-station nc'></span>
-								<span class='icon amp-station tr'></span>
-								<span class='icon amp-station tr'></span>
-								<span class='icon amp-station tr'></span>
-								<span class='icon amp-station vs'></span>
-							</td>
-						</tr>
-						<tr>
-							<td class='name'>Bio Labs</td>
-							<td>
-								<span class='icon bio-lab nc'></span>
-								<span class='icon bio-lab tr'></span>
-								<span class='icon bio-lab tr'></span>
-								<span class='icon bio-lab vs'></span>
-							</td>
-						</tr>
-						<tr>
-							<td class='name'>Tech Plans</td>
-							<td>
-								<span class='icon tech-plant nc'></span>
-								<span class='icon tech-plant tr'></span>
-								<span class='icon tech-plant tr'></span>
-								<span class='icon tech-plant tr'></span>
-								<span class='icon tech-plant vs'></span>
-							</td>
-						</tr>
-					</table>
+
+					<div id="{{ $c->slug }}-chart" class="chart">
+					</div>
+
+					<div class="facility-icons">
+						<ul></ul>
+					</div>
+
 				</div>
 
 			</div>
-			<hr class='hidden-lg'>
 		</div>
 		@endforeach
 
@@ -74,22 +53,19 @@
 </div>
 @stop
 
+@section('head')
+	<link href="/css/server.css" media="all" type="text/css" rel="stylesheet">
+@append
+
 @section('scripts')
 
 <script>
-	var continents = [];
-	@foreach( $continents as $continent )
-	continents.push("{{ $continent->slug }}");
-	@endforeach
+	var tilesCdn = "{{ Config::get('ps2maps.tiles.cdn') }}";
+	var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
 </script>
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.js"></script>
-@foreach( $continents as $continent )
-	<script src="/js/{{ $continent->slug }}.js"></script>
-@endforeach
+<script src="/js/raphael-min.js"></script>
 <script src="/js/server.js"></script>
-
 @append
 
 @section('javascript')
