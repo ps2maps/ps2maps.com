@@ -15,9 +15,17 @@ h1,h2,h3,h4,h5,h6 {
 	font-family: $roboto;
 }
 
+.nowrap {
+	white-space: nowrap;
+}
+
 a:focus {
 	outline: none;
 	color: inherit;
+}
+
+.jumbotron {
+	margin-top: 20px;
 }
 
 #svg-sprites {
@@ -189,7 +197,7 @@ body.home {
 			text-align: center;
 			font-size: 20px;
 			font-weight: 700;
-			margin: 0 0 10px 0;
+			margin: 10px 0 10px 0;
 		}
 	}
 
@@ -289,6 +297,20 @@ body.home {
 		margin-bottom: 30px;
 	}
 
+}
+
+body.embeddable {
+	h1,h2,h3,h4,h5,h6 {
+		color: $brand-primary;
+	}
+
+	input.code {
+		font-family: monospace;
+	}
+
+	div.code-block {
+
+	}
 }
 
 @import 'nav/top';

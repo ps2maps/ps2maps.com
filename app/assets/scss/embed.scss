@@ -1,14 +1,94 @@
+@import 'bootstrap/variables';
+@import 'variables';
+@import 'mixins';
+
 body {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
+	font-family: $roboto;
 }
-.map {
-	width: 100%;
-	height: 100%;
+#svg-sprites {
+	display: none;
 }
+
+div.map {
+	position: relative;
+
+	& > svg {
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+	}
+}
+
+
 h1 {
 	position: absolute;
 	top: 0;
-	left: 0;
+	width: 100%;
+	text-align: center;
+	font-size: 20px;
+	color: #FFF;
+	text-shadow: 1px 2px 3px rgba(0,0,0,1);
+	z-index: 2;
+
+	@include respond(480px) {
+		font-size: 24px;
+	}
+
+	@include respond($screen-sm) {
+		font-size: 30px;
+	}
+
+}
+
+h2 {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	font-family: $roboto;
+	text-shadow: 1px 2px 3px rgba(0,0,0,1);
+	margin: 0 0 10px 5px;
+	padding: 0;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
+	z-index: 2;
+
+	svg {
+		width: 30px;
+		vertical-align: middle;
+		position: relative;
+		top: -2px;
+	}
+
+	@include respond(480px) {
+
+		font-size: 24px;
+		height: 40px;
+		line-height: 40px;
+
+		svg {
+			width: 40px;
+			top: -4px;
+		}
+	}
+
+	@include respond($screen-sm) {
+		font-size: 30px;
+		height: 50px;
+		line-height: 50px;
+
+		svg {
+			width: 50px;
+		}
+	}
+}
+
+
+
+a {
+	color: #FFF;
+	text-decoration: none;
 }

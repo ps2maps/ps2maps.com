@@ -21,6 +21,14 @@ div.sidebar {
 		right: 0;
 	}
 
+	a {
+		color: #DDD;
+
+		&:hover {
+			color: darken(#DDD, 15%);
+		}
+	}
+
 	div.scroll-container {
 		pointer-events: auto;
 		height: auto;
