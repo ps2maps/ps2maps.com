@@ -1,17 +1,16 @@
 # Sidebar hide/show
-sidebar = $$('.sidebar')
 $$('.sidebar-toggle').on('click', (e) ->
-	if sidebar.hasClass('visible')
-		sidebar.removeClass('visible')
+	if $$('.sidebar').hasClass('visible')
+		$$('.sidebar').removeClass('visible')
 		store.set('ps2maps.sidebar.visible', false)
 	else
-		sidebar.addClass('visible')
+		$$('.sidebar').addClass('visible')
 		store.set('ps2maps.sidebar.visible', true)
 )
 
 # Sidebar init hide/show
 if store.get('ps2maps.sidebar.visible', true) == true
-	sidebar.addClass('visible')
+	$$('.sidebar').addClass('visible')
 
 # Sidebar Filters - Terrain / Tiles
 $$('.control-terrain').on('change', (e) ->
@@ -23,7 +22,7 @@ $$('.control-terrain').on('change', (e) ->
 		$$('.leaflet-tile-pane').addClass('hidden')
 		store.set('ps2maps.sidebar.filter.tiles', false)
 
-).prop('checked', store.get('ps2maps.sidebar.filter.tiles')).trigger('change')
+).prop('checked', store.get('ps2maps.sidebar.filter.tiles', true)).trigger('change')
 
 # Sidebar Filters - Facilities
 $$('.control-facilities').on('change', (e) ->
@@ -35,7 +34,7 @@ $$('.control-facilities').on('change', (e) ->
 		$$('.leaflet-facilities-pane, .leaflet-facilitiesLabels-pane, .leaflet-outposts-pane, .leaflet-outpostsLabels-pane').addClass('hidden')
 		store.set('ps2maps.sidebar.filter.facilities', false)
 
-).prop('checked', store.get('ps2maps.sidebar.filter.facilities')).trigger('change')
+).prop('checked', store.get('ps2maps.sidebar.filter.facilities', true)).trigger('change')
 
 # Sidebar Filters - Lattice
 $$('.control-lattice').on('change', (e) ->
@@ -47,7 +46,7 @@ $$('.control-lattice').on('change', (e) ->
 		$$('.leaflet-lattice-pane').addClass('hidden')
 		store.set('ps2maps.sidebar.filter.lattice', false)
 
-).prop('checked', store.get('ps2maps.sidebar.filter.lattice')).trigger('change')
+).prop('checked', store.get('ps2maps.sidebar.filter.lattice', true)).trigger('change')
 
 # Sidebar Filters - Territory Control
 $$('.control-territories').on('change', (e) ->
@@ -71,7 +70,7 @@ $$('.control-territories').on('change', (e) ->
 			$$('.leaflet-regions-pane, .leaflet-regionsNoColor-pane').addClass('hidden')
 			store.set('ps2maps.sidebar.filter.territories', 'hide')
 
-).val(store.get('ps2maps.sidebar.filter.territories')).trigger('change')
+).val(store.get('ps2maps.sidebar.filter.territories', 'color')).trigger('change')
 
 # Sidebar Filters - Grid
 $$('.control-grid').on('change', (e) ->
@@ -94,7 +93,7 @@ $$('.control-grid').on('change', (e) ->
 			$$('.leaflet-grid-pane, .leaflet-gridLabels-pane, .leaflet-subGrid-pane').addClass('hidden')
 			store.set('ps2maps.sidebar.filter.grid', 'hide')
 
-).val(store.get('ps2maps.sidebar.filter.grid')).trigger('change')
+).val(store.get('ps2maps.sidebar.filter.grid', 'hide')).trigger('change')
 
 # Full Map Update
 $$('body').on('territoryControlFetched', (e, data) ->
@@ -154,35 +153,6 @@ $$('body').on('territoryControlFetched', (e, data) ->
 
 	# Map has been updated
 	$$('body').trigger('mapUpdated', data)
-)
-
-# Territory Control Chart Update
-$$('body').on('mapUpdated', (e, data) ->
-
-	# Tally up owned territories
-	# Start at -1 because Warpgates don't count
-	territories = { vs: -1, tr: -1, nc: -1 }
-	for id,facility of ps2maps.facilities
-		territories[facility.faction] += 1
-
-	# Calculate Total number of territories
-	total = territories.vs + territories.tr + territories.nc
-
-	# Convert territory ownership values to percentages
-	for faction,territory of territories
-		territories[faction] = Math.round(territory/total*100)
-		if territories[faction] < 0
-			territories[faction] = 0
-		else if territories[faction] > 100
-			territories[faction] = 100
-
-	# Update mobile sidebar nav facility control percentages
-	$$('#sidebar-wrapper .vs .percentage').text(territories.vs + "%")
-	$$('#sidebar-wrapper .tr .percentage').text(territories.tr + "%")
-	$$('#sidebar-wrapper .nc .percentage').text(territories.nc + "%")
-
-	# Update the territory control chart
-	window.updateTerritoryChart([territories.vs, territories.tr, territories.nc])
 )
 
 $$('body').on('FacilityResecured', (e,data) ->
