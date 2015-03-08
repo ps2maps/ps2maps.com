@@ -1,7 +1,7 @@
 <div class='log-window container-fluid hidden-xs hidden-ms'>
 	<div class='log-header row'>
 		<div class='col-sm-5'>
-			<span>Facility Capture Log - {{ $server->name }} {{ $continent->name }}</span> <span class="badge log-count"></span>
+			<span>Territory Control Log - {{ $server->name }} {{ $continent->name }}</span> <span class="badge log-count"></span>
 		</div>
 		<div class='col-sm-7 text-right filters hidden-xs hidden-ms'>
 
