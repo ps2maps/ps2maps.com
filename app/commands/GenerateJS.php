@@ -11,7 +11,7 @@ use Monolog\Handler\StreamHandler;
 
 class GenerateJS extends Command {
 
-	private $log;
+	private $monolog;
 	private $outputPath;
 	private $hexParams;
 	private $continents;
@@ -38,12 +38,10 @@ class GenerateJS extends Command {
 	 */
 	public function __construct()
 	{
-		$this->log = new Logger('GENERATEJS');
-		$this->log->pushHandler(new StreamHandler(storage_path().'/logs/generatejs.log', Logger::INFO));
+		$this->monolog = new Logger('GENERATEJS');
+		$this->monolog->pushHandler(new StreamHandler(storage_path().'/logs/generatejs.log', Logger::INFO));
 
 		$this->outputPath = public_path().'/js/';
-
-		$this->continents = Continent::whereEnabled('yes')->orderBy('name')->get();
 
 		// Hex size and origin
 		$width = 6.25;
@@ -67,10 +65,13 @@ class GenerateJS extends Command {
 		parent::__construct();
 	}
 
-	private function feedback($message)
+	private function log($message, $extra=array())
 	{
-		if ( $this->option('verbose') )
-			$this->info($message);
+		if ( $this->option('verbose') ) {
+			$this->info($message." ".json_encode($extra));
+		}
+
+		$this->monolog->addNotice($message, $extra);
 	}
 
 	/**
@@ -80,36 +81,33 @@ class GenerateJS extends Command {
 	 */
 	public function fire()
 	{
+		if ( !Schema::hasTable('continents') ) {
+			$this->log("Missing continents table.");
+			return false;
+		}
+
+		// Get all the continents
+		$this->continents = Continent::whereEnabled('yes')
+			->where('slug','!=','vRTraining')
+			->orderBy('name')
+			->get();
+
 		// Loop through available continents
 		foreach( $this->continents as $continent ) {
 			if ( $this->option($continent->slug) == false and $this->option('all') == false )
 				continue;
 
-			$this->feedback("Generating " . $continent->name . " script");
+			$this->log("Generating " . $continent->name . " script");
 
-			$regions = [];
-
-			// Loop through regions, calculate hex coordinates
-			foreach( $continent->regions as $region ) {
-
-				$tmp['id'] = (int) $region->id;
-				$tmp['name'] = $region->name;
-				$tmp['facility_id'] = $region->facility->id;
-				$tmp['facility_type_id'] = $region->facility->facility_type_id;
-				$tmp['currency_id'] = $region->facility->currency_id;
-				$tmp['currency_amount'] = $region->facility->currency_amoun;
-				$tmp['polygon'] = $this->calculateHexCoordinates($region);
-
-				$regions[] = $tmp;
-			}
-
-			// JSON data
-			$regions = $this->json_pretty_print(json_encode($regions));
+			// Regions
+			$this->log('Calculating Hex Regions');
+			$regions = $this->json_pretty_print(json_encode($this->getRegions($continent)));
 
 			// Facility + Facility Link data
+			$this->log('Fetching Facilities');
 			$facilities = $this->json_pretty_print(json_encode($this->getFacilities($continent)));
 
-			// Marker data
+			// Marker data here
 
 			$carbon = new Carbon\Carbon();
 
@@ -125,26 +123,24 @@ class GenerateJS extends Command {
 			fwrite($f, $output);
 			fclose($f);
 
-			$this->feedback($file." generated");
+			$this->log($file." generated");
 		}
 	}
 
-	public function getFacilities($continent)
+	public function getRegions($continent)
 	{
-		$facilities = Facility::with('FacilityType')
-			->where('continent_id','=',$continent->id)
-			->orderBy('name')
-			->get();
+		$regions = [];
+		// Loop through regions, calculate hex coordinates
+		foreach( $continent->regions as $region ) {
 
-		$output = [];
-		foreach( $facilities as $facility ) {
-			$output[$facility->id] = [
-				'name' => $facility->name,
-				'type' => (int) $facility->facility_type_id,
-				'loc' => [ (float) $facility->z, ((float) $facility->x)*-1 ],
-			];
+			$tmp['facility_id'] = (int)$region->facility->id;
+			$tmp['currency'] = (int)$region->facility->currency_amount;
+			$tmp['currency_id'] = (int)$region->facility->currency_id;
+			$tmp['points'] = $this->calculateHexCoordinates($region);
+
+			$regions[(int)$region->id] = $tmp;
 		}
-		return $output;
+		return $regions;
 	}
 
 	public function calculateHexCoordinates($region)
@@ -176,6 +172,74 @@ class GenerateJS extends Command {
 		return $coordinates;
 	}
 
+	public function getFacilities($continent)
+	{
+		$output = [];
+
+		// Iterate through the Facility types
+		foreach( FacilityType::orderBy('name')->get() as $type ) {
+
+			// Get the markers for the facilities nnnnnnnnnnnnnn
+			$facilities = Facility::with('FacilityType')
+				->with('linkedFacilities')
+				->where('continent_id','=',$continent->id)
+				->where('facility_type_id','=',$type->id)
+				->orderBy('name')
+				->get();
+
+			// Skip if no markers exist for that type
+			if ( count($facilities) == 0 ) {
+				$this->log("No ".$type->name." facilities found.");
+				continue;
+			}
+
+			$output[$type->slug] = [];
+
+			// Add the facilities to the output
+			foreach( $facilities as $facility ) {
+
+				// Ignore if Warpgate facility has no position
+				// if ( strpos($facility->name, 'Warpgate') !== false and (is_null($facility->lat) or is_null($facility->lng) or $facility->lat == 0 or $facility->lng == 0 )) {
+				// 	$this->log($facility->name." has no position");
+				// 	continue;
+				// }
+
+				// Facility Name
+				$output[$type->slug][$facility->id] = [
+					'name' => $facility->name
+				];
+
+				// Facility Position
+				if ( !is_null($facility->lat) or !is_null($facility->lng) ) {
+					$x = (float)$facility->lat;
+					$y = (float)$facility->lng;
+					// $output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat, (float)$facility->lng ];
+				} else {
+					$x = (float)$facility->lat_override;
+					$y = (float)$facility->lng_override;
+					// $output[$type->slug][$facility->id]['xy'] = [(float)$facility->lat_override, (float)$facility->lng_override ];
+				}
+				if ( !is_null($x) and !is_null($y) and $x != 0 and $y != 0 ) {
+					$output[$type->slug][$facility->id]['xy'] = [$x,$y];
+				}
+
+				// Lattice Links
+				if ( count($facility->linkedFacilities) > 0 ) {
+					$output[$type->slug][$facility->id]['links'] = [];
+					foreach( $facility->linkedFacilities as $linkedFacility ) {
+						$output[$type->slug][$facility->id]['links'][] = (int)$linkedFacility->id;
+					}
+				}
+			}
+		}
+		return $output;
+	}
+
+	public function getLattice($continent)
+	{
+
+	}
+
 	protected function getArguments()
 	{
 		return array(
@@ -185,8 +249,10 @@ class GenerateJS extends Command {
 	protected function getOptions()
 	{
 		$options[] = ['all', null, InputOption::VALUE_NONE, 'Generate scripts for all continents.', null];
-		foreach( $this->continents as $continent ) {
-			$options[] = [$continent->slug, null, InputOption::VALUE_NONE, 'Generate script for '.$continent->name.'.', null];
+		if ( Schema::hasTable('continents') ) {
+			foreach( Continent::where('enabled','=','yes')->orderBy('name')->get() as $continent ) {
+				$options[] = [$continent->slug, null, InputOption::VALUE_NONE, 'Generate script for '.$continent->name.'.', null];
+			}
 		}
 		return $options;
 	}

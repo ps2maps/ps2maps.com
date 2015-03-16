@@ -29,7 +29,7 @@ return array(
 	|
 	*/
 
-	'lifetime' => 10080, // 1 week = 10080 minutes
+	'lifetime' => 43829, // 1 month
 
 	'expire_on_close' => false,
 
@@ -96,7 +96,7 @@ return array(
 	|
 	*/
 
-	'cookie' => 'laravel_session',
+	'cookie' => 'ps2maps_session',
 
 	/*
 	|--------------------------------------------------------------------------

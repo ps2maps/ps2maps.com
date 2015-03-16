@@ -11,26 +11,60 @@ class Facility extends Eloquent
 		'continent_id',
 		'facility_type_id',
 		'region_id',
-		'x',
-		'y',
-		'z',
 		'currency_amount',
 		'currency_id',
+		'lat',
+		'lng',
+		'elevation',
+		'lat_override',
+		'lng_override',
+		'elevation_override',
 	);
 
-	public function setXAttribute($value)
+	private $precision = 2;
+
+	public function setLatAttribute($value)
 	{
-		$this->attributes['x'] = number_format(round($value, 2),2,'.','');
+		$this->attributes['lat'] = $this->numberFormat($value);
 	}
 
-	public function setYAttribute($value)
+	public function setLngAttribute($value)
 	{
-		$this->attributes['y'] = number_format(round($value, 2),2,'.','');
+		$this->attributes['lng'] = $this->numberFormat($value);
 	}
 
-	public function setZAttribute($value)
+	public function setElevationAttribute($value)
 	{
-		$this->attributes['z'] = number_format(round($value, 2),2,'.','');
+		$this->attributes['elevation'] = $this->numberFormat($value);
+	}
+
+	public function setLatOverrideAttribute($value)
+	{
+		$this->attributes['lat_override'] = $this->numberFormat($value);
+	}
+
+	public function setLngOverrideAttribute($value)
+	{
+		$this->attributes['lng_override'] = $this->numberFormat($value);
+	}
+
+	public function setElevationOverrideAttribute($value)
+	{
+		$this->attributes['elevation_override'] = $this->numberFormat($value);
+	}
+
+	private function numberFormat($value)
+	{
+		if ( is_null($value) ) {
+			return $value;
+		}	else {
+			return number_format(round($value, $this->precision),$this->precision,'.','');
+		}
+	}
+
+	public function setNameAttribute($value)
+	{
+		$this->attributes['name'] = trim($value);
 	}
 
 	public function continent()

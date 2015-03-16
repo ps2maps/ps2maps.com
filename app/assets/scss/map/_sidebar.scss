@@ -1,0 +1,180 @@
+
+div.sidebar {
+	$width: 160px;
+
+	display: none;
+	z-index: 1;
+	color: #CCC;
+	width: $width;
+	position: absolute;
+	right: - $width;
+	height: 100%;
+	pointer-events: none;
+	@include transition(right 0.25s ease);
+	text-shadow: 1px 1px 1px #000;
+
+	@include respond($screen-sm) {
+		display: block;
+	}
+
+	&.visible {
+		right: 0;
+	}
+
+	a {
+		color: #DDD;
+
+		&:hover {
+			color: darken(#DDD, 15%);
+		}
+	}
+
+	div.scroll-container {
+		pointer-events: auto;
+		height: auto;
+		overflow-y: auto;
+		overflow-x: hidden;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		margin-top: 45px;
+		padding-bottom: 31px;
+	}
+
+	div.section {
+		background-color: rgba(5, 17, 18, 0.8);
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+		border-width: 1px 0 1px 1px;
+		border-color: #333;
+		border-style: solid;
+		padding: 5px;
+		margin-bottom: 5px;
+	}
+
+
+	h2 {
+		text-align: center;
+		margin: 0;
+		padding: 0;
+		font-size: 14px;
+	}
+
+
+	div.territory-control {
+
+		.chart {
+			width: $width - 10;
+			height: $width - 10;
+
+			.axis {
+				path,
+				line {
+					fill: none;
+					stroke: white;
+					shape-rendering: crispEdges;
+				}
+				text {
+					font-size: 11px;
+					fill: white;
+				}
+			}
+		}
+
+		.faction {
+			display: none;
+		}
+
+		&.nc,&.tr,&.vs {
+			.chart {
+				display: none;
+			}
+		}
+
+		&.nc {
+			.faction.nc {
+				display: block;
+			}
+		}
+		&.tr {
+			.faction.tr {
+				display: block;
+			}
+		}
+		&.vs {
+			.faction.vs {
+				display: block;
+			}
+		}
+	}
+
+	div.facility-details {
+		position: relative;
+		overflow: hidden;
+		display: none;
+
+		h2 {
+			position: relative;
+			z-index: 2;
+			text-align: center;
+		}
+
+		div.type {
+			position: relative;
+			z-index: 2;
+			line-height: 20px;
+			padding-top: 5px;
+
+			.icon {
+				width: 20px;
+				height: 20px;
+
+				svg {
+					margin-bottom: -5px;
+				}
+			}
+			.name {
+				height: 20px;
+				line-height: 20px;
+			}
+		}
+		div.faction {
+			position: relative;
+			z-index: 2;
+			padding-top: 3px;
+		}
+		div.faction-logo {
+			display: none;
+			position: absolute;
+			top: -30px;
+			right: 0;
+			width: 100px;
+			height: 100px;
+			z-index: 1;
+			opacity: 0.5;
+
+			svg {
+				width: 150px;
+			}
+		}
+	}
+
+	div.filter-controls {
+
+		label {
+			font-weight: normal;
+		}
+
+		input[type=checkbox] {
+			position: relative;
+			top: 2px;
+		}
+
+		select {
+			width: 100%;
+			color: #000;
+			margin-bottom: 7px;
+		}
+	}
+}

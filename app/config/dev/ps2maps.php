@@ -1,7 +1,9 @@
 <?php
 
-return array(
+return append_config([
 
-	'tiles-cdn' => '//cdn.ps2maps.gunsight',
+	'tiles' => [
+		'cdn' => '//cdn.ps2maps.gunsight',
+	],
 
-);
+]);

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html class='no-js'>
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -19,25 +16,47 @@
 	<link rel="canonical" href="{{ Request::url() }}" />
 
 	<link href="/css/bootstrap.css" rel="stylesheet" media="screen"/>
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" media="all" type="text/css" rel="stylesheet">
 	<link href="/css/main.css" rel="stylesheet" type="text/css" charset="utf-8"/>
-	<link href='//fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+
 	@yield('styles')
 
 	<script src='/js/modernizr.custom.js'></script>
 
 	@yield('head')
+
 </head>
-<body>
+<body class="@if(isset($bodyClass)){{$bodyClass}}@endif">
 
-	@include('menu')
+	<div id='svg-sprites'><?php require_once(public_path().'/img/sprites.svg'); ?></div>
 
-	@yield('content')
+	@include('factionColors')
+
+	<div id="wrapper" class="">
+
+		@include('nav/sidebar')
+
+		<div id="page-content-wrapper">
+
+			@include('nav/top')
+
+			@yield('content')
+
+		</div>
+
+	</div>
 
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="js/jquery-2.1.0.min.js"><\/script>')</script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+	<script src="/js/plugins.js"></script>
+	<script src="/js/main.js"></script>
 
 	@yield('scripts')
+
 
 	<script>
 		@yield('javascript')
@@ -47,7 +66,7 @@
 		});
 	</script>
 
-	@include('ga')
+	@include('analytics')
 
 </body>
 </html>

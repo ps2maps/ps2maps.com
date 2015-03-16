@@ -68,13 +68,14 @@ App::down(function()
 	$whitelist = array(
 		'192.168.1.51',
 		'24.54.148.205',
+		'67.217.9.225',
 	);
 
 	if ( !in_array($_SERVER['REMOTE_ADDR'], $whitelist) ) {
 		return Response::make("ps2maps.com will be right back...", 503);
 	}
 
-	echo "maintenance mode<br/>";
+	echo "<!-- Maintenance Mode -->\n";
 });
 
 /*

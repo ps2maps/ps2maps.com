@@ -1,0 +1,94 @@
+@import 'bootstrap/variables';
+@import 'variables';
+@import 'mixins';
+
+body {
+	background-color: #051111;
+	color: #CCC;
+}
+
+h1 {
+	font-weight: 700;
+	text-align: center;
+	font-size: 26px;
+}
+
+hr {
+	border-color: hsl(0,0%,70%);
+}
+
+div.continent {
+	margin-top: 10px;
+
+	a {
+		display: block;
+		border: 2px dashed rgba(0,0,0,0);
+		text-decoration: none;
+		color: $brand-primary;
+
+		&:hover {
+			border-color: #555;
+
+			h2 {
+			}
+		}
+	}
+}
+
+h2 {
+	margin: 0;
+	font-size: 20px;
+}
+
+div.last-activity {
+	margin-bottom: 10px;
+}
+
+div.chart svg text.percentage {
+	font-size: 50px;
+	@include respond(480px) {
+		font-size: 40px;
+	}
+	@include respond(600px) {
+		font-size: 30px;
+	}
+	@include respond($screen-sm) {
+		font-size: 40px;
+	}
+	@include respond($screen-md) {
+		font-size: 50px;
+	}
+}
+
+div.facility-icons {
+
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		text-align: center;
+	}
+
+	li {
+		width: 17%;
+		display: inline-block;
+		padding: 3px;
+
+		@include respond(480px) {
+			width: 12%;
+		}
+
+		@include respond(600px) {
+			width: 10%;
+		}
+
+		@include respond($screen-sm) {
+			width: 17%;
+		}
+	}
+}
+
+
+.map {
+	width: 100%;
+}

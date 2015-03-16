@@ -1,0 +1,116 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "bourbon/bourbon";
+@import "variables";
+@import "mixins";
+
+body {
+	overflow: hidden;
+	margin-top: 0;
+}
+
+header.navbar ul.nav > li.icon.sidebar {
+	display: block;
+}
+
+
+// Move Zoom control down slightly
+.leaflet-top .leaflet-control {
+	margin-top: 61px ;
+}
+
+// Translucent Navbar
+header.navbar {
+	background-color: rgba(5, 17, 18, 0.8);
+	position: absolute;
+	width: 100%;
+}
+
+#sidebar-wrapper {
+	background-color: rgba(5, 17, 18, 0.8);
+}
+
+// Hide User Echo widget in small layouts
+.ue-tab-container {
+	opacity: 0;
+	@include transition(opacity 0.25s ease-in-out);
+
+	@include respond($screen-sm) {
+		opacity: 1;
+	}
+}
+
+#map {
+	background-color: #051111;
+	display: block;
+	position:absolute;
+	height:auto;
+	bottom:0;
+	top:0;
+	left:0;
+	right:0;
+	z-index: 1;
+}
+
+@import "map/panes";
+
+@import "map/log";
+
+@import "map/sidebar";
+
+@import "map/sprites";
+
+// Leaftlet.label
+.leaflet-label {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	z-index: 6;
+	color: #FFF;
+	width: 100px;
+	position: absolute;
+	text-align: center;
+	left: -50px;
+	top: 14px;
+	font-size: 12px;
+	line-height: 16px;
+	font-family: 'Roboto Condensed';
+	text-shadow: #000 2px 2px 1px;
+	pointer-events: none;
+}
+
+.label-capture-point {
+	top: -10px;
+	left: -41px;
+	font-size: 16px;
+}
+
+// Leaflet.divLayer
+.leaflet-divlayer {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	width: 100px;
+	font-family: 'Roboto Condensed';
+	text-shadow: #000 2px 2px 1px;
+	color: #fff;
+	font-size: 16px;
+	line-height: 18px;
+	margin-left: -50px;
+	margin-top: -8px;
+	text-align: center;
+	pointer-events: none;
+	position: absolute;
+}
+
+.gridLabel {
+	width: 50px;
+	font-size: 12px;
+	line-height: 12px;
+	margin-left: 2px;
+	margin-top: 2px;
+	text-align: left;
+	color: #FFF;
+}

@@ -1,53 +1,226 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
-// var sass = require('gulp-ruby-sass');
-// var clean = require('gulp-clean');
-// var jshint = require('gulp-jshint');
-// var uglify = require('gulp-uglify');
+var gp = require('gulp-load-plugins')({
+	pattern: ['gulp-*', 'gulp.*', '*']
+});
 
-var sources = {
-	js : {
-		map : [
-			'public/js/map/init.js',
-			'public/js/map/functions.js',
-			'public/js/map/create-map.js',
-			'public/js/map/create-regions.js',
-			'public/js/map/create-markers.js',
-			'public/js/map/log.js',
+// Handle Errors
+var errorFunction = function(error)
+{
+	// gp.gutil.beep();
+	console.log(error);
+}
+
+var build = "./build";
+var debug = false
+
+var src = {
+	build: [
+		'./artisan',
+		'./app/**/*',
+		'./bootstrap/**/*',
+		'./public/**/*',
+		// './vendor/**/*',
+		'!./app/{assets,assets/**}',
+		'!./app/storage/cache/**',
+		'!./app/storage/{debugbar,debugbar/**}',
+		'!./app/storage/logs/**',
+		'!./app/storage/sessions/**',
+		'!./app/storage/views/**',
+		'!./public/js/{old,old/**}',
+		'!./public/{packages,packages/**}',
+	],
+	buildImages: [
+		'./build/public/img/**/*.jpg',
+		'./build/public/img/**/*.jpeg',
+		'./build/public/img/**/*.png',
+		'./build/public/img/**/*.gif',
+	],
+	coffee: {
+		continent: [
+			'app/assets/coffee/continent/map.coffee',
+			'app/assets/coffee/continent/regions.coffee',
+			'app/assets/coffee/continent/markers.coffee',
+			// 'app/assets/coffee/continent/lattice.coffee',
+			// 'app/assets/coffee/continent/associations.coffee',
+			// 'app/assets/coffee/continent/grid.coffee',
+			// 'app/assets/coffee/continent/log.coffee',
+			// 'app/assets/coffee/continent/d3-charts.coffee',
+			// 'app/assets/coffee/continent/event-handlers.coffee',
 		],
-		main : [
-			'public/js/main/script.js',
-			'public/js/main/cache.js'
+		continentDebug: 'app/assets/coffee/continent/debug.coffee',
+		server: [
+			'app/assets/coffee/server/icons.coffee',
+			'app/assets/coffee/server/maps.coffee',
+			'app/assets/coffee/server/d3.coffee',
+			'app/assets/coffee/server/event-handlers.coffee',
+		],
+		embed: [
+			'app/assets/coffee/embed/map.coffee',
+			'app/assets/coffee/embed/event-handlers.coffee',
+		],
+		main: [
+			'app/assets/coffee/main/ps2maps.coffee',
+			'app/assets/coffee/main/census.coffee',
+			'app/assets/coffee/main/search.coffee',
+			'app/assets/coffee/main/event-handlers.coffee',
+			'app/assets/coffee/main/init.coffee',
+		]
+	},
+	js: {
+		plugins: [
+			'app/assets/js/plugins/jquery.selector-cache.js',
+			'app/assets/js/plugins/json.js',
+			'app/assets/js/plugins/jquery.svg.js',
+			'app/assets/js/plugins/reconnecting-websocket.js',
+			'app/assets/js/plugins/store2.js',
+			'app/assets/js/plugins/store.cache.js',
+			'app/assets/js/plugins/typeahead.jquery.js',
+		],
+		mapPlugins: [
+			'app/assets/js/mapPlugins/*.js',
+			]
+	},
+	sass: {
+		all: [
+		'app/assets/scss/**/*.scss',
 		]
 	}
 };
 
-// map.js build
-gulp.task('map.js', function(){
-	return gulp.src(sources.js.map)
-		.pipe(concat('map.js'))
+// continent.js (CoffeeScript)
+gulp.task('continent.js', function(){
+	var source = src.coffee.continent;
+	if (debug == true) {
+		source.push(src.coffee.continentDebug);
+	}
+	return gulp.src(source)
+	.pipe(gp.plumber({
+		errorHandler: errorFunction
+	}))
+	.pipe(gp.coffee())
+	.pipe(gp.concat('continent.js'))
+	.pipe(gulp.dest('./public/js'));
+});
+
+// server.js Coffeescript
+gulp.task('server.js', function(){
+	return gulp.src(src.coffee.server)
+		.pipe(gp.plumber({
+		errorHandler: errorFunction
+		}))
+		.pipe(gp.coffee())
+		.pipe(gp.concat('server.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
-// script.js build
+// embed.js Coffeescript
+gulp.task('embed.js', function(){
+	return gulp.src(src.coffee.embed)
+		.pipe(gp.plumber({
+		errorHandler: errorFunction
+		}))
+		.pipe(gp.coffee())
+		.pipe(gp.concat('embed.js'))
+		.pipe(gulp.dest('./public/js'));
+});
+
+// main.js
 gulp.task('main.js', function() {
-	return gulp.src(sources.js.main)
-		.pipe(concat('main.js'))
-		.pipe(gulp.dest('./public/js'));
+	return gulp.src(src.coffee.main)
+	.pipe(gp.plumber({
+		errorHandler: errorFunction
+	}))
+	.pipe(gp.coffee())
+	.pipe(gp.concat('main.js'))
+	.pipe(gulp.dest('./public/js'));
 });
 
-// Sass
-// var sass_sources = ['./public/scss/*.scss'];
-// gulp.task('sass', function() {
-// 	return gulp.src('./public/scss/map.scss')
-// 		.pipe(sass())
-// 		.pipe(gulp.dest('./public/css'));
-// });
+// plugins.js
+gulp.task('plugins.js', function() {
+	return gulp.src(src.js.plugins)
+	.pipe(gp.concat('plugins.js'))
+	.pipe(gulp.dest('./public/js'));
+});
+
+// mapPlugins.js
+gulp.task('mapPlugins.js', function() {
+	return gulp.src(src.js.mapPlugins)
+	.pipe(gp.concat('map-plugins.js'))
+	.pipe(gulp.dest('./public/js'));
+});
+
+// SCSS
+gulp.task('sass', function() {
+	return gulp.src(src.sass.all)
+		.pipe(gp.sass({
+			sourceComments: true
+		}))
+		.pipe(gp.autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: false
+		}))
+		.pipe(gulp.dest('./public/css'));
+});
+
+// Build Images
+// Optimize and compress images
+gulp.task('build:images', function(){
+	return gulp.src([build + '/public/img/**/*.jpg', build + '/public/img/**/*.png'])
+		.pipe(gp.imagemin({
+			optimizationLevel: 5,
+			progressive: true,
+			interlaced: true,
+			verbose: true,
+			use: [gp.imageminPngquant()]
+		}))
+		.pipe(gulp.dest(build + "/public/img"));
+});
+
+// Build JavaScript
+gulp.task('build:js', function(){
+	return gulp.src(build + '/public/js/**/*.js')
+		.pipe(gp.ignore.exclude('*.min.js'))
+		.pipe(gp.bytediff.start())
+		.pipe(gp.uglify())
+		.pipe(gp.bytediff.stop())
+		.pipe(gulp.dest(build + '/public/js'));
+});
+
+// Clean (delete) the build directory
+gulp.task('build:clean', function(){
+	return gp.del.sync(build);
+});
+
+// Copy Build files to build directory
+gulp.task('build:copy', function(){
+
+	return gulp.src(src.build, {base:'.'})
+		.pipe(gulp.dest(build));
+});
+
+gulp.task('build:zip', function(){
+	return gulp.src(build + '/**')
+		.pipe(gp.zip('build.zip'))
+		.pipe(gulp.dest('.'));
+});
+
+// Master build task
+gulp.task('build', function(cb){
+
+	return gp.runSequence('build:clean', 'build:copy', 'build:js', 'build:images', 'build:zip', cb);
+
+});
 
 // Watch
 gulp.task('watch', function() {
-	gulp.watch(sources.js.map, ['map.js']);
-	gulp.watch(sources.js.main, ['main.js']);
+	gulp.watch(src.coffee.continent, ['continent.js']);
+	gulp.watch(src.coffee.server, ['server.js']);
+	gulp.watch(src.coffee.embed, ['embed.js']);
+	gulp.watch(src.coffee.main, ['main.js']);
+	gulp.watch(src.js.plugins, ['plugins.js']);
+	gulp.watch(src.js.mapPlugins, ['mapPlugins.js']);
+	gulp.watch(src.sass.all, ['sass']);
 });
 
-gulp.task('default', []);
+gulp.task('default', ['sass', 'continent.js', 'main.js', 'plugins.js', 'mapPlugins.js', 'server.js', 'embed.js', 'watch']);
+

@@ -1,18 +1,35 @@
 <?php
 
+// Route::group(['before'=>'auth'], function(){
+// 	Route::controller('admin', 'AdminController');
+// });
+
+// Fetch search sources
+Route::post('searchSources', 'PageController@postSearchSources');
+
+// Route::get('donate', function(){
+// 	return View::make('donate');
+// });
+//
+// Route::get('test', function(){
+// 	return View::make('embed_test');
+// });
+
+// Embedding instructions
+Route::get('embeddable', 'PageController@getEmbeddable');
+
+// Settings
+Route::get('settings', 'PageController@getSettings');
+Route::post('settings', 'PageController@postSettings');
+
 // Servers and Continents
-Route::get('{server}/{continent}', 'ServerController@continent');
-Route::get('{server}', 'ServerController@server');
+Route::get('{server}/{continent}/embed', 'MapController@embed');
+Route::get('{server}/{continent}', 'MapController@continent');
+Route::get('{server}', 'MapController@server');
 
-// Embedded maps
-Route::get('embed/{server}/{continent}', 'ServerController@embed');
 
-// Blog
-Route::get('blog/rss', 'BlogController@rss');
-Route::get('blog/{slug}', 'BlogController@article');
-Route::get('blog', 'BlogController@index');
 
 // Home
-Route::get('/', 'HomeController@getIndex');
+Route::get('/', 'PageController@getIndex');
 
 

@@ -1,0 +1,135 @@
+// Pane styles
+div.leaflet-pane {
+	@include transition(opacity 0.25s ease-in-out);
+	&.visible {
+		display: block;
+	}
+}
+
+// Default pane attributes
+.leaflet-regions-pane {
+	opacity: 1;
+	z-index: 4;
+}
+.leaflet-regionsNoColor-pane {
+	z-index: 4;
+}
+.leaflet-lattice-pane {
+	z-index: 5;
+	opacity: 0.8;
+}
+.leaflet-facilities-pane {
+	z-index: 6;
+}
+.leaflet-outposts-pane {
+	z-index: 6;
+}
+.leaflet-facilitiesLabels-pane {
+	z-index: 7;
+}
+.leaflet-outpostsLabels-pane {
+	z-index: 7;
+}
+.leaflet-grid-pane {
+	opacity: 0.4;
+}
+.leaflet-subGrid-pane {
+	opacity: 0.2;
+}
+.leaflet-gridLabels-pane {
+	opacity: 1;
+}
+
+// Opacity per map zoom level
+.leaflet-map-pane[data-zoom='0'] {
+	.leaflet-lattice-pane,
+	// .leaflet-facilities-pane,
+	.leaflet-facilitiesLabels-pane,
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: none;
+	}
+}
+
+.leaflet-map-pane[data-zoom='1'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: none;
+	}
+}
+
+.leaflet-map-pane[data-zoom='2'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+}
+
+.leaflet-map-pane[data-zoom='3'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+}
+
+.leaflet-map-pane[data-zoom='4'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-regions-pane { opacity: 1; }
+}
+
+.leaflet-map-pane[data-zoom='5'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-lattice-pane { opacity: 0.6; }
+	.leaflet-regions-pane { opacity: 0.8; }
+}
+
+.leaflet-map-pane[data-zoom='6'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-lattice-pane { opacity: 0.4; }
+	.leaflet-regions-pane { opacity: 0.6; }
+}
+
+.leaflet-map-pane[data-zoom='7'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-lattice-pane { opacity: 0.2; }
+	.leaflet-regions-pane { opacity: 0.4; }
+}
+
+.leaflet-map-pane[data-zoom='8'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-lattice-pane { opacity: 0.2; }
+	.leaflet-regions-pane { opacity: 0.2; }
+}
+
+.leaflet-map-pane[data-zoom='9'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-lattice-pane { opacity: 0.2; }
+	.leaflet-regions-pane { opacity: 0.2; }
+}
+
+.leaflet-map-pane[data-zoom='10'] {
+	.leaflet-outposts-pane,
+	.leaflet-outpostsLabels-pane {
+		display: block;
+	}
+	.leaflet-lattice-pane { opacity: 0.2; }
+	.leaflet-regions-pane { opacity: 0.2; }
+}
