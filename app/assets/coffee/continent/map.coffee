@@ -1,24 +1,22 @@
 # Custom Projection
-L.Projection.LatLon =
+L.Projection.PlanetSide2 =
 	project: (latlng) ->
-		new L.Point(latlng.lat, latlng.lng)
+		new L.Point(latlng.lng/32, latlng.lat/32)
 	unproject: (point) ->
-		new L.LatLng(point.x, point.y)
-	bounds: L.bounds([0,0],[256,256])
+		new L.LatLng(point.y*32, point.x*32)
+	bounds: L.bounds([-128,-128],[128,128])
 
 # Custom CRS
-L.CRS.Screen = L.extend({}, L.CRS, {
-	projection: L.Projection.LatLon
-	transformation: new L.Transformation(1, 0, 1, 0)
+L.CRS.PlanetSide2 = L.extend {}, L.CRS,
+	projection: L.Projection.PlanetSide2
+	transformation: new L.Transformation(1, 0, -1, 0)
 	scale: (zoom) ->
 		Math.pow(2, zoom)
-	wrapLat: null
-	wrapLng: null
-})
+
 
 # Create Map
 mapOptions =
-	crs: L.CRS.Screen
+	crs: L.CRS.PlanetSide2
 	minZoom: 0
 	maxZoom: 10
 	maxNativeZoom: 5
@@ -29,7 +27,7 @@ ps2maps.map = L.map('map', mapOptions)
 # .on('contextmenu', function(e){})
 
 # Add Tile Layer
-tilesUrl = tilesCdn + "/tiles/" + continent.slug + "/latest/zoom{z}/tile_{z}_{x}_{y}.jpg";
+tilesUrl = tilesCdn + "/tiles/" + continent.slug + "/test/zoom{z}/" + continent.slug + "_{z}_{x}_{y}.jpg";
 layerOptions =
 	subdomains: '0123'
 	noWrap: true
@@ -38,29 +36,6 @@ layerOptions =
 	maxZoom: mapOptions.maxZoom
 	maxNativeZoom: 5
 L.tileLayer(tilesUrl, layerOptions).addTo(ps2maps.map)
-
-# Canvas Tiles (for debugging)
-# coordinateTiles = L.gridLayer()
-# coordinateTiles.createTile = (coords) ->
-# 	tile = document.createElement 'canvas'
-# 	tile.width = tile.height = 256
-
-# 	context = tile.getContext '2d'
-
-# 	context.beginPath();
-# 	context.rect 0, 0, 256, 256
-# 	context.lineWidth = 2
-# 	context.strokeStyle = 'white'
-# 	context.closePath()
-# 	context.stroke()
-
-# 	context.font = "12px Arial"
-# 	context.fillStyle = 'white'
-# 	context.fillText "x,y " + coords.x + "," + coords.y, 20, 20
-# 	context.fillText "z " + coords.z, 20, 40
-
-# 	return tile
-# coordinateTiles.addTo(ps2maps.map)
 
 # Determine map view from URI hash
 view = window.location.hash.slice(1,-1).split(',')
