@@ -6,11 +6,12 @@ var gp = require('gulp-load-plugins')({
 // Handle Errors
 var errorFunction = function(error)
 {
-	gutil.beep();
+	// gp.gutil.beep();
 	console.log(error);
 }
 
 var build = "./build";
+var debug = false
 
 var src = {
 	build: [
@@ -18,12 +19,11 @@ var src = {
 		'./app/**/*',
 		'./bootstrap/**/*',
 		'./public/**/*',
-		'./vendor/**/*',
+		// './vendor/**/*',
 		'!./app/{assets,assets/**}',
 		'!./app/storage/cache/**',
 		'!./app/storage/{debugbar,debugbar/**}',
 		'!./app/storage/logs/**',
-		'!./app/storage/meta/**',
 		'!./app/storage/sessions/**',
 		'!./app/storage/views/**',
 		'!./public/js/{old,old/**}',
@@ -40,13 +40,14 @@ var src = {
 			'app/assets/coffee/continent/map.coffee',
 			'app/assets/coffee/continent/regions.coffee',
 			'app/assets/coffee/continent/markers.coffee',
-			'app/assets/coffee/continent/lattice.coffee',
-			'app/assets/coffee/continent/associations.coffee',
-			'app/assets/coffee/continent/grid.coffee',
-			'app/assets/coffee/continent/log.coffee',
-			'app/assets/coffee/continent/d3-charts.coffee',
-			'app/assets/coffee/continent/event-handlers.coffee',
+			// 'app/assets/coffee/continent/lattice.coffee',
+			// 'app/assets/coffee/continent/associations.coffee',
+			// 'app/assets/coffee/continent/grid.coffee',
+			// 'app/assets/coffee/continent/log.coffee',
+			// 'app/assets/coffee/continent/d3-charts.coffee',
+			// 'app/assets/coffee/continent/event-handlers.coffee',
 		],
+		continentDebug: 'app/assets/coffee/continent/debug.coffee',
 		server: [
 			'app/assets/coffee/server/icons.coffee',
 			'app/assets/coffee/server/maps.coffee',
@@ -88,70 +89,73 @@ var src = {
 
 // continent.js (CoffeeScript)
 gulp.task('continent.js', function(){
-	return gulp.src(src.coffee.continent)
-	.pipe(plumber({
+	var source = src.coffee.continent;
+	if (debug == true) {
+		source.push(src.coffee.continentDebug);
+	}
+	return gulp.src(source)
+	.pipe(gp.plumber({
 		errorHandler: errorFunction
 	}))
-	.pipe(coffee())
-	.pipe(concat('continent.js'))
+	.pipe(gp.coffee())
+	.pipe(gp.concat('continent.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // server.js Coffeescript
 gulp.task('server.js', function(){
 	return gulp.src(src.coffee.server)
-		.pipe(plumber({
+		.pipe(gp.plumber({
 		errorHandler: errorFunction
 		}))
-		.pipe(coffee())
-		.pipe(concat('server.js'))
+		.pipe(gp.coffee())
+		.pipe(gp.concat('server.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
 // embed.js Coffeescript
 gulp.task('embed.js', function(){
 	return gulp.src(src.coffee.embed)
-		.pipe(plumber({
+		.pipe(gp.plumber({
 		errorHandler: errorFunction
 		}))
-		.pipe(coffee())
-		.pipe(concat('embed.js'))
+		.pipe(gp.coffee())
+		.pipe(gp.concat('embed.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
 // main.js
 gulp.task('main.js', function() {
 	return gulp.src(src.coffee.main)
-	.pipe(plumber({
+	.pipe(gp.plumber({
 		errorHandler: errorFunction
 	}))
-	.pipe(coffee())
-	.pipe(concat('main.js'))
+	.pipe(gp.coffee())
+	.pipe(gp.concat('main.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // plugins.js
 gulp.task('plugins.js', function() {
 	return gulp.src(src.js.plugins)
-	.pipe(concat('plugins.js'))
+	.pipe(gp.concat('plugins.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // mapPlugins.js
 gulp.task('mapPlugins.js', function() {
 	return gulp.src(src.js.mapPlugins)
-	.pipe(concat('map-plugins.js'))
+	.pipe(gp.concat('map-plugins.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // SCSS
 gulp.task('sass', function() {
 	return gulp.src(src.sass.all)
-		.pipe(plumber({
-			errorHandler: errorFunction
+		.pipe(gp.sass({
+			sourceComments: true
 		}))
-		.pipe(sass())
-		.pipe(autoprefixer({
+		.pipe(gp.autoprefixer({
 			browsers: ['last 2 versions'],
 			cascade: false
 		}))
