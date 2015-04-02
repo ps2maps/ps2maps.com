@@ -89,69 +89,69 @@ var src = {
 // continent.js (CoffeeScript)
 gulp.task('continent.js', function(){
 	return gulp.src(src.coffee.continent)
-	.pipe(plumber({
+	.pipe(gp.plumber({
 		errorHandler: errorFunction
 	}))
-	.pipe(coffee())
-	.pipe(concat('continent.js'))
+	.pipe(gp.coffee())
+	.pipe(gp.concat('continent.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // server.js Coffeescript
 gulp.task('server.js', function(){
 	return gulp.src(src.coffee.server)
-		.pipe(plumber({
-		errorHandler: errorFunction
+		.pipe(gp.plumber({
+			errorHandler: errorFunction
 		}))
-		.pipe(coffee())
-		.pipe(concat('server.js'))
+		.pipe(gp.coffee())
+		.pipe(gp.concat('server.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
 // embed.js Coffeescript
 gulp.task('embed.js', function(){
 	return gulp.src(src.coffee.embed)
-		.pipe(plumber({
+		.pipe(gp.plumber({
 		errorHandler: errorFunction
 		}))
-		.pipe(coffee())
-		.pipe(concat('embed.js'))
+		.pipe(gp.coffee())
+		.pipe(gp.concat('embed.js'))
 		.pipe(gulp.dest('./public/js'));
 });
 
 // main.js
 gulp.task('main.js', function() {
 	return gulp.src(src.coffee.main)
-	.pipe(plumber({
+	.pipe(gp.plumber({
 		errorHandler: errorFunction
 	}))
-	.pipe(coffee())
-	.pipe(concat('main.js'))
+	.pipe(gp.coffee())
+	.pipe(gp.concat('main.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // plugins.js
 gulp.task('plugins.js', function() {
 	return gulp.src(src.js.plugins)
-	.pipe(concat('plugins.js'))
+	.pipe(gp.concat('plugins.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // mapPlugins.js
 gulp.task('mapPlugins.js', function() {
 	return gulp.src(src.js.mapPlugins)
-	.pipe(concat('map-plugins.js'))
+	.pipe(gp.concat('map-plugins.js'))
 	.pipe(gulp.dest('./public/js'));
 });
 
 // SCSS
 gulp.task('sass', function() {
 	return gulp.src(src.sass.all)
-		.pipe(plumber({
+		.pipe(gp.plumber({
 			errorHandler: errorFunction
 		}))
-		.pipe(sass())
-		.pipe(autoprefixer({
+		.pipe(gp.sass())
+		.pipe(gp.autoprefixer({
 			browsers: ['last 2 versions'],
 			cascade: false
 		}))
