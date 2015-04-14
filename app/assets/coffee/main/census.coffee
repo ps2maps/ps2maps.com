@@ -4,7 +4,7 @@ class Census
 	fetchTerritoryControl: () ->
 
 		# Census Territory Control URL
-		url = "http://census.soe.com/s:ps2maps/get/ps2:v2/map/?world_id=" + server.id + "&zone_ids=" +  Object.keys(continents).join(',') + "&callback=?"
+		url = "http://census.daybreakgames.com/s:ps2maps/get/ps2:v2/map/?world_id=" + server.id + "&zone_ids=" +  Object.keys(continents).join(',') + "&callback=?"
 
 		# Fetch JSON results from Census
 		$.getJSON(url)

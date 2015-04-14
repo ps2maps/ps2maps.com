@@ -4,7 +4,7 @@ class Census
 	censusTerritoryOwnership: (callback) ->
 
 		census = this
-		url = "http://census.soe.com/s:ps2maps/get/ps2:v2/map/?world_id=" + server.id + "&zone_ids=" + continentIds + "&callback=?"
+		url = "http://census.daybreakgames.com/s:ps2maps/get/ps2:v2/map/?world_id=" + server.id + "&zone_ids=" + continentIds + "&callback=?"
 
 		# Fetch JSON results from Census
 		$.getJSON(url)

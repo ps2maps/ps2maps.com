@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Census extends Command {
 
-	private $baseUrl = "http://census.soe.com/s:ps2maps/get/ps2:v2/";
+	private $baseUrl = "http://census.daybreakgames.com/s:ps2maps/get/ps2:v2/";
 	private $monolog;
 	private $verb = 'Comparing';
 	private $latScale = 0.03126;
