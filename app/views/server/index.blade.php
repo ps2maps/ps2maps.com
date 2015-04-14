@@ -72,11 +72,6 @@ Live, interactive continent maps for {{ $server->name }} server for PlanetSide 2
 
 @section('scripts')
 
-<script>
-	var tilesCdn = "{{ Config::get('ps2maps.tiles.cdn') }}";
-	var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
-</script>
-
 <script src="/js/raphael-min.js"></script>
 <script src="/js/server.js"></script>
 @append
