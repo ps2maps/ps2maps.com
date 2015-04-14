@@ -176,6 +176,17 @@ body.home {
 		}
 	}
 
+	div.adsense.top,
+	div.adsense.bottom {
+		margin-top: 20px;
+		max-width: 100%;
+		overflow: hidden;
+	}
+
+	div.adsense.skyscraper {
+
+	}
+
 	select.servers {
 		margin-top: 10px;
 		width: 100%;

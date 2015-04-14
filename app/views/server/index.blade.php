@@ -16,6 +16,19 @@ Live, interactive continent maps for {{ $server->name }} server for PlanetSide 2
 		<h1>{{ $server->name }} Server - Global Operations</h1>
 		<h4 class='text-center'><a href="/embeddable?server={{ $server->slug }}">Embed these maps on your own website</a></h4>
 
+		<div class="adsense top">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- global-ops-top -->
+			<ins class="adsbygoogle"
+			     style="display:block"
+			     data-ad-client="ca-pub-2103076834948237"
+			     data-ad-slot="6780196903"
+			     data-ad-format="auto"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
+
 		@foreach( $continents as $c )
 		<div class='continent {{ $c->slug }} col-xs-12 col-sm-6 col-md-3 col-lg-3' data-id="{{ $c->id }}">
 			<script src="/js/{{ $c->slug }}.js"></script>
