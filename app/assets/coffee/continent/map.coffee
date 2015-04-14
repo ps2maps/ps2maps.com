@@ -29,7 +29,6 @@ ps2maps.map = L.map('map', mapOptions)
 # .on('contextmenu', function(e){})
 
 # Add Tile Layer
-tilesUrl = tilesCdn + "/tiles/" + continent.slug + "/latest/zoom{z}/tile_{z}_{x}_{y}.jpg";
 layerOptions =
 	subdomains: '0123'
 	noWrap: true

@@ -20,7 +20,7 @@ Live, interactive {{ $continent->name }} continent map on the {{ $server->name }
 	<script src="/js/{{ $continent->slug }}.js"></script>
 	<script>
 		var continent = {{ $continent->slug }};
-		var tilesCdn = "{{ Config::get('ps2maps.tiles.cdn') }}";
+		var tilesUrl = "{{ Config::get('ps2maps.tiles.cdn') }}/tiles/" + continent.slug + "/latest/zoom{z}/tile_{z}_{x}_{y}.jpg";
 		var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
 	</script>
 	<script src="/js/map-plugins.js"></script>
