@@ -49,9 +49,9 @@
 			</a>
 		</li>
 
-		{{--<li>
+		<li>
 			<a href="/donate"><i class="fa fa-usd"></i> Donate to ps2maps.com</a>
-		</li>--}}
+		</li>
 
 		<li>
 			<a href="http://ps2maps.userecho.com" target="ps2maps.userecho.com">
