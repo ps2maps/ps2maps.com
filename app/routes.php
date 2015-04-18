@@ -7,9 +7,6 @@
 // Fetch search sources
 Route::post('searchSources', 'PageController@postSearchSources');
 
-// Route::get('donate', function(){
-// 	return View::make('donate');
-// });
 //
 // Route::get('test', function(){
 // 	return View::make('embed_test');
@@ -17,6 +14,10 @@ Route::post('searchSources', 'PageController@postSearchSources');
 
 // Embedding instructions
 Route::get('embeddable', 'PageController@getEmbeddable');
+
+Route::get('donate', function(){
+	return View::make('donate');
+});
 
 // Settings
 Route::get('settings', 'PageController@getSettings');

@@ -324,5 +324,15 @@ body.embeddable {
 	}
 }
 
+body.donate {
+	.well {
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background-color: #DDD;
+		}
+	}
+}
+
 @import 'nav/top';
 @import 'nav/sidebar';
