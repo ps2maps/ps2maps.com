@@ -19,8 +19,8 @@ var server = { id: {{$sessionServer->id}}, name: "{{$sessionServer->name}}", slu
 							<use xlink:href="#ps2maps_logo"></use>
 						</svg>
 					</span>
-					<span class='hidden-xs'>PlanetSide 2 Maps</span>
-					<span class='visible-xs-inline-block'>ps2maps.com</span>
+					<span class='hidden-xs hidden-sm'>PlanetSide 2 Maps</span>
+					<span class='visible-xs-inline-block visible-sm-inline-block'>ps2maps.com</span>
 				</a>
 			</li>
 
@@ -37,9 +37,9 @@ var server = { id: {{$sessionServer->id}}, name: "{{$sessionServer->name}}", slu
 							<i class='fa fa-file'></i> Embeddable Maps
 						</a>
 					</li>
-					{{-- <li>
+					<li>
 						<a href="/donate"><i class="fa fa-usd"></i> Donate to ps2maps.com</a>
-					</li> --}}
+					</li>
 					<li>
 						<a href="http://ps2maps.userecho.com" target="ps2maps.userecho.com">
 							<i class='fa fa-comment'></i> Give us Feedback!
