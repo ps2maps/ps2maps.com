@@ -10,6 +10,7 @@ Thumbs.db
 /assets
 /node_modules
 /build
+/build.zip
 
 /public/css/embed.css
 /public/css/server.css
