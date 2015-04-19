@@ -13,7 +13,14 @@
 
 		<div class="col-sm-8 col-sm-offset-2">
 			<p>
-				Thank you for taking the time to support PlanetSide 2 Maps. Even the smallest donation helps go toward development time and server resources for the site. There are multiple donation options available to pick from. All are safe, reputable and widely-used payment methods. Thanks!<br><br>Sincerely, Jake
+				Thank you for considering supporting PlanetSide 2 Maps. Even the smallest donation helps go toward development time and server resources for the site. There are multiple donation options available to pick from. All are safe, reputable and widely-used payment methods.
+			</p>
+			<p>
+				Also, please don't forget to <a href="//ps2maps.userecho.com" target="_blank">provide feedback, ideas or feature requests</a>. We strive to respond to every piece of feedback!
+			</p>
+			<p>
+				Thanks!<br>
+				Sincerely, Jake
 			</p>
 
 		</div>
