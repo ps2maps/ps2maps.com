@@ -41,10 +41,10 @@ Create embeddable continent maps for Amerish, Esamir, Hossin or Indar for Planet
 
 				<select class="servers form-control">
 					@foreach( $servers as $server )
-						@if (Input::get('server') == $server->slug )
-							<option value="{{ $server->slug }}" selected>{{ $server->name }}</option>
+						@if (Input::get('server') == $server['slug'] )
+							<option value="{{ $server['slug'] }}" selected>{{ $server['name'] }}</option>
 						@else
-							<option value="{{ $server->slug }}">{{ $server->name }}</option>
+							<option value="{{ $server['slug'] }}">{{ $server['name'] }}</option>
 							@endif
 					@endforeach
 				</select>

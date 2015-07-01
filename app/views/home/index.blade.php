@@ -42,7 +42,7 @@
 
 			<select class="servers">
 				@foreach( $servers as $server )
-				<option value="{{ $server->slug }}" <?php if ( $server->id == $sessionServer->id ) echo 'selected'; ?>>{{ $server->name }}</option>
+				<option value="{{ $server['slug'] }}" <?php if ( $server['id'] == $sessionServer['id'] ) echo 'selected'; ?>>{{ $server['name'] }}</option>
 				@endforeach
 			</select>
 
@@ -50,9 +50,10 @@
 
 			  <ul class="nav nav-tabs">
 			  	<li class='caption hidden-xs'>First, pick a server...</li>
+
 			  	@foreach( $servers as $server )
-			    <li class="<?php if ( $server->id == $sessionServer->id ) echo 'active'; ?>" data-target="{{ $server->slug }}">
-			    	<a href="#{{ $server->slug }}" data-toggle="tab">{{ $server->name }}</a>
+			    <li class="<?php if ( $server['id'] == $sessionServer['id'] ) echo 'active'; ?>" data-target="{{ $server['slug'] }}">
+			    	<a href="#{{ $server['slug'] }}" data-toggle="tab">{{ $server['name'] }}</a>
 			    </li>
 			    @endforeach
 			  </ul>
@@ -60,18 +61,18 @@
 			  <div class="tab-content">
 
 			  	@foreach( $servers as $server )
-			    <div class="tab-pane <?php if ( $server->id == $sessionServer->id ) echo 'active'; ?>" id="{{ $server->slug }}">
+			    <div class="tab-pane <?php if ( $server['id'] == $sessionServer['id'] ) echo 'active'; ?>" id="{{ $server['slug'] }}">
 
 			    	<div class='caption'>
 			    		<span class='hidden-xs'>Next, visit the </span>
-			    		<a class='btn btn-primary' href="/{{ $server->slug }}">{{ $server->name }} Global Operations page</a>
+			    		<a class='btn btn-primary' href="/{{ $server['slug'] }}">{{ $server['name'] }} Global Operations page</a>
 			    		<span class="hidden-xs"> or pick a continent <i class="fa fa-level-down"></i></span>
 			    	</div>
 
 			    	<ul class="continents">
 			    		@foreach( $continents as $continent )<li>
-			    			<a href='/{{ $server->slug }}/{{ $continent->slug }}'>
-			    				<h2>{{ $continent->name }} on <br class='visible-xs'> {{ $server->name }}</h2>
+			    			<a href="/{{ $server['slug'] }}/{{ $continent->slug }}">
+			    				<h2>{{ $continent->name }} on <br class='visible-xs'> {{ $server['name'] }}</h2>
 			    				<img src='{{ URL::to('/img/'.$continent->slug.'.jpg') }}' onmouseover="this.src='{{ URL::to('/img/'.$continent->slug.'-hover.jpg') }}'" onmouseout="this.src='{{ URL::to('/img/'.$continent->slug.'.jpg') }}'"class='img-rounded img-responsive'/>
 			    			</a>
 			    		</li>@endforeach

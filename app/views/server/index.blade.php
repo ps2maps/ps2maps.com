@@ -1,11 +1,11 @@
 @extends('templates/default')
 
 @section('title')
-{{ $server->name }} server maps of Amerish, Esamir, Hossin and Indar continents for PlanetSide 2 Maps - ps2maps.com
+{{ $server['name'] }} server maps of Amerish, Esamir, Hossin and Indar continents for PlanetSide 2 Maps - ps2maps.com
 @stop
 
 @section('meta_description')
-Live, interactive continent maps for {{ $server->name }} server for PlanetSide 2 Maps - ps2maps.com
+Live, interactive continent maps for {{ $server['name'] }} server for PlanetSide 2 Maps - ps2maps.com
 @stop
 
 @section('content')
@@ -13,8 +13,8 @@ Live, interactive continent maps for {{ $server->name }} server for PlanetSide 2
 <div class='container-fluid'>
 	<div class='continents' class='row'>
 
-		<h1>{{ $server->name }} Server - Global Operations</h1>
-		<h4 class='text-center'><a href="/embeddable?server={{ $server->slug }}">Embed these maps on your own website</a></h4>
+		<h1>{{ $server['name'] }} Server - Global Operations</h1>
+		<h4 class='text-center'><a href="/embeddable?server={{ $server['slug'] }}">Embed these maps on your own website</a></h4>
 
 		<div class="adsense top">
 			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -37,7 +37,7 @@ Live, interactive continent maps for {{ $server->name }} server for PlanetSide 2
 
 				<div class='col-xs-12 col-ms-6'>
 
-					<a href='/{{ $server->slug }}/{{ $c->slug }}'>
+					<a href="/{{ $server['slug'] }}/{{ $c->slug }}">
 						<div id='{{ $c->slug }}-map' class='map'></div>
 						<h2>
 								{{ $c->name }} <i class="fa fa-arrow-circle-right"></i>

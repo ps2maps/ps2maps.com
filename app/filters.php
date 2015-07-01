@@ -13,12 +13,15 @@
 
 App::before(function($request)
 {
+	// Get all servers
+	$servers = Config::get('ps2maps.servers');
+	View::share('servers', $servers);
+
 	// Get the current session server, default to Connery
-	$server = Session::get('server', function(){
-		return Server::where('slug','=','connery')
-			->remember(1440)
-			->first();
-	});
+	// $server = Session::get('server', function(){
+	// 	return $servers['briggs'];
+	// });
+	$server = $servers['briggs'];
 	View::share('sessionServer', $server);
 
 	// Get all enabled continents
@@ -30,11 +33,10 @@ App::before(function($request)
 	View::share('continents', $continents);
 
 	// Get all servers
-	$servers = Server::whereEnabled('yes')
-		->orderBy('name')
-		->remember(1440)
-		->get();
-	View::share('servers', $servers);
+	// $servers = Server::whereEnabled('yes')
+	// 	->orderBy('name')
+	// 	->remember(1440)
+	// 	->get();
 
 	// Faction Colors
 	$factionColors = Session::get('faction-colors', Config::get('ps2maps.faction-colors'));

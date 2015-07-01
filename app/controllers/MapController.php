@@ -2,15 +2,19 @@
 
 Class MapController extends BaseController
 {
-	public function server($server)
-	{
-		// Find the server
-		$server = Server::where('slug','=',$server)
-			->remember(1440)
-			->first();
+	public function __construct(){
+		$this->servers = Config::get('ps2maps.servers');
+	}
 
-		if ( is_null($server) )
+	public function server($server_slug)
+	{
+		// Is valid server?
+		if (!isset($this->servers[$server_slug])) {
 			return App::abort('404');
+		}
+
+		// Get the server
+		$server = $this->servers[$server_slug];
 
 		// Save the server to the session
 		Session::set('server', $server);
@@ -21,10 +25,15 @@ Class MapController extends BaseController
 
 	public function continent($server_slug, $continent_slug)
 	{
-		$server = Server::where('slug','=',$server_slug)->remember(1440)->first();
+		// Is valid server?
+		if (!isset($this->servers[$server_slug])) {
+			return App::abort('404');
+		}
+		$server = $this->servers[$server_slug];
+
 		$continent = Continent::where('slug','=',$continent_slug)->remember(1440)->first();
 
-		if ( is_null($server) or is_null($continent) )
+		if ( is_null($continent) )
 			return App::abort('404');
 
 		// Save the server to the session
@@ -36,10 +45,14 @@ Class MapController extends BaseController
 
 	public function embed($server_slug, $continent_slug)
 	{
-		$server = Server::where('slug','=',$server_slug)->remember(1440)->first();
+		// Is valid server?
+		if (!isset($this->servers[$server_slug])) {
+			return App::abort('404');
+		}
+		$server = $this->servers[$server_slug];
 		$continent = Continent::where('slug','=',$continent_slug)->remember(1440)->first();
 
-		if ( is_null($server) or is_null($continent) )
+		if ( is_null($continent) )
 			return App::abort('404');
 
 		return View::make('server/embed', compact('server', 'continent'));

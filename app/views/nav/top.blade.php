@@ -1,6 +1,6 @@
 <script>
 var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
-var server = { id: {{$sessionServer->id}}, name: "{{$sessionServer->name}}", slug: "{{$sessionServer->slug}}" };
+var server = { id: {{$sessionServer['id']}}, name: "{{$sessionServer['name']}}", slug: "{{$sessionServer['slug']}}" };
 </script>
 <header class="navbar">
 	<div class="container-fluid">
@@ -33,7 +33,7 @@ var server = { id: {{$sessionServer->id}}, name: "{{$sessionServer->name}}", slu
 						</a>
 					</li>
 					<li>
-						<a href="/embeddable?server={{ $sessionServer->slug }}">
+						<a href="/embeddable?server={{ $sessionServer['slug'] }}">
 							<i class='fa fa-file'></i> Embeddable Maps
 						</a>
 					</li>
@@ -48,17 +48,17 @@ var server = { id: {{$sessionServer->id}}, name: "{{$sessionServer->name}}", slu
 					<li class='divider'></li>
 					<li class="dropdown-header">Servers</li>
 					@foreach( $servers as $server )
-					<li><a href='/{{ $server->slug }}'>{{ $server->name }}</a></li>
+					<li><a href="/{{ $server['slug'] }}">{{ $server['name'] }}</a></li>
 					@endforeach
 
 				</ul>
 			</li>
 
-			<li class='server hidden-xs'><a href="/{{ $sessionServer->slug }}">{{ $sessionServer->name }}</a></li>
+			<li class='server hidden-xs'><a href="/{{ $sessionServer['slug'] }}">{{ $sessionServer['name'] }}</a></li>
 
 			@foreach( $continents as $continent )
 			<li class='continent hidden-xs' data-id='{{ $continent->id }}' data-slug='{{ $continent->slug }}'>
-				<a href="/{{ $sessionServer->slug }}/{{ $continent->slug }}">{{ $continent->name }}</a>
+				<a href="/{{ $sessionServer['slug'] }}/{{ $continent->slug }}">{{ $continent->name }}</a>
 				<div class='faction-logo nc'>
 					<div class="logo-inner">
 						<svg viewBox='0 0 256 256'>

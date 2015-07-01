@@ -2,8 +2,8 @@
 <div id="sidebar-wrapper">
 	<ul class='nav'>
 		<li class="server">
-			<a href="/{{ $sessionServer->slug }}">
-				{{ $sessionServer->name }} Global Ops <i class="fa fa-arrow-circle-right"></i>
+			<a href="/{{ $sessionServer['slug'] }}">
+				{{ $sessionServer['name'] }} Global Ops <i class="fa fa-arrow-circle-right"></i>
 			</a>
 		</li>
 
@@ -13,7 +13,7 @@
 		?>
 
 		<li class="continent @if ($current) current @endif" data-id='{{ $c->id }}' data-slug='{{ $c->slug }}'>
-			<a href="/{{ $sessionServer->slug }}/{{ $c->slug }}">{{ $c->name }}</a>
+			<a href="/{{ $sessionServer['slug'] }}/{{ $c->slug }}">{{ $c->name }}</a>
 			@if ( $current )
 				<div class="chart"></div>
 			@endif
@@ -44,7 +44,7 @@
 		</li>
 
 		<li>
-			<a href="/embeddable?server={{ $sessionServer->slug }}">
+			<a href="/embeddable?server={{ $sessionServer['slug'] }}">
 				<i class='fa fa-file'></i> Embeddable Maps
 			</a>
 		</li>
