@@ -4,13 +4,13 @@ return array(
 
 	'debug' => true,
 
-	'url' => 'http://ps2maps.gunsight',
+	'url' => 'http://ps2maps.dev',
 
-	'providers' => array(
+	'providers' => append_config(array(
 		'Barryvdh\Debugbar\ServiceProvider',
-	),
+	)),
 
-	'aliases' => array(
+	'aliases' => append_config(array(
 
-	),
+	)),
 );

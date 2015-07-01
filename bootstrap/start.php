@@ -29,15 +29,15 @@ $env = $app->detectEnvironment(function(){
 	$hostname = gethostname();
 
 	// Dev
-	if ( $hostname == 'augusta.gunsight' )
+	if ( $hostname == 'dev01' )
 		return 'dev';
 
 	// Dev Staging
-	elseif ( $_SERVER['HTTP_HOST'] == 'staging.ps2maps.gunsight' )
+	elseif ( $_SERVER['HTTP_HOST'] && $_SERVER['HTTP_HOST'] == 'staging.ps2maps.dev' )
 		return 'dev-staging';
 
 	// Live Staging
-	elseif ( $_SERVER['HTTP_HOST'] == 'staging.ps2maps.com' )
+	elseif ( $_SERVER['HTTP_HOST'] && $_SERVER['HTTP_HOST'] == 'staging.ps2maps.com' )
 		return 'staging';
 
 	// Default: production

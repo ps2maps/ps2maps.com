@@ -3,7 +3,7 @@
 return append_config([
 
 	'tiles' => [
-		'cdn' => '//cdn.ps2maps.gunsight',
+		'cdn' => '//cdn.ps2maps.dev',
 	],
 
 ]);
