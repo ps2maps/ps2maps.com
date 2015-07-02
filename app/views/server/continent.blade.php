@@ -3,11 +3,11 @@
 <?php $bodyClass='continent-map' ?>
 
 @section('title')
-{{ $continent->name }} map on the {{ $server->name }} server for PlanetSide 2 Maps - ps2maps.com
+{{ $continent->name }} map on the {{ $server['name'] }} server for PlanetSide 2 Maps - ps2maps.com
 @stop
 
 @section('meta_description')
-Live, interactive {{ $continent->name }} continent map on the {{ $server->name }} server for PlanetSide 2 Maps - ps2maps.com
+Live, interactive {{ $continent->name }} continent map on the {{ $server['name'] }} server for PlanetSide 2 Maps - ps2maps.com
 @stop
 
 @section('head')

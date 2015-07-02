@@ -79,7 +79,7 @@
 
 		<div class="section embed text-center">
 			<i class='fa fa-chevron-left'></i>
-			<a href="/embeddable?server={{ $server->slug }}&continent={{ $continent->slug }}">
+			<a href="/embeddable?server={{ $server['slug'] }}&continent={{ $continent->slug }}">
 				 Embed this Map
 			</a>
 			<i class='fa fa-chevron-right'></i>
