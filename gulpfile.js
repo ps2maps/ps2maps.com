@@ -69,12 +69,14 @@ var src = {
 	js: {
 		plugins: [
 			'app/assets/js/plugins/jquery.selector-cache.js',
-			'app/assets/js/plugins/json.js',
+			'app/assets/js/plugins/svg4everybody.js',
 			'app/assets/js/plugins/jquery.svg.js',
+			'app/assets/js/plugins/svg-sprite-polyfill.js',
+			'app/assets/js/plugins/json.js',
 			'app/assets/js/plugins/reconnecting-websocket.js',
 			'app/assets/js/plugins/store2.js',
 			'app/assets/js/plugins/store.cache.js',
-			'app/assets/js/plugins/typeahead.jquery.js',
+			'app/assets/js/plugins/typeahead.jquery.js'
 		],
 		mapPlugins: [
 			'app/assets/js/mapPlugins/*.js',
@@ -162,6 +164,19 @@ gulp.task('sass', function() {
 		.pipe(gulp.dest('./public/css'));
 });
 
+// SVG Sprites
+gulp.task('svg', function(){
+	return gulp.src('svgs/**/*.svg')
+		.pipe($.svgstore())
+		.pipe($.svgmin({
+			plugins: [{
+				cleanupIDs: false
+			}]
+		}))
+		.pipe($.rename('sprites.svg'))
+		.pipe(gulp.dest('public/img'));
+});
+
 // Build Images
 // Optimize and compress images
 gulp.task('build:images', function(){
@@ -220,7 +235,8 @@ gulp.task('watch', function() {
 	gulp.watch(src.js.plugins, ['plugins.js']);
 	gulp.watch(src.js.mapPlugins, ['mapPlugins.js']);
 	gulp.watch(src.sass.all, ['sass']);
+	gulp.watch('svgs/**/*.svg', ['svg']);
 });
 
-gulp.task('default', ['sass', 'continent.js', 'main.js', 'plugins.js', 'mapPlugins.js', 'server.js', 'embed.js', 'watch']);
+gulp.task('default', ['sass', 'continent.js', 'main.js', 'plugins.js', 'mapPlugins.js', 'server.js', 'embed.js', 'svg', 'watch']);
 
