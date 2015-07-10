@@ -29,8 +29,6 @@
 </head>
 <body class="@if(isset($bodyClass)){{$bodyClass}}@endif">
 
-	<div id='svg-sprites'><?php require_once(public_path().'/img/sprites.svg'); ?></div>
-
 	@include('factionColors')
 
 	<div id="wrapper" class="">
