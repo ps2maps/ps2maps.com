@@ -43,7 +43,7 @@ return [
 			'slug' => 'briggs',
 			'id' => 25,
 			'namespace' => 'ps2:v2',
-			'platform' => 'pc',
+			'platform' => 'windows',
 		],
 		'ceres' => [
 			'name' => 'Ceres',
@@ -57,14 +57,14 @@ return [
 			'slug' => 'cobalt',
 			'id' => 13,
 			'namespace' => 'ps2:v2',
-			'platform' => 'pc',
+			'platform' => 'windows',
 		],
 		'connery' => [
 			'name' => 'Connery',
 			'slug' => 'connery',
 			'id' => 1,
 			'namespace' => 'ps2:v2',
-			'platform' => 'pc',
+			'platform' => 'windows',
 		],
 		'crux' => [
 			'name' => 'Crux',
@@ -78,7 +78,7 @@ return [
 			'slug' => 'emerald',
 			'id' => 13,
 			'namespace' => 'ps2:v2',
-			'platform' => 'pc',
+			'platform' => 'windows',
 		],
 		'genudine' => [
 			'name' => 'Genudine',
@@ -92,7 +92,7 @@ return [
 			'slug' => 'jaeger',
 			'id' => 19,
 			'namespace' => 'ps2:v2',
-			'platform' => 'pc',
+			'platform' => 'windows',
 		],
 		'lithcorp' => [
 			'name' => 'Lithcorp',
@@ -106,7 +106,7 @@ return [
 			'slug' => 'miller',
 			'id' => 10,
 			'namespace' => 'ps2:v2',
-			'platform' => 'pc',
+			'platform' => 'windows',
 		],
 		'palos' => [
 			'name' => 'Palos',
