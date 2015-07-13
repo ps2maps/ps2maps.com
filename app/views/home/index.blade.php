@@ -17,7 +17,7 @@
 			    <feMergeNode in="SourceGraphic"/>
 			  </feMerge>
 			</filter>
-			<use xlink:href="#ps2maps_logo" style="filter:url(#dropshadow)"></use>
+			<use xlink:href="/img/sprites.svg#ps2maps" style="filter:url(#dropshadow)"></use>
 		</svg>
 	</div>
 </div>
