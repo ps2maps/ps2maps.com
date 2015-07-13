@@ -15,18 +15,18 @@
 ?>
 <style id='faction-colors-id' class='faction-colors-class'>
 	{{-- Marker Icons --}}
-	svg.marker-icon.ns { fill: {{ $nsDefault }}; }
-	svg.marker-icon.ns circle { stroke: {{ $nsOutline }}; }
-	svg.marker-icon.ns path, svg.marker-icon.ns polygon { fill: {{ $nsOutline }}; }
-	svg.marker-icon.nc { fill: {{ $ncDefault }}; }
-	svg.marker-icon.nc circle { stroke: {{ $ncOutline }}; }
-	svg.marker-icon.nc path, svg.marker-icon.nc polygon { fill: {{ $ncOutline }}; }
-	svg.marker-icon.tr { fill: {{ $trDefault }}; }
-	svg.marker-icon.tr circle { stroke: {{ $trOutline }}; }
-	svg.marker-icon.tr path, svg.marker-icon.tr polygon { fill: {{ $trOutline }}; }
-	svg.marker-icon.vs { fill: {{ $vsDefault }}; }
-	svg.marker-icon.vs circle { stroke: {{ $vsOutline }}; }
-	svg.marker-icon.vs path, svg.marker-icon.vs polygon { fill: {{ $vsOutline }}; }
+	.svg-icon svg.ns { fill: {{ $nsDefault }}; }
+	.svg-icon svg.ns circle { stroke: {{ $nsOutline }}; }
+	.svg-icon svg.ns path, svg.marker-icon.ns polygon { fill: {{ $nsOutline }}; }
+	.svg-icon svg.nc { fill: {{ $ncDefault }}; }
+	.svg-icon svg.nc circle { stroke: {{ $ncOutline }}; }
+	.svg-icon svg.nc path, svg.marker-icon.nc polygon { fill: {{ $ncOutline }}; }
+	.svg-icon svg.tr { fill: {{ $trDefault }}; }
+	.svg-icon svg.tr circle { stroke: {{ $trOutline }}; }
+	.svg-icon svg.tr path, svg.marker-icon.tr polygon { fill: {{ $trOutline }}; }
+	.svg-icon svg.vs { fill: {{ $vsDefault }}; }
+	.svg-icon svg.vs circle { stroke: {{ $vsOutline }}; }
+	.svg-icon svg.vs path, svg.marker-icon.vs polygon { fill: {{ $vsOutline }}; }
 
 	{{-- Log Window --}}
 	.log-window .nc { color: {{ $ncDefault }}; }
