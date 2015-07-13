@@ -1,20 +1,20 @@
 # Default Icon Size Options
 optionsDefault =
-	className: 'svgIcon'
+	className: 'svg-icon'
 	iconSize: [24,24]
 	iconAnchor: [12,12]
 	labelAnchor: [0,0]
 
 # Large Icon Size Options
 optionsLarge =
-	className: 'svgIcon'
+	className: 'svg-icon svg-icon-large'
 	iconSize: [32,32]
 	iconAnchor: [16,16]
 	labelAnchor: [0,0]
 
 # Create Icon for each facility type
-iconCache = {}
-svgContainer = $('#svg-sprites')
+# iconCache = {}
+# svgContainer = $('#svg-sprites')
 
 for type of ps2maps.facilityTypes
 
@@ -29,27 +29,32 @@ for type of ps2maps.facilityTypes
 
 	ps2maps.icons[type] = {}
 
-	$svgContainer = $('#svg-sprites')
+	# $svgContainer = $('#svg-sprites')
 
 	# Define the Icons
 	for id,faction of ps2maps.factions
 
 		# Icon HTML
-		html  = "<svg viewBox='0 0 256 256' class='marker-icon " + type + " " + faction.slug + "'>";
+		html  = "<svg class='" + type + " " + faction.slug + "'>";
+
+		html += "<use xlink:href='/img/sprites.svg#" + type + "'/>";
 
 		# If cached,
-		if iconCache[type]
-			html += iconCache[type];
-		else
+		# if iconCache[type]
+		# 	html += iconCache[type];
+		# else
 
-			# Find the SVG's html
-			tmp = $svgContainer.find('#'+type).html();
+		# 	console.log(type);
 
-			# Cache the result
-			iconCache[type] = tmp
+		# 	# Find the SVG's html
+		# 	tmp = $svgContainer.find('#'+type).html();
+		# 	console.log(tmp);
 
-			# Add to the icon's html
-			html += tmp
+		# 	# Cache the result
+		# 	iconCache[type] = tmp
+
+		# 	# Add to the icon's html
+		# 	html += tmp
 
 		html += "</svg>"
 		options.html = html

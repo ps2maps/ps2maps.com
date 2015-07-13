@@ -1,10 +1,19 @@
-.svgIcon {
+.svg-icon {
 	pointer-events: none;
-}
 
-svg.marker-icon {
-	// Nanite Systems Color
-	fill: #79e0e1;
+	svg {
+		// Nanite Systems Color
+		fill: #79e0e1;
+		width: 24px;
+		height: 24px;
+	}
+
+	&.svg-icon-large {
+		svg {
+			width: 32px;
+			height: 32px;
+		}
+	}
 }
 
 .myDivIcon {
