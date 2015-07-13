@@ -89,15 +89,15 @@ ps2maps.logFacilityResecure = (facilityId, factionId, timestamp) ->
 
 	# The facility icon
 	icon  = "<div class='facility-icon'>"
-	icon += "<svg viewBox='0 0 256 256' class='marker-icon " + facility.facilityType + " " + faction.slug + "'>"
-	icon += $$('#svg-sprites').find('#' + facility.facilityType).html()
+	icon += "<svg class='marker-icon " + facility.facilityType + " " + faction.slug + "'>"
+	icon += "<use xlink:href='/img/sprites.svg#" + faction.slug + "'/>"
 	icon += "</svg></div>"
 
 	# The HTML
 	html  = "<li class='log-item " + faction.slug + " resecured'><div class='col-xs-12'>"
 	html += "<span class='timestamp'>" + time + "</span> "
 	html += "<span class='faction " + faction.slug + "'>" + faction.slug.toUpperCase() + "</span> "
-	html += "resecured" + icon
+	html += "<span class='verb'>resecured</span>" + icon
 	html += "<a href='javascript:ps2maps.viewFacility("+ facilityId + ")'>" + facility.name + "</a>"
 	html += "</div></li>"
 
@@ -110,7 +110,6 @@ ps2maps.logFacilityResecure = (facilityId, factionId, timestamp) ->
 
 
 ps2maps.logFacilityCapture = (facilityId, factionId, timestamp) ->
-	# Add new list item
 	faction = ps2maps.factions[factionId]
 	facility = ps2maps.facilities[facilityId]
 
@@ -119,15 +118,15 @@ ps2maps.logFacilityCapture = (facilityId, factionId, timestamp) ->
 
 	# The facility icon
 	icon  = "<div class='facility-icon'>"
-	icon += "<svg viewBox='0 0 256 256' class='marker-icon " + facility.facilityType + " " + faction.slug + "'>"
-	icon += $$('#svg-sprites').find('#' + facility.facilityType).html()
+	icon += "<svg class='marker-icon " + facility.facilityType + " " + faction.slug + "'>"
+	icon += "<use xlink:href='/img/sprites.svg#" + faction.slug + "'/>"
 	icon += "</svg></div>"
 
 	# The HTML
 	html  = "<li class='log-item " + faction.slug + " captured'><div class='col-xs-12'>"
 	html += "<span class='timestamp'>" + time + "</span> "
 	html += "<span class='faction " + faction.slug + "'>" + faction.slug.toUpperCase() + "</span> "
-	html += "captured" + icon
+	html += "<span class='verb'>captured</span>" + icon
 	html += "<a href='javascript:ps2maps.viewFacility("+ facilityId + ")'>" + facility.name + "</a>"
 	html += "</div></li>"
 

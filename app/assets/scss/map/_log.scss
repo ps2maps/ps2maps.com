@@ -95,6 +95,11 @@
 		display: inline-block;
 		vertical-align: middle;
 		margin: 0 5px 0 5px;
+
+		svg {
+			width: 100%;
+			height: 100%;
+		}
 	}
 
 	.clear-button {
