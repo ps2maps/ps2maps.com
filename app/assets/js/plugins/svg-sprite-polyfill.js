@@ -7,7 +7,7 @@
         wrap.style.display  = 'none';
 
         // append
-        // document.body.insertBefore(wrap, document.body.firstChild);
+        document.body.insertBefore(wrap, document.body.firstChild);
         return;
     };
 
