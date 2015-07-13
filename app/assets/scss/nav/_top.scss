@@ -34,7 +34,7 @@ header.navbar {
 		padding: 0;
 		white-space: nowrap;
 
-		& > li {
+		> li {
 			display: inline-block;
 			position: relative;
 			line-height: $height;
@@ -83,6 +83,7 @@ header.navbar {
 				}
 			}
 
+			// PS2 Maps Logo
 			&.ps2maps-logo {
 				user-select: none;
 				font-size: 22px;
@@ -96,6 +97,7 @@ header.navbar {
 
 				svg {
 					width: 30px;
+					height: 30px;
 					top: 7px;
 					position: relative;
 				}
@@ -106,6 +108,7 @@ header.navbar {
 
 			}
 
+			// Dropdown Menu
 			&.dropdown {
 				border-left: 1px solid #555;
 				border-right: 1px solid #555;
@@ -120,6 +123,23 @@ header.navbar {
 						color: #000;
 					}
 				}
+
+				.server {
+					svg {
+						position: absolute;
+						right: 10%;
+
+						&.ps4 {
+							width: 40px;
+							height: 20px;
+						}
+
+						&.windows {
+							width: 20px;
+							height: 20px;
+						}
+					}
+				}
 			}
 
 			&.server {
@@ -127,8 +147,7 @@ header.navbar {
 				text-transform: uppercase;
 
 				a {
-					padding-left: 10px;
-					padding-right: 10px;
+					padding: 0 10px 0 10px;
 				}
 			}
 
@@ -161,6 +180,7 @@ header.navbar {
 				svg {
 					margin-left: -50%;
 					width: 90px;
+					height: 90px;
 					position: relative;
 				}
 
