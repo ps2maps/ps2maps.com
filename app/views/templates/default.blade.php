@@ -29,6 +29,13 @@
 </head>
 <body class="@if(isset($bodyClass)){{$bodyClass}}@endif">
 
+	<script>
+		var apis = {{ json_encode(Config::get('ps2maps.apis')) }};
+		var apiVersion = "{{ Config::get('ps2maps.api_version') }}";
+		var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
+		var server = {{ json_encode($sessionServer) }};
+	</script>
+
 	@include('factionColors')
 
 	<div id="wrapper" class="">

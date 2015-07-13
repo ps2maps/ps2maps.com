@@ -1,8 +1,3 @@
-<script>
-var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
-var server = {{ json_encode($sessionServer) }};
-
-</script>
 <header class="navbar">
 	<div class="container-fluid">
 
