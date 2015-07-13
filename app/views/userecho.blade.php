@@ -21,6 +21,6 @@ setTimeout(function(){
 	  _ue.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.userecho.com/js/widget-1.4.gz.js';
 	  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(_ue, s);
 	})();
-}, 0);
+}, 5000);
 
 </script>
