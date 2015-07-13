@@ -11,8 +11,8 @@
 			<li class='ps2maps-logo'>
 				<a href="/">
 					<span>
-						<svg viewBox='0 0 256 256' class=''>
-							<use xlink:href="#ps2maps_logo"></use>
+						<svg>
+							<use xlink:href="/img/sprites.svg#ps2maps"></use>
 						</svg>
 					</span>
 					<span class='hidden-xs hidden-sm'>PlanetSide 2 Maps</span>
@@ -44,7 +44,13 @@
 					<li class='divider'></li>
 					<li class="dropdown-header">Servers</li>
 					@foreach( $servers as $server )
-					<li><a href="/{{ $server['slug'] }}">{{ $server['name'] }}</a></li>
+					<li class="server {{ $server['slug'] }}">
+						<a href="/{{ $server['slug'] }}">{{ $server['name'] }}
+							<svg class="{{ $server['platform'] }}">
+								<use xlink:href="/img/sprites.svg#{{ $server['platform'] }}"/>
+							</svg>
+						</a>
+					</li>
 					@endforeach
 
 				</ul>
@@ -57,22 +63,22 @@
 				<a href="/{{ $sessionServer['slug'] }}/{{ $continent->slug }}">{{ $continent->name }}</a>
 				<div class='faction-logo nc'>
 					<div class="logo-inner">
-						<svg viewBox='0 0 256 256'>
-							<use xlink:href="#nc_logo"></use>
+						<svg>
+							<use xlink:href="/img/sprites.svg#nc"></use>
 						</svg>
 					</div>
 				</div>
 				<div class='faction-logo tr'>
 					<div class="logo-inner">
-						<svg viewBox='0 0 256 256'>
-							<use xlink:href="#tr_logo"></use>
+						<svg>
+							<use xlink:href="/img/sprites.svg#tr"></use>
 						</svg>
 					</div>
 				</div>
 				<div class='faction-logo vs'>
 					<div class="logo-inner">
-						<svg viewBox='0 0 256 256'>
-							<use xlink:href="#vs_logo"></use>
+						<svg>
+							<use xlink:href="/img/sprites.svg#vs"></use>
 						</svg>
 					</div>
 				</div>
