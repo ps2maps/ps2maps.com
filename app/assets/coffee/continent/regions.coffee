@@ -6,10 +6,7 @@ regionClick = (e) ->
 	details.find('h2.name').text(e.target.facility.name)
 
 	# Set the icon
-	svg  = "<svg viewBox='0 0 256 256' class='marker-icon " + e.target.facility.facilityType + " " + e.target.facility.faction + "' style='width:20px;'>";
-	svg += $('#svg-sprites').find('#' + e.target.facility.facilityType).html()
-	svg += "</svg>"
-	details.find('.type .icon').html( svg )
+	details.find('.type svg').replaceWith("<svg class='" + e.target.facility.faction + "'><use xlink:href='/img/sprites.svg#" + e.target.facility.facilityType + "'/></svg>")
 
 	# Set the facility type name
 	details.find('.type .name').html( ps2maps.facilityTypes[e.target.facility.facilityType].name )
