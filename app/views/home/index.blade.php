@@ -27,18 +27,7 @@
 	<div class="row">
 		<div class="col-sm-12">
 
-			<div class="adsense top">
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- homepage-responsive -->
-				<ins class="adsbygoogle"
-				     style="display:block"
-				     data-ad-client="ca-pub-2103076834948237"
-				     data-ad-slot="4385133703"
-				     data-ad-format="auto"></ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-			</div>
+			@include('adsense/home-top')
 
 			<select class="servers">
 				@foreach( $servers as $server )
@@ -84,18 +73,7 @@
 
 			</div>
 
-			<div class="adsense bottom">
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- homepage-responsive-bottom -->
-				<ins class="adsbygoogle"
-				     style="display:block"
-				     data-ad-client="ca-pub-2103076834948237"
-				     data-ad-slot="5303463707"
-				     data-ad-format="auto"></ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
-			</div>
+			@include('adsense/home-bottom')
 
 		</div>
 	</div>
