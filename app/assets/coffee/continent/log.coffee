@@ -90,7 +90,7 @@ ps2maps.logFacilityResecure = (facilityId, factionId, timestamp) ->
 	# The facility icon
 	icon  = "<div class='facility-icon'>"
 	icon += "<svg class='marker-icon " + facility.facilityType + " " + faction.slug + "'>"
-	icon += "<use xlink:href='/img/sprites.svg#" + faction.slug + "'/>"
+	icon += "<use xlink:href='/img/sprites.svg#" + facility.facilityType + "'/>"
 	icon += "</svg></div>"
 
 	# The HTML
@@ -119,7 +119,7 @@ ps2maps.logFacilityCapture = (facilityId, factionId, timestamp) ->
 	# The facility icon
 	icon  = "<div class='facility-icon'>"
 	icon += "<svg class='marker-icon " + facility.facilityType + " " + faction.slug + "'>"
-	icon += "<use xlink:href='/img/sprites.svg#" + faction.slug + "'/>"
+	icon += "<use xlink:href='/img/sprites.svg#" + facility.facilityType + "'/>"
 	icon += "</svg></div>"
 
 	# The HTML
