@@ -126,14 +126,12 @@ div.sidebar {
 			line-height: 20px;
 			padding-top: 5px;
 
-			.icon {
+			svg {
+				margin-bottom: -5px;
 				width: 20px;
 				height: 20px;
-
-				svg {
-					margin-bottom: -5px;
-				}
 			}
+
 			.name {
 				height: 20px;
 				line-height: 20px;
