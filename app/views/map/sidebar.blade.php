@@ -5,20 +5,20 @@
 			<h2>{{ $continent->name }} Territory Control</h2>
 			<div class='chart'></div>
 			<div class='faction nc'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#nc_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#nc"></use>
 				</svg>
 				<h2>New Conglomerate controlled</h2>
 			</div>
 			<div class='faction tr'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#tr_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#tr"></use>
 				</svg>
 				<h2>Terran Republic controlled</h2>
 			</div>
 			<div class='faction vs'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#vs_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#vs"></use>
 				</svg>
 				<h2>Vanu Soverignty controlled</h2>
 			</div>
@@ -27,23 +27,23 @@
 		<div class="section facility-details">
 			<h2 class='name'></h2>
 			<div class='type'>
-				<span class="icon"></span>
+				<svg></svg>
 				<span class="name"></span>
 			</div>
 			<div class="faction"></div>
 			<div class='faction-logo nc'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#nc_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#nc"></use>
 				</svg>
 			</div>
 			<div class='faction-logo tr'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#tr_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#tr"></use>
 				</svg>
 			</div>
 			<div class='faction-logo vs'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#vs_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#vs"></use>
 				</svg>
 			</div>
 		</div>
