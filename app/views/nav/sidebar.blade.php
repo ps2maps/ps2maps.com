@@ -18,18 +18,18 @@
 				<div class="chart"></div>
 			@endif
 			<div class='faction-logo nc'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#nc_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#nc"></use>
 				</svg>
 			</div>
 			<div class='faction-logo tr'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#tr_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#tr"></use>
 				</svg>
 			</div>
 			<div class='faction-logo vs'>
-				<svg viewBox='0 0 256 256'>
-					<use xlink:href="#vs_logo"></use>
+				<svg>
+					<use xlink:href="/img/sprites.svg#vs"></use>
 				</svg>
 			</div>
 		</li>
