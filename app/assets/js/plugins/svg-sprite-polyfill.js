@@ -2,9 +2,12 @@
 (function (requestAnimationFrame, active) {
     // create a sprite svg element and hide it somewhere
     var createSpriteElement = function (url, svgText) {
+        console.log(svgText);
         var wrap            = document.createElement('span');
         wrap.innerHTML      = svgText;
-        wrap.style.display  = 'none';
+        wrap.style.display  = 'block';
+        wrap.style.height   = 0;
+        wrap.style.width   = 0;
 
         // append
         document.body.insertBefore(wrap, document.body.firstChild);
