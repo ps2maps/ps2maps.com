@@ -91,7 +91,8 @@
         };
     };
 
-    return active ? createScanner([])() : void(0);
+    createScanner([])();
+    // return active ? createScanner([])() : void(0);
 })(
     (window.requestAnimationFrame || function (fn) {
             window.setTimeout(fn, 300);
