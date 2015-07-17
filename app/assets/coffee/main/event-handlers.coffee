@@ -58,7 +58,8 @@ $$('body').on('censusFinished', (e,data) ->
 		return
 
 	# Create the Web Socket Connection
-	ps2maps.socket = new ReconnectingWebSocket("wss://push.planetside2.com/streaming?service-id=s:ps2maps")
+	url = "wss://push.planetside2.com/streaming?environment=" + server.env + "&service-id=s:ps2maps"
+	ps2maps.socket = new ReconnectingWebSocket(url)
 	ps2maps.socket.debug = false
 
 	# ps2maps.socket.onconnecting = (e) ->
