@@ -32,14 +32,6 @@ $env = $app->detectEnvironment(function(){
 	if ( $hostname == 'dev01' )
 		return 'dev';
 
-	// Dev Staging
-	elseif ( $_SERVER['HTTP_HOST'] && $_SERVER['HTTP_HOST'] == 'staging.ps2maps.dev' )
-		return 'dev-staging';
-
-	// Live Staging
-	elseif ( $_SERVER['HTTP_HOST'] && $_SERVER['HTTP_HOST'] == 'staging.ps2maps.com' )
-		return 'staging';
-
 	// Default: production
 });
 
