@@ -1,61 +1,36 @@
-# Default Icon Size Options
-optionsDefault =
-	className: 'svg-icon'
-	iconSize: [24,24]
-	iconAnchor: [12,12]
-	labelAnchor: [0,0]
-
-# Large Icon Size Options
-optionsLarge =
-	className: 'svg-icon svg-icon-large'
-	iconSize: [32,32]
-	iconAnchor: [16,16]
-	labelAnchor: [0,0]
-
-# Create Icon for each facility type
-# iconCache = {}
-# svgContainer = $('#svg-sprites')
-
 for type of ps2maps.facilityTypes
 
 	switch type
 		# Large Icons
 		when 'amp_station', 'bio_lab', 'interlink_facility', 'tech_plant', 'warpgate'
-			options = optionsLarge
+			options =
+				className: 'svg-icon svg-icon-large'
+				iconSize: [24,24]
+				iconAnchor: [12,12]
+				labelAnchor: [0,0]
 
-		# Default Icons
+		when 'large_outpost'
+			options =
+				className: 'svg-icon svg-icon-medium'
+				iconSize: [20,20]
+				iconAnchor: [10,10]
+				labelAnchor: [0,0]
+
 		else
-			options = optionsDefault
+			options =
+				className: 'svg-icon svg-icon-small'
+				iconSize: [16,16]
+				iconAnchor: [8,8]
+				labelAnchor: [0,0]
 
 	ps2maps.icons[type] = {}
-
-	# $svgContainer = $('#svg-sprites')
 
 	# Define the Icons
 	for id,faction of ps2maps.factions
 
 		# Icon HTML
 		html  = "<svg class='" + type + " " + faction.slug + "'>";
-
 		html += "<use xlink:href='/img/sprites.svg#" + type + "'/>";
-
-		# If cached,
-		# if iconCache[type]
-		# 	html += iconCache[type];
-		# else
-
-		# 	console.log(type);
-
-		# 	# Find the SVG's html
-		# 	tmp = $svgContainer.find('#'+type).html();
-		# 	console.log(tmp);
-
-		# 	# Cache the result
-		# 	iconCache[type] = tmp
-
-		# 	# Add to the icon's html
-		# 	html += tmp
-
 		html += "</svg>"
 		options.html = html
 		ps2maps.icons[type][faction.slug] = L.divIcon(options)

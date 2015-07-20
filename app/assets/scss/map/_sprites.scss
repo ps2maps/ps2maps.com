@@ -2,16 +2,28 @@
 	pointer-events: none;
 
 	svg {
-		// Nanite Systems Color
+		// Nanite Systems Color (default)
 		fill: #79e0e1;
-		width: 24px;
-		height: 24px;
 	}
 
 	&.svg-icon-large {
 		svg {
-			width: 32px;
-			height: 32px;
+			width: 24px;
+			height: 24px;
+		}
+	}
+
+	&.svg-icon-medium {
+		svg {
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&.svg-icon-small {
+		svg {
+			width: 16px;
+			height: 16px;
 		}
 	}
 }
