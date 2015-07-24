@@ -5,7 +5,6 @@ class Census
 
 		# Census Territory Control URL
 		url = "http://census.daybreakgames.com/s:ps2maps/get/" + server.env + ":" + apiVersion + "/map/?world_id=" + server.id + "&zone_ids=" +  Object.keys(continents).join(',') + "&callback=?"
-		console.log url
 
 		# Fetch JSON results from Census
 		$.getJSON(url)

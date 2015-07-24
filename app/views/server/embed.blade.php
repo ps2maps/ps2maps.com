@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Embedded interactive live map of {{ $continent->name }} continent on the {{ $server->name }} server.</title>
+	<title>Embedded interactive live map of {{ $continent->name }} continent on the {{ $server['name'] }} server.</title>
 	<meta name="description" content="@yield('meta_description', Config::get('ps2maps.meta_description'))">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
@@ -18,8 +18,10 @@
 	<div id='svg-sprites'><?php require_once(public_path().'/img/sprites.svg'); ?></div>
 
 	<script>
-		var server = { id: {{$sessionServer->id}}, name: "{{$sessionServer->name}}", slug: "{{$sessionServer->slug}}" };
+		var apis = {{ json_encode(Config::get('ps2maps.apis')) }};
+		var apiVersion = "{{ Config::get('ps2maps.api_version') }}";
 		var timeFormat = "{{ Config::get('ps2maps.time-formats.'.Session::get('time-format'), Config::get('ps2maps.time-formats.12')) }}";
+		var server = {{ json_encode($sessionServer) }};
 	</script>
 
 	@include('factionColors')
@@ -27,8 +29,8 @@
 	<div class='map'>
 		<svg></svg>
 		<h1>
-			<a href="{{ Request::root().'/'.$server->slug.'/'.$continent->slug }}">
-				{{ $continent->name }} on {{ $server->name }}
+			<a href="{{ Request::root().'/'.$server['slug'].'/'.$continent->slug }}">
+				{{ $continent->name }} on {{ $server['name'] }}
 			</a>
 		</h1>
  		<h2>
