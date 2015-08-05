@@ -83,7 +83,7 @@ return [
 		'emerald' => [
 			'name' => 'Emerald',
 			'slug' => 'emerald',
-			'id' => 13,
+			'id' => 17,
 			'env' => 'ps2',
 			'platform' => 'windows',
 		],
