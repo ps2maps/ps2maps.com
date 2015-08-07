@@ -23,6 +23,8 @@ There is so much I want to do to transform the site and make it more easy to mai
 * Consider converting to a client-side single-page app. Not sure about this yet. Personally not sold on the whole Angular thing... ReactJS looks like better (and WAY faster) for custom web component support
 * Might switch to MongoDB, but this isn't a database heavy site so it doesn't really matter much
 * Integrate the latest LeafletJS 1.0 (beta), which has a ton of improvements and new features (including all the custom pane management features I contributed)
+* Add all the marker icons back in (locations of spawn points, equipment terminals, teleporters, turrets, etc...). The best approach to this is to be stored in `.json` files in the repo that anyone can fork, alter and create a PR for. This will make it very maintainable and easily allow any non-developers to help keep these up to date
+* Need to alter the Leaflet map to use a custom CRS that matches the PlanetSide 2 CRS instead of the Simple CRS with scaled values. This way, using `/loc` in game will actually match to locations on the map. This feature is in progress
 
 ### Contributing Guide
 
