@@ -23,3 +23,13 @@ There is so much I want to do to transform the site and make it more easy to mai
 * Consider converting to a client-side single-page app. Not sure about this yet. Personally not sold on the whole Angular thing... ReactJS looks like better (and WAY faster) for custom web component support
 * Might switch to MongoDB, but this isn't a database heavy site so it doesn't really matter much
 * Integrate the latest LeafletJS 1.0 (beta), which has a ton of improvements and new features (including all the custom pane management features I contributed)
+
+### Contributing Guide
+
+* To develop, you'll need PHP 5.4.x, MariaDB (or MySQL 5.x would work fine too), GulpJS
+* Create a `.env.local.php` with your database credentials (See the example, as well as Laravel 4.2 docs on this)
+* Make sure you `# composer install` the Laravel dependencies
+* Use Laravel's `artisan` to run the migrations
+* I'm afraid I don't have any seeds for the current state of the database. I'll need to commit a SQL dump soon for this
+* `# npm install` your NodeJS dependencies
+* run `# gulp` at the command line to watch all SASS, CoffeeScript, etc files
