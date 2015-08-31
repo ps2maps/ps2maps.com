@@ -1,16 +1,7 @@
 <?php
 
-// Route::group(['before'=>'auth'], function(){
-// 	Route::controller('admin', 'AdminController');
-// });
-
 // Fetch search sources
 Route::post('searchSources', 'PageController@postSearchSources');
-
-//
-// Route::get('test', function(){
-// 	return View::make('embed_test');
-// });
 
 // Embedding instructions
 Route::get('embeddable', 'PageController@getEmbeddable');
@@ -28,9 +19,5 @@ Route::get('{server}/{continent}/embed', 'MapController@embed');
 Route::get('{server}/{continent}', 'MapController@continent');
 Route::get('{server}', 'MapController@server');
 
-
-
 // Home
 Route::get('/', 'PageController@getIndex');
-
-
