@@ -6,7 +6,6 @@ var $ = require('gulp-load-plugins')({
 // Handle Errors
 var errorFunction = function(error)
 {
-	// $.gutil.beep();
 	console.log(error);
 }
 
