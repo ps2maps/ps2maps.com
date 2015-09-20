@@ -1,7 +1,5 @@
 {
-  "dependencies": {
-    "express": "^4.13.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp-debug": "^1.0.1"
   }
