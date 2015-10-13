@@ -4,6 +4,7 @@
 composer.phar
 .env.*.php
 .env.php
+*.env
 .DS_Store
 Thumbs.db
 .sass-cache
