@@ -2,6 +2,7 @@
   "name": "ps2maps.dev",
   "scripts": {
     "start": "node ./bin/www",
+    "seed": "node seeds/seed.js",
     "migrate": "node node_modules/mongoose-migrate/bin/migrate"
   },
   "dependencies": {
@@ -10,10 +11,13 @@
     "debug": "~2.2.0",
     "dotenv": "^1.2.0",
     "express": "~4.13.1",
+    "got": "^5.0.0",
+    "moment": "^2.10.6",
     "mongoose": "^4.1.10",
     "mongoose-migrate": "^0.2.3",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0",
+    "slug": "^0.9.1",
     "swig": "^1.4.2"
   },
   "devDependencies": {

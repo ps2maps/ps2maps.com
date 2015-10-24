@@ -1,10 +1,24 @@
-console.log("Fetching data from Census API...");
+got = require('got');
+mongoose = require('mongoose');
 
-// Census Namespaces
-var namespaces = [
-	'ps2:v2',
-	'ps2ps4us:v2',
-	'ps2ps4eu:v2'
-];
+console.log("ps2maps.com Database Seeding");
+console.log("============================");
 
-require('./servers')(namespaces);
+// Census variables
+census = {
+	url: "http://census.daybreakgames.com/get/",
+	version: 'v2',
+	namespaces: [
+		'ps2',
+		'ps2ps4us',
+		'ps2ps4eu'
+	],
+	defaultNamespace: 'ps2'
+}
+
+
+// Seed servers
+// require('./servers')();
+
+// Seed continents
+require('./continents')(census);
