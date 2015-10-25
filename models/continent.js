@@ -27,7 +27,6 @@ var schema = new Schema({
 });
 
 schema.pre('save', function(next){
-	console.log('in the presave!');
 	this.slug = slug(this.name.en);
 	next();
 });
