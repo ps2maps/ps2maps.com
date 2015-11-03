@@ -13,7 +13,7 @@ module.exports = function(callback) {
 		console.log("Continents: Fetching from Census API...");
 
 		// Get Census data
-		var url = census.url + "s:" + census.serviceId + "/get/" + census.defaultNamespace + ':' + census.version + '/zone?c:limit=1000';
+		var url = census.url + "s:" + census.serviceId + "/get/" + census.namespaces[0] + ':' + census.version + '/zone?c:limit=1000';
 		got.get(url, { json: true }, function(err, body, res){
 
 			// Handle errors
@@ -41,7 +41,7 @@ module.exports = function(callback) {
 						if (err) {
 							throw new Error(err);
 						}
-						console.log('added continent ' + continent.id);
+						console.log("Continents: Added " + continent.name.en);
 						resolve(continent);
 					});
 
@@ -50,13 +50,6 @@ module.exports = function(callback) {
 
 			// Callback after all continents are downloaded
 			Promise.all(promises).then(function(continents){
-				console.log('continent THEN');
-				// console.log(continents);
-				for (continent of continents) {
-					console.log(continent);
-					console.log("Continents: Added " + continent.name.en);
-				}
-				console.log('done with continents');
 				callback();
 			});
 		});
