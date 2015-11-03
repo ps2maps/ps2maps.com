@@ -14,27 +14,26 @@ census = {
 		'ps2ps4us',
 		'ps2ps4eu'
 	],
-	defaultNamespace: 'ps2',
 	serviceId: 'ps2maps'
 }
 
-var promises = [];
-
 // Seed servers
-promises.push(new Promise(function(resolve, reject){
+new Promise(function(resolve, reject){
 	require('./servers')(function(){
 		resolve();
 	});
-}));
+}).then(function(){
 
-// Seed continents
-promises.push(new Promise(function(resolve, reject){
-	require('./continents')(function(){
-		resolve();
+	// Seed continents
+	return new Promise(function(resolve, reject){
+		require('./continents')(function(){
+			resolve();
+		});
 	});
-}));
+}).then(function(){
 
-// Disconnect database
-Promise.all(promises).then(function(results){
+	// Done seeding
+	console.log("Seeding complete");
 	database.disconnect();
 });
+
